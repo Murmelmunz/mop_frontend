@@ -11,34 +11,34 @@ class SearchRoomPage extends StatelessWidget {
         backgroundColor: Colors.blue,
       ),
 
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Text(
-            "Search Room...",
-            style: new TextStyle(fontSize: 20.0),
-            textAlign: TextAlign.center,
-          ),
-          RaisedButton(
-            onPressed: () {
-              Navigator.of(context).pushNamed('/room');
-            },
-            child: Text('Room'),
-          ),
-          RaisedButton(
-            onPressed: () {
-              Navigator.of(context).pushNamed('/room', arguments: 123);
-            },
-            child: Text('Room 123'),
-          ),
-          RaisedButton(
-            onPressed: () {
-              Navigator.of(context).pushNamed('/room', arguments: 456);
-            },
-            child: Text('Room 456'),
-          ),
-        ],
-      ),
+      body: new Container(
+          padding: new EdgeInsets.all(10.0),
+          child: new Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget> [
+              TextField(
+                  decoration: InputDecoration(
+                      hintText: 'Please enter a search term'
+                  ),
+              ),
+              new Card(
+                color: Colors.white70,
+                child: new Container(
+                  padding: new EdgeInsets.all(10.0),
+                  child: new Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget> [ //Padding between these please
+                      new Text("I love Flutter", style: new TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
+                      new Icon(Icons.favorite, color: Colors.redAccent, size: 50.0)
+              ]
+          )
+    )
+    )
+    ]
+    )
+    ),
+
 
       floatingActionButton: FloatingActionButton(
         onPressed: () {
