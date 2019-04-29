@@ -1,18 +1,12 @@
+import 'dart:async';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class CreateRoomPage extends StatefulWidget {
   static const String routeName = "/create_room";
 
   CreateRoomPage({Key key, this.title}) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
 
   final String title;
 
@@ -22,74 +16,90 @@ class CreateRoomPage extends StatefulWidget {
 
 class _CreateRoomPageState extends State<CreateRoomPage> {
   int _counter = 0;
+  bool _isLoading = false;
+  String _error;
+  String _topic = "";
+  String _meetingPoint = "";
+  DateTime _date = DateTime.now();
+  TimeOfDay _time = TimeOfDay.now();
 
   void _incrementCounter() {
     setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
       _counter++;
     });
   }
 
+  Future _createRoom() async {
+    setState(() { _isLoading = true; });
+    try {
+      final response = await http.get(
+          Uri.encodeFull('https://jsonplaceholder.typicode.com/todos/1'),
+          headers: {"Accept": "application/json"})
+        .timeout(Duration(milliseconds: 1000));
+
+      if (response.statusCode >= 200 && response.statusCode < 300) {
+        print("success: " + response.body);
+        Navigator.of(context).popAndPushNamed('/room', arguments: _counter);
+      } else {
+        throw('error: ${response.statusCode}');
+      }
+    } catch (e) {
+      print(e.toString());
+      setState(() {
+        _error = e.toString();
+      });
+    }
+    setState(() { _isLoading = false; });
+  }
+
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
+      appBar: AppBar(title: Text(widget.title),),
+
+      body: _isLoading
+          ? Center(child: CircularProgressIndicator())
+          : Center(
         child: Column(
-          // Column is also layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.display1,
-            ),
-            RaisedButton(
-              onPressed: () {
-                // use the navigator to goto a named route
-                Navigator.of(context).popAndPushNamed('/room', arguments: _counter);
-              },
-              child: Text('Create Room'),
-            ),
+            TextField(decoration: InputDecoration(hintText: "Topic"),
+              onChanged: (text) { setState(() { _topic = text; }); },),
+            Text('Test: $_topic'),
+
+            TextField(decoration: InputDecoration(hintText: "Meeting Point"),
+              onChanged: (text) { setState(() { _meetingPoint = text; }); },),
+            Text('Test: $_meetingPoint'),
+
+            Row(children: <Widget>[
+              Text("Datum: "),
+              RaisedButton(child: Text(DateFormat('dd.MM.yy').format(_date)),
+                onPressed: () async { _date = await showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime(2018), lastDate: DateTime(2030)); setState(() {}); }
+              ),
+              Icon(Icons.event),
+            ],),
+
+            Row(children: <Widget>[
+              Text("Zeit: "),
+              RaisedButton(child: Text(_time.format(context)),
+                onPressed: () async { _time = await showTimePicker(context: context, initialTime: TimeOfDay.now()); setState(() {}); }
+              ),
+              Icon(Icons.access_time),
+            ],),
+
+            Text('You have pushed the button this many times:',),
+            Text('$_counter', style: Theme.of(context).textTheme.display1,),
+            RaisedButton(onPressed: _createRoom, child: Text('Create Room'),),
+
+            _error != null ? Text(_error) : Text("")
           ],
         ),
       ),
+
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
-        tooltip: 'Increment',
         child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      ),
     );
   }
 }
