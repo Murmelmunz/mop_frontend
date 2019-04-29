@@ -108,6 +108,12 @@ class _MyHomePageState extends State<SearchRoomPage> {
           ],
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.of(context).pushNamed('/create_room', arguments: 456);
+          },
+        child: Icon(Icons.add),
+      ),
     );
   }
 }
