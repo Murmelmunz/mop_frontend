@@ -32,10 +32,24 @@ class _CreateRoomPageState extends State<CreateRoomPage> {
   Future _createRoom() async {
     setState(() { _isLoading = true; });
     try {
-      final response = await http.get(
-          Uri.encodeFull('https://jsonplaceholder.typicode.com/todos/1'),
-          headers: {"Accept": "application/json"})
-        .timeout(Duration(milliseconds: 1000));
+//      final response = await http.put(
+//          //Uri.encodeFull('https://jsonplaceholder.typicode.com/todos/1'),
+//          Uri.encodeFull('http://10.0.2.2:3000/test/1'),
+//          body: '{"a": 101, "b": 202, "c":303}',
+//          headers: {"Content-Type": "application/json"})
+//        .timeout(Duration(milliseconds: 5000));
+
+      final response = await http.post(
+          Uri.encodeFull('http://10.0.2.2:3000/test'),
+          body: '{"topic": "$_topic", "meetingPoint": "$_meetingPoint", "date": "$_date", "time": "$_time"}',
+          headers: {"Content-Type": "application/json"})
+        .timeout(Duration(milliseconds: 5000));
+
+//      final response = await http.delete(
+//        //Uri.encodeFull('https://jsonplaceholder.typicode.com/todos/1'),
+//          Uri.encodeFull('http://10.0.2.2:3000/test/0'),
+//          headers: {"Content-Type": "application/json"})
+//        .timeout(Duration(milliseconds: 5000));
 
       if (response.statusCode >= 200 && response.statusCode < 300) {
         print("success: " + response.body);
