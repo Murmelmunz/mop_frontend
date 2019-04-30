@@ -13,8 +13,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: new SearchRoomPage(title: 'HomePage'),
+      home: SearchRoomPage(title: 'HomePage'),
       routes: <String, WidgetBuilder>{
+        SearchRoomPage.routeName: (BuildContext context) => SearchRoomPage(title: 'Homepage'),
         CreateRoomPage.routeName: (BuildContext context) => CreateRoomPage(title: "Create Room"),
         RoomPage.routeName: (BuildContext context) => RoomPage(),
       },
