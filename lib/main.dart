@@ -6,12 +6,12 @@ import 'package:speechlist/screens/search_room.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-
+  static const PrimaryColor = const Color(0xFF00206B);
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primaryColor: PrimaryColor,
       ),
       home: SearchRoomPage(title: 'HomePage'),
       routes: <String, WidgetBuilder>{

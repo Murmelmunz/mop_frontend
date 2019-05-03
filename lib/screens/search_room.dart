@@ -64,7 +64,7 @@ class _MyHomePageState extends State<SearchRoomPage> {
         centerTitle: true,
           actions: [
             new IconButton(
-              icon: new Icon(Icons.close),
+              icon: new Image.asset('lib/assets/logo_projekt.png'),
               tooltip: 'Home',
               onPressed: () {
                 Navigator.of(context).pushNamed('/search_room');
@@ -87,7 +87,12 @@ class _MyHomePageState extends State<SearchRoomPage> {
                     hintText: "Search",
                     prefixIcon: Icon(Icons.search),
                     border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(25.0)))),
+                        borderRadius: BorderRadius.all(Radius.circular(25.0))
+                    ),
+                    labelStyle: TextStyle(
+                      color: const Color(0xFF00206B),
+                    ),
+                ),
               ),
             ),
             Expanded(
@@ -99,6 +104,10 @@ class _MyHomePageState extends State<SearchRoomPage> {
                     padding: EdgeInsets.only(left:10, right:10, top:5, bottom:5),
                       alignment: Alignment(0, 0),
                       child: Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30.0),
+                          side: BorderSide(width: 0.2),
+                        ),
                         child: Container(
                           padding: EdgeInsets.all(5),
                           child: Column(
@@ -111,6 +120,7 @@ class _MyHomePageState extends State<SearchRoomPage> {
                                   child: Text(
                                     'Topic: ' + '${items[index]}',
                                     style: TextStyle(
+                                      color: const Color(0xFF00206B),
                                       fontSize: 19,
                                     ),
                                   ),
@@ -121,6 +131,7 @@ class _MyHomePageState extends State<SearchRoomPage> {
                                   child: Text(
                                     'ID: ' + '${items[index]}',
                                     style: TextStyle(
+                                      color: const Color(0xFF00206B),
                                       fontSize: 17,
                                     ),
                                   ),
@@ -131,6 +142,7 @@ class _MyHomePageState extends State<SearchRoomPage> {
                                   child: Text(
                                     'Meeting point: ' + '${items[index]}',
                                     style: TextStyle(
+                                      color: const Color(0xFF00206B),
                                       fontSize: 13,
                                     ),
                                   ),
@@ -139,28 +151,25 @@ class _MyHomePageState extends State<SearchRoomPage> {
                                   alignment: Alignment(-0.91, 0),
                                   padding: EdgeInsets.all(10),
                                   child: Text(
-                                    'Person count: ' + '${items[index]}',
-                                    style: TextStyle(
-                                      fontSize: 11,
-                                    ),
-                                  ),
+                                          'Person count: ' + '${items[index]}',
+                                          style: TextStyle(
+                                            color: const Color(0xFF00206B),
+                                            fontSize: 11,
+                                          ),
+                                      ),
                                 ),
                                 Container(
                                   alignment: Alignment(1, 0),
-                                  padding: EdgeInsets.all(0),
-                                  child: ButtonTheme.bar( // make buttons use the appropriate styles for cards
-                                    child: ButtonBar(
-                                      children: <Widget>[
-                                        FlatButton(
-                                          child: const Text('Join Room'),
-                                          onPressed: () {
-                                            Navigator.of(context).pushNamed('/room', arguments: 0);
-                                          },
-                                        ),
-                                      ],
+                                    child: new IconButton(
+                                      icon: new Icon(Icons.arrow_drop_down),
+                                      tooltip: 'Expand for more Information',
+                                      iconSize: 30,
+                                      color: const Color(0xFF00206B),
+                                      onPressed: () {
+                                        Navigator.of(context).pushNamed('/search_room');
+                                      },
                                     ),
-                                  ),
-                                ),
+                                    ),
                               ]
                           )
                         )
@@ -176,6 +185,7 @@ class _MyHomePageState extends State<SearchRoomPage> {
           onPressed: () {
             Navigator.of(context).pushNamed('/create_room', arguments: 456);
           },
+        backgroundColor: const Color(0xFF00206B),
         child: Icon(Icons.add),
       ),
     );
