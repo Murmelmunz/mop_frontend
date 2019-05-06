@@ -23,12 +23,6 @@ class _CreateRoomPageState extends State<CreateRoomPage> {
   DateTime _date = DateTime.now();
   TimeOfDay _time = TimeOfDay.now();
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
   Future _createRoom() async {
     setState(() { _isLoading = true; });
     try {
@@ -73,47 +67,45 @@ class _CreateRoomPageState extends State<CreateRoomPage> {
 
       body: _isLoading
           ? Center(child: CircularProgressIndicator())
-          : Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            TextField(decoration: InputDecoration(hintText: "Topic"),
-              onChanged: (text) { setState(() { _topic = text; }); },),
-            Text('Test: $_topic'),
+          : Container(
+        padding: EdgeInsets.only(left:10, right:10, top:5, bottom:5),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              TextField(decoration: InputDecoration(hintText: "Topic"),
+                onChanged: (text) { setState(() { _topic = text; }); },),
+              Padding(padding: EdgeInsets.all(8.0)),
 
-            TextField(decoration: InputDecoration(hintText: "Meeting Point"),
-              onChanged: (text) { setState(() { _meetingPoint = text; }); },),
-            Text('Test: $_meetingPoint'),
+              TextField(decoration: InputDecoration(hintText: "Meeting point"),
+                onChanged: (text) { setState(() { _meetingPoint = text; }); },),
+              Padding(padding: EdgeInsets.all(8.0)),
 
-            Row(children: <Widget>[
-              Text("Datum: "),
-              RaisedButton(child: Text(DateFormat('dd.MM.yy').format(_date)),
-                onPressed: () async { _date = await showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime(2018), lastDate: DateTime(2030)); setState(() {}); }
-              ),
-              Icon(Icons.event),
-            ],),
+              Row(children: <Widget>[
+                Text("Date: "),
+                RaisedButton(child: Text(DateFormat('dd.MM.yy').format(_date)),
+                    onPressed: () async { _date = await showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime(2018), lastDate: DateTime(2030)); setState(() {}); }
+                ),
+                Icon(Icons.event),
+              ],),
+              Padding(padding: EdgeInsets.all(8.0)),
 
-            Row(children: <Widget>[
-              Text("Zeit: "),
-              RaisedButton(child: Text(_time.format(context)),
-                onPressed: () async { _time = await showTimePicker(context: context, initialTime: TimeOfDay.now()); setState(() {}); }
-              ),
-              Icon(Icons.access_time),
-            ],),
+              Row(children: <Widget>[
+                Text("Time: "),
+                RaisedButton(child: Text(_time.format(context)),
+                    onPressed: () async { _time = await showTimePicker(context: context, initialTime: TimeOfDay.now()); setState(() {}); }
+                ),
+                Icon(Icons.access_time),
+              ],),
+              Padding(padding: EdgeInsets.all(80.0)),
 
-            Text('You have pushed the button this many times:',),
-            Text('$_counter', style: Theme.of(context).textTheme.display1,),
-            RaisedButton(onPressed: _createRoom, child: Text('Create Room'),),
+              RaisedButton(onPressed: _createRoom, child: Text('Create Room'),),
 
-            _error != null ? Text(_error) : Text("")
-          ],
+              _error != null ? Text(_error) : Text("")
+            ],
+          ),
         ),
-      ),
-
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        child: Icon(Icons.add),
-      ),
+      )
     );
   }
 }
