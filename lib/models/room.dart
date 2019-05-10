@@ -1,19 +1,18 @@
 class Room {
-  final String id;
-
+  int roomId;
   String topic;
   String meetingPoint;
 
-  Room(this.id, this.topic, this.meetingPoint);
+  Room(this.roomId, this.topic, this.meetingPoint);
 
   Map<String, dynamic> toJSON() => <String, dynamic>{
-    'id': this.id,
+    'roomId': this.roomId,
     'topic': this.topic,
     'meetingPoint': this.meetingPoint
   };
 
   factory Room.fromJSON(Map<String, dynamic> json) => new Room(
-    json['id'],
+    json['roomId'],
     json['topic'],
     json['meetingPoint'],
   );

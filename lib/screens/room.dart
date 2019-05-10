@@ -1,7 +1,48 @@
-import 'package:flutter/material.dart';
+import 'dart:convert';
 
-class RoomPage extends StatelessWidget {
+import 'package:flutter/material.dart';
+import 'package:speechlist/main.dart';
+import 'package:speechlist/models/room.dart';
+import 'package:http/http.dart' as http;
+
+class RoomPage extends StatefulWidget {
   static const String routeName = "/room";
+  int roomId;
+
+  RoomPage(int roomId) {
+    this.roomId = roomId;
+  }
+
+  @override
+  _RoomPageState createState() => _RoomPageState(this.roomId);
+}
+
+class _RoomPageState extends State<RoomPage> {
+  int roomId;
+  Future<Room> room;
+
+  _RoomPageState(int roomId) {
+    this.roomId = roomId;
+  }
+
+  void initState() {
+    super.initState();
+    this.room = createRoom();
+  }
+
+  Future<Room> createRoom() async {
+    final response = await http.get(
+        Uri.encodeFull('http://10.0.2.2:3000/room/$roomId'),
+        headers: {"Content-Type": "application/json"})
+      .timeout(Duration(milliseconds: 5000));
+
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      print("success: " + response.body);
+      return Room.fromJSON(json.decode(response.body));
+    } else {
+      throw('error: ${response.statusCode}');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -10,29 +51,30 @@ class RoomPage extends StatelessWidget {
     return new Scaffold(
       appBar: new AppBar(
         title: new Text("Room Page $args"),
-        backgroundColor: Colors.blue,
+        backgroundColor: MyApp.PrimaryColor,
       ),
 
-      body: new Container(
-        // Center the content
-        child: new Center(
-          child: new Column(
-            // Center content in the column
-            mainAxisAlignment: MainAxisAlignment.center,
-            // add children to the column
-            children: <Widget>[
-              // Text
-              new Text(
-                "Room Page",
-                // Setting the style for the Text
-                style: new TextStyle(fontSize: 20.0),
-                // Set text alignment to center
-                textAlign: TextAlign.center,
-              ),
-            ],
-          ),
-        ),
+      body: FutureBuilder<Room>(
+        future: room,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return new Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: <Widget>[
+                Text(snapshot.data.topic),
+                Text(snapshot.data.meetingPoint),
+                Text("${snapshot.data.roomId}"),
+              ],
+            );
+          } else if (snapshot.hasError) {
+            return Text("${snapshot.error}");
+          }
+
+          return CircularProgressIndicator();
+        },
       ),
+
     );
   }
 }

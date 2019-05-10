@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'dart:math';
 
 class CreateRoomPage extends StatefulWidget {
   static const String routeName = "/create_room";
@@ -15,9 +16,10 @@ class CreateRoomPage extends StatefulWidget {
 }
 
 class _CreateRoomPageState extends State<CreateRoomPage> {
-  int _counter = 0;
   bool _isLoading = false;
   String _error;
+
+  int _roomId = new Random().nextInt(9000);
   String _topic = "";
   String _meetingPoint = "";
   DateTime _date = DateTime.now();
@@ -34,8 +36,8 @@ class _CreateRoomPageState extends State<CreateRoomPage> {
 //        .timeout(Duration(milliseconds: 5000));
 
       final response = await http.post(
-          Uri.encodeFull('http://10.0.2.2:3000/test'),
-          body: '{"topic": "$_topic", "meetingPoint": "$_meetingPoint", "date": "$_date", "time": "$_time"}',
+          Uri.encodeFull('http://10.0.2.2:3000/room'),
+          body: '{"roomId": $_roomId, "topic": "$_topic", "meetingPoint": "$_meetingPoint", "date": "$_date", "time": "$_time"}',
           headers: {"Content-Type": "application/json"})
         .timeout(Duration(milliseconds: 5000));
 
@@ -47,7 +49,7 @@ class _CreateRoomPageState extends State<CreateRoomPage> {
 
       if (response.statusCode >= 200 && response.statusCode < 300) {
         print("success: " + response.body);
-        Navigator.of(context).popAndPushNamed('/room', arguments: _counter);
+        Navigator.of(context).popAndPushNamed('/room', arguments: _roomId);
       } else {
         throw('error: ${response.statusCode}');
       }
@@ -55,9 +57,9 @@ class _CreateRoomPageState extends State<CreateRoomPage> {
       print(e.toString());
       setState(() {
         _error = e.toString();
+        _isLoading = false;
       });
     }
-    setState(() { _isLoading = false; });
   }
 
   @override

@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
       routes: <String, WidgetBuilder>{
         SearchRoomPage.routeName: (BuildContext context) => SearchRoomPage(title: 'Homepage'),
         CreateRoomPage.routeName: (BuildContext context) => CreateRoomPage(title: "Create Room"),
-        RoomPage.routeName: (BuildContext context) => RoomPage(),
+        RoomPage.routeName: (BuildContext context) => RoomPage(ModalRoute.of(context).settings.arguments),
       },
     );
   }
