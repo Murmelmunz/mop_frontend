@@ -1,9 +1,7 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:speechlist/main.dart';
 import 'package:speechlist/models/room.dart';
-import 'package:http/http.dart' as http;
+import 'package:speechlist/utils/network.dart';
 
 class RoomPage extends StatefulWidget {
   static const String routeName = "/room";
@@ -27,30 +25,16 @@ class _RoomPageState extends State<RoomPage> {
 
   void initState() {
     super.initState();
-    this.room = createRoom();
-  }
-
-  Future<Room> createRoom() async {
-    final response = await http.get(
-        Uri.encodeFull('http://10.0.2.2:3000/room/$roomId'),
-        headers: {"Content-Type": "application/json"})
-      .timeout(Duration(milliseconds: 5000));
-
-    if (response.statusCode >= 200 && response.statusCode < 300) {
-      print("success: " + response.body);
-      return Room.fromJSON(json.decode(response.body));
-    } else {
-      throw('error: ${response.statusCode}');
-    }
+    this.room = Network().fetchRoom(roomId);
   }
 
   @override
   Widget build(BuildContext context) {
     final num args = ModalRoute.of(context).settings.arguments;
 
-    return new Scaffold(
-      appBar: new AppBar(
-        title: new Text("Room Page $args"),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Room Page $args"),
         backgroundColor: MyApp.PrimaryColor,
       ),
 
@@ -58,13 +42,16 @@ class _RoomPageState extends State<RoomPage> {
         future: room,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return new Column(
+            return Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.end,
               children: <Widget>[
                 Text(snapshot.data.topic),
                 Text(snapshot.data.meetingPoint),
                 Text("${snapshot.data.roomId}"),
+
+                // FutureBuilder will reload data
+                RaisedButton(onPressed: () => setState(() {}), child: Text('Refresh'),),
               ],
             );
           } else if (snapshot.hasError) {
