@@ -5,7 +5,7 @@ class Room {
 
   Room(this.roomId, this.topic, this.meetingPoint);
 
-  Map<String, dynamic> toJSON() => <String, dynamic>{
+  Map<String, dynamic> toJson() => <String, dynamic>{
     'roomId': this.roomId,
     'topic': this.topic,
     'meetingPoint': this.meetingPoint

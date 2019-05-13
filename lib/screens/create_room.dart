@@ -1,8 +1,8 @@
 import 'dart:async';
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'dart:math';
+import 'package:speechlist/models/room.dart';
+import 'package:speechlist/utils/network.dart';
 
 class CreateRoomPage extends StatefulWidget {
   static const String routeName = "/create_room";
@@ -19,7 +19,6 @@ class _CreateRoomPageState extends State<CreateRoomPage> {
   bool _isLoading = false;
   String _error;
 
-  int _roomId = new Random().nextInt(9000);
   String _topic = "";
   String _meetingPoint = "";
   DateTime _date = DateTime.now();
@@ -28,31 +27,8 @@ class _CreateRoomPageState extends State<CreateRoomPage> {
   Future _createRoom() async {
     setState(() { _isLoading = true; });
     try {
-//      final response = await http.put(
-//          //Uri.encodeFull('https://jsonplaceholder.typicode.com/todos/1'),
-//          Uri.encodeFull('http://10.0.2.2:3000/test/1'),
-//          body: '{"a": 101, "b": 202, "c":303}',
-//          headers: {"Content-Type": "application/json"})
-//        .timeout(Duration(milliseconds: 5000));
-
-      final response = await http.post(
-          Uri.encodeFull('http://10.0.2.2:3000/room'),
-          body: '{"roomId": $_roomId, "topic": "$_topic", "meetingPoint": "$_meetingPoint", "date": "$_date", "time": "$_time"}',
-          headers: {"Content-Type": "application/json"})
-        .timeout(Duration(milliseconds: 5000));
-
-//      final response = await http.delete(
-//        //Uri.encodeFull('https://jsonplaceholder.typicode.com/todos/1'),
-//          Uri.encodeFull('http://10.0.2.2:3000/test/0'),
-//          headers: {"Content-Type": "application/json"})
-//        .timeout(Duration(milliseconds: 5000));
-
-      if (response.statusCode >= 200 && response.statusCode < 300) {
-        print("success: " + response.body);
-        Navigator.of(context).popAndPushNamed('/room', arguments: _roomId);
-      } else {
-        throw('error: ${response.statusCode}');
-      }
+      Room room = await Network().createRoom(Room(null, _topic, _meetingPoint));
+      Navigator.of(context).popAndPushNamed('/room', arguments: room.roomId);
     } catch (e) {
       print(e.toString());
       setState(() {
