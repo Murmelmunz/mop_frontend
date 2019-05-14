@@ -17,15 +17,9 @@ class RoomPage extends StatefulWidget {
 
 class _RoomPageState extends State<RoomPage> {
   int roomId;
-  Future<Room> room;
 
   _RoomPageState(int roomId) {
     this.roomId = roomId;
-  }
-
-  void initState() {
-    super.initState();
-    this.room = Network().fetchRoom(roomId);
   }
 
   @override
@@ -39,7 +33,7 @@ class _RoomPageState extends State<RoomPage> {
       ),
 
       body: FutureBuilder<Room>(
-        future: room,
+        future: Network().fetchRoom(roomId),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return Column(

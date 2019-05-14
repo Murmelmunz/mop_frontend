@@ -1,9 +1,14 @@
 import 'dart:async';
+import 'dart:math';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:speechlist/models/room.dart';
 
-class Network {
+class Network extends NetworkNormal {
+  // change NetworkNormal to NetworkDemo or NetworkDemoError to test without a server
+}
+
+class NetworkNormal {
   final _host = 'http://10.0.2.2:3000';
 
   Future<Room> fetchRoom(int roomId) async {
@@ -47,5 +52,46 @@ class Network {
       // If that call was not successful, throw an error.
       throw Exception('Failed to load room. Error: ${response.statusCode}');
     }
+  }
+}
+
+class NetworkDemo {
+  final delay = const Duration(seconds: 2);
+
+  Future<Room> fetchRoom(int roomId) async {
+    await Future.delayed(delay);
+    return Room.fromJson(json.decode('{"roomId": 42, "topic": "Topic ${Random().nextInt(9001)}", "meetingPoint": "Skyscraper"}'));
+  }
+
+  Future<List<Room>> fetchAllRooms() async {
+    await Future.delayed(delay);
+    List responseJson = json.decode('[{"roomId": 42, "topic": "Topic ${Random().nextInt(9001)}", "meetingPoint": "Skyscraper"}, '
+        '{"roomId": 84, "topic": "Mobile Programming", "meetingPoint": "Cafeteria"}]');
+    return responseJson.map((m) => new Room.fromJson(m)).toList();
+  }
+
+  Future<Room> createRoom(Room room) async {
+    await Future.delayed(delay);
+    room.roomId = Random().nextInt(9001);
+    return room;
+  }
+}
+
+class NetworkDemoError {
+  final delay = const Duration(seconds: 2);
+
+  Future<Room> fetchRoom(int roomId) async {
+    await Future.delayed(delay);
+    throw Exception('Failed to load room. Error: ${404}');
+  }
+
+  Future<List<Room>> fetchAllRooms() async {
+    await Future.delayed(delay);
+    throw Exception('Failed to load room. Error: ${404}');
+  }
+
+  Future<Room> createRoom(Room room) async {
+    await Future.delayed(delay);
+    throw Exception('Failed to load room. Error: ${404}');
   }
 }
