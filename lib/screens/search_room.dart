@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:speechlist/models/room.dart';
+import 'package:speechlist/utils/network.dart';
 
 // Start of search room with identification
 class SearchRoomPage extends StatefulWidget {
@@ -40,15 +41,16 @@ class _MyHomePageState extends State<SearchRoomPage> {
     });
   }
 
-
   @override
   void initState() {
     _dropDownMenuItems = getDropDownMenuItems();
     _currentCity = _dropDownMenuItems[0].value;
-    duplicateItems.add(new Room(234632, "Operation Research", "test2"));
-    duplicateItems.add(new Room(1234, "Mobile Programming", "test3434"));
-    duplicateItems.add(new Room(234564, "Secure Engineering", "test3434"));
-    items.addAll(duplicateItems);
+
+    new Network().fetchAllRooms().then((a) {
+      duplicateItems.addAll(a);
+      items.addAll(a);
+      setState(() {});
+    });
     super.initState();
   }
 

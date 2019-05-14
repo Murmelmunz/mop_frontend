@@ -20,7 +20,14 @@ class Network {
     }
   }
 
-
+  Future<List<Room>> fetchAllRooms() async {
+    final items = List<Room>();
+    items.add(new Room(null, "Operation Research", "test1"));
+    items.add(new Room(null, "Mobile Programming", "test2"));
+    items.add(new Room(null, "Secure Engineering", "test3"));
+    items.add(new Room(null, "test4", "test4"));
+    return items;
+  }
 
   Future<Room> createRoom(Room room) async {
     room.roomId = new Random().nextInt(9000);
