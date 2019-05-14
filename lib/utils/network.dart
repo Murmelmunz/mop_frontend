@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:math';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:speechlist/models/room.dart';
@@ -13,7 +12,7 @@ class Network {
 
     if (response.statusCode >= 200 && response.statusCode < 300) {
       // If the call to the server was successful, parse the JSON
-      return Room.fromJSON(json.decode(response.body));
+      return Room.fromJson(json.decode(response.body));
     } else {
       // If that call was not successful, throw an error.
       throw Exception('Failed to load room. Error: ${response.statusCode}');
@@ -21,16 +20,20 @@ class Network {
   }
 
   Future<List<Room>> fetchAllRooms() async {
-    final items = List<Room>();
-    items.add(new Room(null, "Operation Research", "test1"));
-    items.add(new Room(null, "Mobile Programming", "test2"));
-    items.add(new Room(null, "Secure Engineering", "test3"));
-    items.add(new Room(null, "test4", "test4"));
-    return items;
+    final response = await http.get('$_host/room', headers: {"Content-Type": "application/json"})
+        .timeout(Duration(milliseconds: 5000));
+
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      // If the call to the server was successful, parse the JSON
+      List responseJson = json.decode(response.body);
+      return responseJson.map((m) => new Room.fromJson(m)).toList();
+    } else {
+      // If that call was not successful, throw an error.
+      throw Exception('Failed to load room. Error: ${response.statusCode}');
+    }
   }
 
   Future<Room> createRoom(Room room) async {
-    room.roomId = new Random().nextInt(9000);
     final response = await http.post(
         '$_host/room',
         body: json.encode(room),
@@ -39,8 +42,7 @@ class Network {
 
     if (response.statusCode >= 200 && response.statusCode < 300) {
       // If the call to the server was successful, parse the JSON
-//      return Room.fromJSON(json.decode(response.body));
-      return room;
+      return Room.fromJson(json.decode(response.body));
     } else {
       // If that call was not successful, throw an error.
       throw Exception('Failed to load room. Error: ${response.statusCode}');
