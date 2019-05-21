@@ -68,8 +68,10 @@ class _RoomsListState extends State<RoomsList> {
             shrinkWrap: true,
             itemCount: itemsFiltered.length,
             itemBuilder: (context, index) {
+              bool last = itemsFiltered.length == (index + 1);
+
               return new Container(
-                padding: EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),
+                padding: EdgeInsets.only(left: 10, right: 10, top: 5, bottom: last ? 80 : 5),
                 alignment: Alignment(0, 0),
                 child: Card(
                     shape: RoundedRectangleBorder(
@@ -148,7 +150,7 @@ class _RoomsListState extends State<RoomsList> {
               );
             },
           ),
-        )
+        ),
       ],
     );
   }

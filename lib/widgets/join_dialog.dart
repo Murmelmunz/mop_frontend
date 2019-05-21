@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:speechlist/models/room.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:speechlist/utils/preferences.dart';
 
 class JoinDialog extends StatefulWidget {
   static const String routeName = "/search_room";
@@ -13,6 +15,9 @@ class JoinDialog extends StatefulWidget {
 
 class _JoinDialogState extends State<JoinDialog> {
   Room room;
+  var textController = new TextEditingController();
+  SharedPreferences sharedPreferences;
+
   _JoinDialogState(this.room);
 
   // Block of declared variables
@@ -41,6 +46,7 @@ class _JoinDialogState extends State<JoinDialog> {
   void initState() {
     _dropDownMenuItems = getDropDownMenuItems();
     _currentCity = _dropDownMenuItems[0].value;
+    Preferences().getUserName().then((userName) => textController.text = userName);
 
     super.initState();
   }
@@ -65,6 +71,10 @@ class _JoinDialogState extends State<JoinDialog> {
           children: <Widget>[
             Padding(
                 padding: EdgeInsets.all(8.0),
+                child: TextField(decoration: InputDecoration(hintText: "Your Name"),
+                  controller: textController)),
+            Padding(
+                padding: EdgeInsets.all(8.0),
                 child: new DropdownButton(
                   value: _currentCity,
                   items: _dropDownMenuItems,
@@ -83,6 +93,7 @@ class _JoinDialogState extends State<JoinDialog> {
               child: RaisedButton(
                 child: Text("Enter Room"),
                 onPressed: () {
+                  Preferences().setUserName(textController.text);
                   Navigator.of(context)
                       .popAndPushNamed('/room', arguments: room.roomId);
                 },

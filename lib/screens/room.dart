@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:speechlist/main.dart';
 import 'package:speechlist/models/room.dart';
 import 'package:speechlist/utils/network.dart';
+import 'package:speechlist/utils/preferences.dart';
 
 class RoomPage extends StatefulWidget {
   static const String routeName = "/room";
@@ -15,8 +16,15 @@ class RoomPage extends StatefulWidget {
 
 class _RoomPageState extends State<RoomPage> {
   int roomId;
+  String userName;
 
   _RoomPageState(this.roomId);
+
+  @override
+  void initState() {
+    Preferences().getUserName().then((n) => userName = n);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +50,7 @@ class _RoomPageState extends State<RoomPage> {
 
                 // FutureBuilder will reload data
                 RaisedButton(onPressed: () => setState(() {}), child: Text('Refresh'),),
+                Text("Your Name: $userName"),
               ],
             );
           } else if (snapshot.hasError) {
