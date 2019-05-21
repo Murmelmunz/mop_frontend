@@ -17,47 +17,6 @@ class SearchRoomPage extends StatefulWidget {
 // Start of creating the Screen. You find methods which are needed for the implementation. First of all
 // all variables will be declared. Then you find the help methods. At the end there are the flutter return widgets
 class _MyHomePageState extends State<SearchRoomPage> {
-  TextEditingController editingController = TextEditingController();
-  final duplicateItems = List<Room>();
-  var items = List<Room>();
-
-  @override
-  void initState() {
-    new Network().fetchAllRooms().then((a) {
-      duplicateItems.addAll(a);
-      items.addAll(a);
-      setState(() {});
-    });
-    super.initState();
-  }
-
-  void filterSearchResults(String query) {
-    List<Room> dummySearchList = List<Room>();
-    dummySearchList.addAll(duplicateItems);
-
-    if (query.isNotEmpty) {
-      List<Room> dummyListData = List<Room>();
-
-      dummySearchList.forEach((item) {
-        if (item.topic.toLowerCase().contains(query.toLowerCase())) {
-          dummyListData.add(item);
-        }
-      });
-
-      setState(() {
-        items.clear();
-        items.addAll(dummyListData);
-      });
-
-      return;
-    } else {
-      setState(() {
-        items.clear();
-        items.addAll(duplicateItems);
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -74,37 +33,22 @@ class _MyHomePageState extends State<SearchRoomPage> {
           new IconButton(
             icon: new Image.asset('lib/assets/logo_projekt.png'),
             tooltip: 'Home',
-            onPressed: () {
-              Navigator.of(context).pushNamed('/search_room');
-              setState(() {});
-            },
+            onPressed: () => setState(() {}),
           ),
         ],
       ),
       body: Container(
-        child: Column(
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextField(
-                onChanged: (value) {
-                  filterSearchResults(value);
-                },
-                controller: editingController,
-                decoration: InputDecoration(
-                  labelText: "Search",
-                  hintText: "Search",
-                  prefixIcon: Icon(Icons.search),
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(25.0))),
-                  labelStyle: TextStyle(
-                    color: const Color(0xFF00206B),
-                  ),
-                ),
-              ),
-            ),
-            RoomsList(items),
-          ],
+        child: FutureBuilder<List<Room>>(
+          future: Network().fetchAllRooms(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasData) {
+              return RoomsList(snapshot.data);
+            } else if (snapshot.hasError) {
+              return Center(child: Text("${snapshot.error}"));
+            }
+          },
         ),
       ),
       floatingActionButton: FloatingActionButton(
