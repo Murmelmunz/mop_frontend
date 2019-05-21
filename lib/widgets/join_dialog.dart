@@ -3,7 +3,7 @@ import 'package:speechlist/models/room.dart';
 
 class JoinDialog extends StatefulWidget {
   static const String routeName = "/search_room";
-  Room room;
+  final Room room;
 
   JoinDialog(this.room, {Key key}) : super(key: key);
 

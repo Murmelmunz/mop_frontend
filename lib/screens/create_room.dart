@@ -6,10 +6,9 @@ import 'package:speechlist/utils/network.dart';
 
 class CreateRoomPage extends StatefulWidget {
   static const String routeName = "/create_room";
+  final String title;
 
   CreateRoomPage({Key key, this.title}) : super(key: key);
-
-  final String title;
 
   @override
   _CreateRoomPageState createState() => _CreateRoomPageState();

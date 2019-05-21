@@ -5,11 +5,9 @@ import 'package:speechlist/utils/network.dart';
 
 class RoomPage extends StatefulWidget {
   static const String routeName = "/room";
-  int roomId;
+  final int roomId;
 
-  RoomPage(int roomId) {
-    this.roomId = roomId;
-  }
+  RoomPage(this.roomId);
 
   @override
   _RoomPageState createState() => _RoomPageState(this.roomId);
@@ -18,9 +16,7 @@ class RoomPage extends StatefulWidget {
 class _RoomPageState extends State<RoomPage> {
   int roomId;
 
-  _RoomPageState(int roomId) {
-    this.roomId = roomId;
-  }
+  _RoomPageState(this.roomId);
 
   @override
   Widget build(BuildContext context) {
