@@ -3,6 +3,7 @@ import 'package:speechlist/main.dart';
 import 'package:speechlist/models/room.dart';
 import 'package:speechlist/utils/network.dart';
 import 'package:speechlist/utils/preferences.dart';
+import 'package:speechlist/widgets/contribution_dialog.dart';
 
 class RoomPage extends StatefulWidget {
   static const String routeName = "/room";
@@ -61,6 +62,17 @@ class _RoomPageState extends State<RoomPage> {
         },
       ),
 
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          showDialog(
+              context: context,
+              builder: (context) {
+                return ContributionDialog();
+              });
+        },
+        backgroundColor: const Color(0xFF00206B),
+        child: Icon(Icons.add),
+      ),
     );
   }
 }
