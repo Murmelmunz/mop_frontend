@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:speechlist/models/room.dart';
+import 'package:speechlist/models/user.dart';
 
 class Network extends NetworkNormal {
   // change NetworkNormal to NetworkDemo or NetworkDemoError to test without a server
@@ -43,6 +44,26 @@ class NetworkNormal {
         '$_host/room',
         body: json.encode(room),
         headers: {"Content-Type": "application/json"})
+        .timeout(Duration(milliseconds: 5000));
+
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      // If the call to the server was successful, parse the JSON
+      return Room.fromJson(json.decode(response.body));
+    } else {
+      // If that call was not successful, throw an error.
+      throw Exception('Failed to load room. Error: ${response.statusCode}');
+    }
+  }
+
+  // TODO: send user data with join request
+  Future<Room> joinRoom(int roomId, User participant) async {
+//    final response = await http.post(
+//        '$_host/room/$roomId/participant',
+//        body: json.encode(participant),
+//        headers: {"Content-Type": "application/json"})
+//        .timeout(Duration(milliseconds: 5000));
+
+    final response = await http.get('$_host/room/$roomId', headers: {"Content-Type": "application/json"})
         .timeout(Duration(milliseconds: 5000));
 
     if (response.statusCode >= 200 && response.statusCode < 300) {

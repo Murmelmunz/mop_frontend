@@ -38,17 +38,20 @@ class _MyHomePageState extends State<SearchRoomPage> {
         ],
       ),
       body: Container(
-        child: FutureBuilder<List<Room>>(
-          future: Network().fetchAllRooms(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: CircularProgressIndicator());
-            } else if (snapshot.hasData) {
-              return RoomsList(snapshot.data);
-            } else if (snapshot.hasError) {
-              return Center(child: Text("${snapshot.error}"));
-            }
-          },
+        child: RefreshIndicator(
+          onRefresh: () async => setState(() {}),
+          child: FutureBuilder<List<Room>>(
+            future: Network().fetchAllRooms(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(child: CircularProgressIndicator());
+              } else if (snapshot.hasData) {
+                return RoomsList(snapshot.data);
+              } else if (snapshot.hasError) {
+                return ListView(children: <Widget>[Text("${snapshot.error}")]);
+              }
+            },
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
