@@ -23,11 +23,15 @@ class _CreateRoomPageState extends State<CreateRoomPage> {
   String _meetingPoint = "";
   DateTime _date = DateTime.now();
   TimeOfDay _time = TimeOfDay.now();
+  var _dateController = new TextEditingController();
+  var _timeController = new TextEditingController();
 
   Future _createRoom() async {
     setState(() { _isLoading = true; });
     try {
-      Room room = await Network().createRoom(Room(null, _topic, _meetingPoint));
+      Room room = await Network().createRoom(
+        Room(null, _topic, _meetingPoint, _dateController.text, _timeController.text)
+      );
       Navigator.of(context).popAndPushNamed('/room', arguments: room.roomId);
     } catch (e) {
       print(e.toString());
@@ -36,6 +40,26 @@ class _CreateRoomPageState extends State<CreateRoomPage> {
         _isLoading = false;
       });
     }
+  }
+
+  Future<void> _pickDate() async {
+    _date = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime(2018),
+        lastDate: DateTime(2030)
+    ) ?? _date;
+    _dateController.text = DateFormat('dd.MM.yy').format(_date);
+    setState(() {});
+  }
+
+  Future<void> _pickTime() async {
+    _time = await showTimePicker(
+        context: context,
+        initialTime: TimeOfDay.now()
+    ) ?? _time;
+    _timeController.text = _time.format(context);
+    setState(() {});
   }
 
   @override
@@ -74,23 +98,27 @@ class _CreateRoomPageState extends State<CreateRoomPage> {
                     onChanged: (text) { setState(() { _meetingPoint = text; }); },),
                   Padding(padding: EdgeInsets.all(8.0)),
 
-                  Row(children: <Widget>[
-                    Text("Date: "),
-                    RaisedButton(child: Text(DateFormat('dd.MM.yy').format(_date)),
-                        onPressed: () async { _date = await showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime(2018), lastDate: DateTime(2030)); setState(() {}); }
+                  GestureDetector(
+                    onTap: () => _pickDate(),
+                    child: AbsorbPointer(
+                        child: TextField(
+                          decoration: InputDecoration(labelText: "Date", prefixIcon: Icon(Icons.event)),
+                          controller: _dateController,
+                        )
                     ),
-                    Icon(Icons.event),
-                  ],mainAxisAlignment: MainAxisAlignment.spaceBetween,),
+                  ),
                   Padding(padding: EdgeInsets.all(8.0)),
 
-                  Row(children: <Widget>[
-                    Text("Time: "),
-                    RaisedButton(child: Text(_time.format(context)),
-                        onPressed: () async { _time = await showTimePicker(context: context, initialTime: TimeOfDay.now()); setState(() {}); }
+                  GestureDetector(
+                    onTap: () => _pickTime(),
+                    child: AbsorbPointer(
+                        child: TextField(
+                          decoration: InputDecoration(labelText: "Time", prefixIcon: Icon(Icons.access_time)),
+                          controller: _timeController,
+                        ),
                     ),
-                    Icon(Icons.access_time),
-                  ],mainAxisAlignment: MainAxisAlignment.spaceBetween,),
-                  Padding(padding: EdgeInsets.all(40.0)),
+                  ),
+                  Padding(padding: EdgeInsets.all(8.0)),
 
                   RaisedButton(onPressed: _createRoom, child: Text('Create Room'),),
                   Padding(padding: EdgeInsets.all(8.0)),
