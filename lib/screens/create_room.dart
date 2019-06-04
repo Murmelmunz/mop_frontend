@@ -77,8 +77,15 @@ class _CreateRoomPageState extends State<CreateRoomPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 IconButton(icon: Icon(Icons.arrow_left), onPressed: () {}, color: Colors.white,),
-                Text("Generic Settings", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold,)), //style: Theme.of(context).textTheme.title
-                IconButton(icon: Icon(Icons.arrow_right), onPressed: () {}, color: Colors.white,),
+                Text("Generic Settings", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold,)),
+
+                IconButton(icon: Icon(Icons.arrow_right),
+                  onPressed: () => Navigator.of(context).pushReplacementNamed(
+                      "/create_room2",
+                      arguments: Room(null, _topic, _meetingPoint, _dateController.text, _timeController.text)
+                  ),
+                  color: Colors.white,
+                ),
               ],
             ),
           ),

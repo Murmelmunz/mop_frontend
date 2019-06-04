@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:speechlist/screens/create_room.dart';
+import 'package:speechlist/screens/create_room2.dart';
+import 'package:speechlist/screens/create_room3.dart';
 import 'package:speechlist/screens/room.dart';
 import 'package:speechlist/screens/search_room.dart';
 
@@ -33,6 +35,8 @@ class MyApp extends StatelessWidget {
         SearchRoomPage.routeName: (BuildContext context) => SearchRoomPage(title: 'Homepage'),
         CreateRoomPage.routeName: (BuildContext context) => CreateRoomPage(title: "Create Room"),
         RoomPage.routeName: (BuildContext context) => RoomPage(ModalRoute.of(context).settings.arguments),
+        CreateRoomPage2.routeName: (BuildContext context) => CreateRoomPage2(room: ModalRoute.of(context).settings.arguments),
+        CreateRoomPage3.routeName: (BuildContext context) => CreateRoomPage3(room: ModalRoute.of(context).settings.arguments),
       },
     );
   }
