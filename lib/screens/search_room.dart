@@ -58,7 +58,6 @@ class _MyHomePageState extends State<SearchRoomPage> {
         onPressed: () {
           Navigator.of(context).pushNamed('/create_room', arguments: 456);
         },
-        backgroundColor: const Color(0xFF00206B),
         child: Icon(Icons.add),
       ),
     );

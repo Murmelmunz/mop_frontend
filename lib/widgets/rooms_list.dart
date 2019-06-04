@@ -54,11 +54,6 @@ class _RoomsListState extends State<RoomsList> {
               labelText: "Search",
               hintText: "Search",
               prefixIcon: Icon(Icons.search),
-              border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(25.0))),
-              labelStyle: TextStyle(
-                color: const Color(0xFF00206B),
-              ),
             ),
           ),
         ),
@@ -91,7 +86,6 @@ class _RoomsListState extends State<RoomsList> {
                               child: Text(
                                 'Topic: ' + '${itemsFiltered[index].topic}',
                                 style: TextStyle(
-                                  color: const Color(0xFF00206B),
                                   fontSize: 19,
                                 ),
                               ),
@@ -102,7 +96,6 @@ class _RoomsListState extends State<RoomsList> {
                               child: Text(
                                 'ID: ' + '${itemsFiltered[index].roomId}',
                                 style: TextStyle(
-                                  color: const Color(0xFF00206B),
                                   fontSize: 17,
                                 ),
                               ),
@@ -113,7 +106,6 @@ class _RoomsListState extends State<RoomsList> {
                               child: Text(
                                 'Meeting point: ' + '${itemsFiltered[index].meetingPoint}',
                                 style: TextStyle(
-                                  color: const Color(0xFF00206B),
                                   fontSize: 13,
                                 ),
                               ),
@@ -124,7 +116,6 @@ class _RoomsListState extends State<RoomsList> {
                               child: Text(
                                 'Person count: ' + '${itemsFiltered[index]}',
                                 style: TextStyle(
-                                  color: const Color(0xFF00206B),
                                   fontSize: 11,
                                 ),
                               ),
@@ -135,7 +126,6 @@ class _RoomsListState extends State<RoomsList> {
                                 icon: new Icon(Icons.arrow_drop_down),
                                 tooltip: 'Expand for more Information',
                                 iconSize: 30,
-                                color: const Color(0xFF00206B),
                                 onPressed: () {
                                   showDialog(
                                       context: context,

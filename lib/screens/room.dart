@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:speechlist/main.dart';
 import 'package:speechlist/models/room.dart';
 import 'package:speechlist/utils/network.dart';
 import 'package:speechlist/utils/preferences.dart';
@@ -34,7 +33,6 @@ class _RoomPageState extends State<RoomPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Room Page $args"),
-        backgroundColor: MyApp.PrimaryColor,
       ),
 
       body: FutureBuilder<Room>(
@@ -70,7 +68,6 @@ class _RoomPageState extends State<RoomPage> {
                 return ContributionDialog();
               });
         },
-        backgroundColor: const Color(0xFF00206B),
         child: Icon(Icons.add),
       ),
     );

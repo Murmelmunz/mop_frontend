@@ -77,7 +77,7 @@ class NetworkNormal {
 }
 
 class NetworkDemo {
-  final delay = const Duration(seconds: 2);
+  final delay = const Duration(milliseconds: 500);
 
   Future<Room> fetchRoom(int roomId) async {
     await Future.delayed(delay);
@@ -99,7 +99,7 @@ class NetworkDemo {
 }
 
 class NetworkDemoError {
-  final delay = const Duration(seconds: 2);
+  final delay = const Duration(milliseconds: 1000);
 
   Future<Room> fetchRoom(int roomId) async {
     await Future.delayed(delay);

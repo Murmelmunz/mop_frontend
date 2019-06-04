@@ -71,7 +71,7 @@ class _JoinDialogState extends State<JoinDialog> {
           children: <Widget>[
             Padding(
                 padding: EdgeInsets.all(8.0),
-                child: TextField(decoration: InputDecoration(hintText: "Your Name"),
+                child: TextField(decoration: InputDecoration(labelText: "Your Name"),
                   controller: textController)),
             Padding(
                 padding: EdgeInsets.all(8.0),

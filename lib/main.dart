@@ -12,6 +12,19 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(
         primaryColor: PrimaryColor,
+        accentColor: PrimaryColor,
+        cursorColor: PrimaryColor,
+
+        textTheme: TextTheme(
+          body1: TextStyle(color: PrimaryColor),
+        ),
+
+        inputDecorationTheme: InputDecorationTheme(
+          border: OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(25.0))
+          ),
+        ),
+
       ),
       home: SearchRoomPage(title: 'HomePage'),
       routes: <String, WidgetBuilder>{

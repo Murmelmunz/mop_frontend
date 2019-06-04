@@ -50,11 +50,11 @@ class _CreateRoomPageState extends State<CreateRoomPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              TextField(decoration: InputDecoration(hintText: "Topic"),
+              TextField(decoration: InputDecoration(labelText: "Topic"),
                 onChanged: (text) { setState(() { _topic = text; }); },),
               Padding(padding: EdgeInsets.all(8.0)),
 
-              TextField(decoration: InputDecoration(hintText: "Meeting point"),
+              TextField(decoration: InputDecoration(labelText: "Meeting point"),
                 onChanged: (text) { setState(() { _meetingPoint = text; }); },),
               Padding(padding: EdgeInsets.all(8.0)),
 
