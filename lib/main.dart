@@ -7,10 +7,12 @@ void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   static const PrimaryColor = const Color(0xFF00206B);
+  static final PrimaryColorLight = PrimaryColor.withOpacity(0.7);
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
+        brightness: Brightness.light,
         primaryColor: PrimaryColor,
         accentColor: PrimaryColor,
         cursorColor: PrimaryColor,

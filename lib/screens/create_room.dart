@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:speechlist/main.dart';
 import 'package:speechlist/models/room.dart';
 import 'package:speechlist/utils/network.dart';
 
@@ -44,45 +45,66 @@ class _CreateRoomPageState extends State<CreateRoomPage> {
 
       body: _isLoading
           ? Center(child: CircularProgressIndicator())
-          : Container(
-        padding: EdgeInsets.only(left:10, right:10, top:5, bottom:5),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              TextField(decoration: InputDecoration(labelText: "Topic"),
-                onChanged: (text) { setState(() { _topic = text; }); },),
-              Padding(padding: EdgeInsets.all(8.0)),
-
-              TextField(decoration: InputDecoration(labelText: "Meeting point"),
-                onChanged: (text) { setState(() { _meetingPoint = text; }); },),
-              Padding(padding: EdgeInsets.all(8.0)),
-
-              Row(children: <Widget>[
-                Text("Date: "),
-                RaisedButton(child: Text(DateFormat('dd.MM.yy').format(_date)),
-                    onPressed: () async { _date = await showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime(2018), lastDate: DateTime(2030)); setState(() {}); }
-                ),
-                Icon(Icons.event),
-              ],),
-              Padding(padding: EdgeInsets.all(8.0)),
-
-              Row(children: <Widget>[
-                Text("Time: "),
-                RaisedButton(child: Text(_time.format(context)),
-                    onPressed: () async { _time = await showTimePicker(context: context, initialTime: TimeOfDay.now()); setState(() {}); }
-                ),
-                Icon(Icons.access_time),
-              ],),
-              Padding(padding: EdgeInsets.all(80.0)),
-
-              RaisedButton(onPressed: _createRoom, child: Text('Create Room'),),
-
-              _error != null ? Text(_error) : Text("")
-            ],
+          : Column(
+        children: <Widget>[
+          Container(
+            color: MyApp.PrimaryColorLight,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                IconButton(icon: Icon(Icons.arrow_left), onPressed: () {}, color: Colors.white,),
+                Text("Generic Settings", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold,)), //style: Theme.of(context).textTheme.title
+                IconButton(icon: Icon(Icons.arrow_right), onPressed: () {}, color: Colors.white,),
+              ],
+            ),
           ),
-        ),
+
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: ListView(
+                children: <Widget>[
+                  Padding(padding: EdgeInsets.all(8.0)),
+
+                  TextField(decoration: InputDecoration(labelText: "Topic", prefixIcon: Icon(Icons.chat_bubble)),
+                    onChanged: (text) { setState(() { _topic = text; }); },),
+                  Padding(padding: EdgeInsets.all(8.0)),
+
+                  TextField(decoration: InputDecoration(labelText: "Meeting point", prefixIcon: Icon(Icons.location_on)),
+                    onChanged: (text) { setState(() { _meetingPoint = text; }); },),
+                  Padding(padding: EdgeInsets.all(8.0)),
+
+                  Row(children: <Widget>[
+                    Text("Date: "),
+                    RaisedButton(child: Text(DateFormat('dd.MM.yy').format(_date)),
+                        onPressed: () async { _date = await showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime(2018), lastDate: DateTime(2030)); setState(() {}); }
+                    ),
+                    Icon(Icons.event),
+                  ],mainAxisAlignment: MainAxisAlignment.spaceBetween,),
+                  Padding(padding: EdgeInsets.all(8.0)),
+
+                  Row(children: <Widget>[
+                    Text("Time: "),
+                    RaisedButton(child: Text(_time.format(context)),
+                        onPressed: () async { _time = await showTimePicker(context: context, initialTime: TimeOfDay.now()); setState(() {}); }
+                    ),
+                    Icon(Icons.access_time),
+                  ],mainAxisAlignment: MainAxisAlignment.spaceBetween,),
+                  Padding(padding: EdgeInsets.all(40.0)),
+
+                  RaisedButton(onPressed: _createRoom, child: Text('Create Room'),),
+                  Padding(padding: EdgeInsets.all(8.0)),
+
+                  _error != null ? Text(_error) : Text(""),
+                  Padding(padding: EdgeInsets.all(8.0)),
+
+                ],
+              ),
+            ),
+          ),
+        ],
       )
+
     );
   }
 }

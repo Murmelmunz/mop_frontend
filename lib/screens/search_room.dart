@@ -21,13 +21,7 @@ class _MyHomePageState extends State<SearchRoomPage> {
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: new AppBar(
-        title: new Text(
-          'SpeechList',
-          style: new TextStyle(
-            fontSize: 18.0,
-            color: Colors.white,
-          ),
-        ),
+        title: new Text('SpeechList',),
         centerTitle: true,
         actions: [
           new IconButton(

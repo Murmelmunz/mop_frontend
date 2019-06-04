@@ -31,9 +31,7 @@ class _RoomPageState extends State<RoomPage> {
     final num args = ModalRoute.of(context).settings.arguments;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Room Page $args"),
-      ),
+      appBar: AppBar(title: Text("Room Page $args"),),
 
       body: FutureBuilder<Room>(
         future: Network().fetchRoom(roomId),
