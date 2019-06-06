@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:speechlist/main.dart';
 import 'package:speechlist/models/room.dart';
 import 'package:speechlist/utils/network.dart';
+import 'package:speechlist/widgets/box_with_title.dart';
 
 class CreateRoomPage3 extends StatefulWidget {
   static const String routeName = "/create_room3";
@@ -64,13 +65,11 @@ class _CreateRoomPageState3 extends State<CreateRoomPage3> {
               ),
             ),
 
-            Stack(
-              alignment: AlignmentDirectional.topCenter,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Container(
-                    width: double.infinity,
+            Expanded(
+              child: ListView(
+                children: <Widget>[
+                  BoxWithTitle(
+                    title: "Room Information",
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: Wrap(
@@ -87,60 +86,37 @@ class _CreateRoomPageState3 extends State<CreateRoomPage3> {
                         ],
                       ),
                     ),
-                    decoration: BoxDecoration(border: Border.all()),
                   ),
-                ),
 
-                Positioned(
-                  child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 8.0),
-                    child: Text("Room Information"),
-                    color: Theme.of(context).scaffoldBackgroundColor,
-                  ),
-                  top: 8,
-                ),
-              ],
-            ),
-
-            Stack(
-              alignment: AlignmentDirectional.topCenter,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Container(
-                    width: double.infinity,
+                  BoxWithTitle(
+                    title: "Categories",
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      child: Wrap(
+                        spacing: 10,
+                        direction: Axis.vertical,
                         children: <Widget>[
                           Text("Topic: ${room.topic}"),
                           Text("Meeting point: ${room.meetingPoint}"),
                           Text("Date: ${room.date}"),
                           Text("Time: ${room.time}"),
+                          room.password != null
+                              ? Icon(Icons.lock, color: Theme.of(context).accentColor)
+                              : Container()
                         ],
                       ),
                     ),
-                    decoration: BoxDecoration(border: Border.all()),
                   ),
-                ),
 
-                Positioned(
-                  child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 8.0),
-                    child: Text("Categories"),
-                    color: Theme.of(context).scaffoldBackgroundColor,
-                  ),
-                  top: 8,
-                ),
-              ],
+                  RaisedButton(onPressed: _createRoom, child: Text('Create Room'),),
+                  Padding(padding: EdgeInsets.all(8.0)),
+
+                  _error != null ? Text(_error) : Text(""),
+                  Padding(padding: EdgeInsets.all(8.0)),
+                  
+                ],
+              ),
             ),
-
-            RaisedButton(onPressed: _createRoom, child: Text('Create Room'),),
-            Padding(padding: EdgeInsets.all(8.0)),
-
-            _error != null ? Text(_error) : Text(""),
-            Padding(padding: EdgeInsets.all(8.0)),
 
           ],
         )
