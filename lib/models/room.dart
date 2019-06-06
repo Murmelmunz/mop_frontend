@@ -4,6 +4,7 @@ class Room {
   String meetingPoint;
   String date;
   String time;
+  String password;
 
   Room(this.roomId, this.topic, this.meetingPoint, this.date, this.time);
 
@@ -13,6 +14,7 @@ class Room {
     'meetingPoint': this.meetingPoint,
     'date': this.date,
     'time': this.time,
+    'password': this.password,
   };
 
   factory Room.fromJson(Map<String, dynamic> json) => new Room(

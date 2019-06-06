@@ -59,7 +59,7 @@ class _CreateRoomPageState3 extends State<CreateRoomPage3> {
                   ),
 
                   Text("Overview", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold,)), //style: Theme.of(context).textTheme.title
-                  IconButton(icon: Icon(Icons.arrow_right), onPressed: () {}, color: Colors.white,),
+                  IconButton(icon: Icon(Icons.arrow_right), color: Colors.white,),
                 ],
               ),
             ),
@@ -73,13 +73,17 @@ class _CreateRoomPageState3 extends State<CreateRoomPage3> {
                     width: double.infinity,
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      child: Wrap(
+                        spacing: 10,
+                        direction: Axis.vertical,
                         children: <Widget>[
                           Text("Topic: ${room.topic}"),
                           Text("Meeting point: ${room.meetingPoint}"),
                           Text("Date: ${room.date}"),
                           Text("Time: ${room.time}"),
+                          room.password != null
+                              ? Icon(Icons.lock, color: Theme.of(context).accentColor)
+                              : Container()
                         ],
                       ),
                     ),
@@ -91,7 +95,7 @@ class _CreateRoomPageState3 extends State<CreateRoomPage3> {
                   child: Container(
                     padding: EdgeInsets.symmetric(horizontal: 8.0),
                     child: Text("Room Information"),
-                    color: Colors.white,
+                    color: Theme.of(context).scaffoldBackgroundColor,
                   ),
                   top: 8,
                 ),
@@ -125,12 +129,18 @@ class _CreateRoomPageState3 extends State<CreateRoomPage3> {
                   child: Container(
                     padding: EdgeInsets.symmetric(horizontal: 8.0),
                     child: Text("Categories"),
-                    color: Colors.white,
+                    color: Theme.of(context).scaffoldBackgroundColor,
                   ),
                   top: 8,
                 ),
               ],
-            )
+            ),
+
+            RaisedButton(onPressed: _createRoom, child: Text('Create Room'),),
+            Padding(padding: EdgeInsets.all(8.0)),
+
+            _error != null ? Text(_error) : Text(""),
+            Padding(padding: EdgeInsets.all(8.0)),
 
           ],
         )

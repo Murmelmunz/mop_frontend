@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
       home: SearchRoomPage(title: 'HomePage'),
       routes: <String, WidgetBuilder>{
         SearchRoomPage.routeName: (BuildContext context) => SearchRoomPage(title: 'Homepage'),
-        CreateRoomPage.routeName: (BuildContext context) => CreateRoomPage(title: "Create Room"),
+        CreateRoomPage.routeName: (BuildContext context) => CreateRoomPage(room: ModalRoute.of(context).settings.arguments),
         RoomPage.routeName: (BuildContext context) => RoomPage(ModalRoute.of(context).settings.arguments),
         CreateRoomPage2.routeName: (BuildContext context) => CreateRoomPage2(room: ModalRoute.of(context).settings.arguments),
         CreateRoomPage3.routeName: (BuildContext context) => CreateRoomPage3(room: ModalRoute.of(context).settings.arguments),

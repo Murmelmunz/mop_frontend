@@ -3,43 +3,37 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:speechlist/main.dart';
 import 'package:speechlist/models/room.dart';
-import 'package:speechlist/utils/network.dart';
 
 class CreateRoomPage extends StatefulWidget {
   static const String routeName = "/create_room";
-  final String title;
+  final Room room;
 
-  CreateRoomPage({Key key, this.title}) : super(key: key);
+  CreateRoomPage({Key key, this.room}) : super(key: key);
 
   @override
-  _CreateRoomPageState createState() => _CreateRoomPageState();
+  _CreateRoomPageState createState() => _CreateRoomPageState(this.room);
 }
 
 class _CreateRoomPageState extends State<CreateRoomPage> {
   bool _isLoading = false;
-  String _error;
 
-  String _topic = "";
-  String _meetingPoint = "";
   DateTime _date = DateTime.now();
   TimeOfDay _time = TimeOfDay.now();
   var _dateController = new TextEditingController();
   var _timeController = new TextEditingController();
+  Room room;
 
-  Future _createRoom() async {
-    setState(() { _isLoading = true; });
-    try {
-      Room room = await Network().createRoom(
-        Room(null, _topic, _meetingPoint, _dateController.text, _timeController.text)
-      );
-      Navigator.of(context).popAndPushNamed('/room', arguments: room.roomId);
-    } catch (e) {
-      print(e.toString());
-      setState(() {
-        _error = e.toString();
-        _isLoading = false;
-      });
-    }
+  _CreateRoomPageState(this.room);
+
+  @override
+  void initState() {
+    super.initState();
+    _dateController.text = room.date;
+    _timeController.text = room.time;
+  }
+
+  initialValue(val) {
+    return TextEditingController(text: val);
   }
 
   Future<void> _pickDate() async {
@@ -49,7 +43,7 @@ class _CreateRoomPageState extends State<CreateRoomPage> {
         firstDate: DateTime(2018),
         lastDate: DateTime(2030)
     ) ?? _date;
-    _dateController.text = DateFormat('dd.MM.yy').format(_date);
+    room.date = _dateController.text = DateFormat('dd.MM.yy').format(_date);
     setState(() {});
   }
 
@@ -58,14 +52,14 @@ class _CreateRoomPageState extends State<CreateRoomPage> {
         context: context,
         initialTime: TimeOfDay.now()
     ) ?? _time;
-    _timeController.text = _time.format(context);
+    room.time = _timeController.text = _time.format(context);
     setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(widget.title),),
+      appBar: AppBar(title: Text("Create Room"),),
 
       body: _isLoading
           ? Center(child: CircularProgressIndicator())
@@ -76,13 +70,13 @@ class _CreateRoomPageState extends State<CreateRoomPage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                IconButton(icon: Icon(Icons.arrow_left), onPressed: () {}, color: Colors.white,),
+                IconButton(icon: Icon(Icons.arrow_left), color: Colors.white,),
                 Text("Generic Settings", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold,)),
 
                 IconButton(icon: Icon(Icons.arrow_right),
                   onPressed: () => Navigator.of(context).pushReplacementNamed(
                       "/create_room2",
-                      arguments: Room(null, _topic, _meetingPoint, _dateController.text, _timeController.text)
+                      arguments: room
                   ),
                   color: Colors.white,
                 ),
@@ -98,11 +92,15 @@ class _CreateRoomPageState extends State<CreateRoomPage> {
                   Padding(padding: EdgeInsets.all(8.0)),
 
                   TextField(decoration: InputDecoration(labelText: "Topic", prefixIcon: Icon(Icons.chat_bubble)),
-                    onChanged: (text) { setState(() { _topic = text; }); },),
+                    onChanged: (text) { room.topic = text; },
+                    controller: initialValue(room.topic),
+                  ),
                   Padding(padding: EdgeInsets.all(8.0)),
 
                   TextField(decoration: InputDecoration(labelText: "Meeting point", prefixIcon: Icon(Icons.location_on)),
-                    onChanged: (text) { setState(() { _meetingPoint = text; }); },),
+                    onChanged: (text) { room.meetingPoint = text; },
+                    controller: initialValue(room.meetingPoint),
+                  ),
                   Padding(padding: EdgeInsets.all(8.0)),
 
                   GestureDetector(
@@ -127,10 +125,11 @@ class _CreateRoomPageState extends State<CreateRoomPage> {
                   ),
                   Padding(padding: EdgeInsets.all(8.0)),
 
-                  RaisedButton(onPressed: _createRoom, child: Text('Create Room'),),
-                  Padding(padding: EdgeInsets.all(8.0)),
-
-                  _error != null ? Text(_error) : Text(""),
+                  TextField(decoration: InputDecoration(labelText: "Password", prefixIcon: Icon(Icons.vpn_key)),
+                    onChanged: (text) { room.password = text; },
+                    controller: initialValue(room.password),
+                    obscureText: true,
+                  ),
                   Padding(padding: EdgeInsets.all(8.0)),
 
                 ],

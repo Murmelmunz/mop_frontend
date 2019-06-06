@@ -14,7 +14,6 @@ class CreateRoomPage2 extends StatefulWidget {
 
 class _CreateRoomPageState2 extends State<CreateRoomPage2> {
   bool _isLoading = false;
-  String _error;
   Room room;
 
   _CreateRoomPageState2(this.room);
@@ -33,7 +32,14 @@ class _CreateRoomPageState2 extends State<CreateRoomPage2> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  IconButton(icon: Icon(Icons.arrow_left), onPressed: () => Navigator.of(context).pushReplacementNamed("/create_room"), color: Colors.white,),
+                  IconButton(icon: Icon(Icons.arrow_left),
+                    onPressed: () => Navigator.of(context).pushReplacementNamed(
+                        "/create_room",
+                        arguments: this.room
+                    ),
+                    color: Colors.white,
+                  ),
+
                   Text("Categorie Selection", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold,)), //style: Theme.of(context).textTheme.title
 
                   IconButton(icon: Icon(Icons.arrow_right),
