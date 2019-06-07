@@ -5,8 +5,11 @@ class Room {
   String date;
   String time;
   String password;
+  List<List<String>> categories;
 
-  Room(this.roomId, this.topic, this.meetingPoint, this.date, this.time);
+  Room(this.roomId, this.topic, this.meetingPoint, this.date, this.time) {
+    this.categories ??= List<List<String>>();
+  }
 
   Map<String, dynamic> toJson() => <String, dynamic>{
 //    'roomId': this.roomId,
@@ -15,6 +18,7 @@ class Room {
     'date': this.date,
     'time': this.time,
     'password': this.password,
+    'categories': this.categories,
   };
 
   factory Room.fromJson(Map<String, dynamic> json) => new Room(
@@ -23,6 +27,7 @@ class Room {
     json['meetingPoint'],
     json['date'],
     json['time'],
+    // TODO: parse categories
   );
 
 //  @override

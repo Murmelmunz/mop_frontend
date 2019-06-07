@@ -95,15 +95,9 @@ class _CreateRoomPageState3 extends State<CreateRoomPage3> {
                       child: Wrap(
                         spacing: 10,
                         direction: Axis.vertical,
-                        children: <Widget>[
-                          Text("Topic: ${room.topic}"),
-                          Text("Meeting point: ${room.meetingPoint}"),
-                          Text("Date: ${room.date}"),
-                          Text("Time: ${room.time}"),
-                          room.password != null
-                              ? Icon(Icons.lock, color: Theme.of(context).accentColor)
-                              : Container()
-                        ],
+                        children: room.categories.map(
+                            (item) => Text("${item[0]}")
+                        ).toList()
                       ),
                     ),
                   ),
