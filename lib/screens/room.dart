@@ -39,11 +39,19 @@ class _RoomPageState extends State<RoomPage> {
           if (snapshot.hasData) {
             return Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.end,
               children: <Widget>[
                 Text(snapshot.data.topic),
                 Text(snapshot.data.meetingPoint),
                 Text("${snapshot.data.roomId}"),
+
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: snapshot.data.categories.map(
+                          (item) => Row(children: item.map(
+                              (item2) => Text("${item2}, ")
+                          ).toList(),)
+                  ).toList(),
+                ),
 
                 // FutureBuilder will reload data
                 RaisedButton(onPressed: () => setState(() {}), child: Text('Refresh'),),

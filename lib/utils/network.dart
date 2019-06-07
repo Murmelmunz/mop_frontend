@@ -82,7 +82,8 @@ class NetworkDemo {
   Future<Room> fetchRoom(int roomId) async {
     await Future.delayed(delay);
     return Room.fromJson(json.decode(
-        '{"roomId": 42, "topic": "Topic ${Random().nextInt(9001)}", "meetingPoint": "Skyscraper", "categories": [["test"]]}'
+        '{"roomId": 42, "topic": "Topic ${Random().nextInt(9001)}", "meetingPoint": "Skyscraper", '
+            '"categories": [["Test"], ["Gender", "M", "W"]]}'
     ));
   }
 

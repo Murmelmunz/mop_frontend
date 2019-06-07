@@ -7,7 +7,7 @@ class Room {
   String password;
   List<List<String>> categories;
 
-  Room(this.roomId, this.topic, this.meetingPoint, this.date, this.time) {
+  Room(this.roomId, this.topic, this.meetingPoint, this.date, this.time, this.categories) {
     this.categories ??= List<List<String>>();
   }
 
@@ -27,7 +27,9 @@ class Room {
     json['meetingPoint'],
     json['date'],
     json['time'],
-    // TODO: parse categories
+    (json['categories'] as List)?.map((i) {
+      return new List<String>.from(i);
+    })?.toList(),
   );
 
 //  @override
