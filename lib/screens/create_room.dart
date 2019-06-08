@@ -16,6 +16,7 @@ class CreateRoomPage extends StatefulWidget {
 
 class _CreateRoomPageState extends State<CreateRoomPage> {
   bool _isLoading = false;
+  bool _obscureText = true;
 
   DateTime _date = DateTime.now();
   TimeOfDay _time = TimeOfDay.now();
@@ -125,10 +126,20 @@ class _CreateRoomPageState extends State<CreateRoomPage> {
                   ),
                   Padding(padding: EdgeInsets.all(8.0)),
 
-                  TextField(decoration: InputDecoration(labelText: "Password", prefixIcon: Icon(Icons.vpn_key)),
-                    onChanged: (text) { room.password = text; },
+                  TextField(
+                    decoration: InputDecoration(
+                        labelText: "Password",
+                        prefixIcon: Icon(Icons.vpn_key),
+                        suffixIcon: IconButton(
+                          icon: Icon(Icons.remove_red_eye),
+                          onPressed: () { setState(() => _obscureText = !_obscureText); },
+                        )
+                    ),
+                    onChanged: (text) {
+                      room.password = text;
+                    },
                     controller: initialValue(room.password),
-                    obscureText: true,
+                    obscureText: _obscureText,
                   ),
                   Padding(padding: EdgeInsets.all(8.0)),
 

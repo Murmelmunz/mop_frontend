@@ -80,7 +80,7 @@ class _CreateRoomPageState3 extends State<CreateRoomPage3> {
                           Text("Meeting point: ${room.meetingPoint}"),
                           Text("Date: ${room.date}"),
                           Text("Time: ${room.time}"),
-                          room.password != null
+                          room.password != null && room.password != ""
                               ? Icon(Icons.lock, color: Theme.of(context).accentColor)
                               : Container()
                         ],
