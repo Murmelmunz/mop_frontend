@@ -67,11 +67,11 @@ class _CreateRoomPageState extends State<CreateRoomPage> {
           : Column(
         children: <Widget>[
           Container(
-            color: MyApp.PrimaryColorLight,
+            color: MyApp.primaryColorLight,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                IconButton(icon: Icon(Icons.arrow_left), color: Colors.white,),
+                IconButton(icon: Icon(Icons.arrow_left), onPressed: null, color: Colors.white,),
                 Text("Generic Settings", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold,)),
 
                 IconButton(icon: Icon(Icons.arrow_right),

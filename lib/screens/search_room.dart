@@ -41,9 +41,8 @@ class _MyHomePageState extends State<SearchRoomPage> {
                 return Center(child: CircularProgressIndicator());
               } else if (snapshot.hasData) {
                 return RoomsList(snapshot.data);
-              } else if (snapshot.hasError) {
-                return ListView(children: <Widget>[Text("${snapshot.error}")]);
               }
+              return ListView(children: <Widget>[Text("${snapshot.error}")]);
             },
           ),
         ),

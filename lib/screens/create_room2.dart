@@ -56,7 +56,7 @@ class _CreateRoomPageState2 extends State<CreateRoomPage2> {
             : Column(
           children: <Widget>[
             Container(
-              color: MyApp.PrimaryColorLight,
+              color: MyApp.primaryColorLight,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[

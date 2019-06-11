@@ -47,7 +47,7 @@ class _CreateRoomPageState3 extends State<CreateRoomPage3> {
             : Column(
           children: <Widget>[
             Container(
-              color: MyApp.PrimaryColorLight,
+              color: MyApp.primaryColorLight,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
@@ -59,8 +59,8 @@ class _CreateRoomPageState3 extends State<CreateRoomPage3> {
                     color: Colors.white,
                   ),
 
-                  Text("Overview", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold,)), //style: Theme.of(context).textTheme.title
-                  IconButton(icon: Icon(Icons.arrow_right), color: Colors.white,),
+                  Text("Overview", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold,)),
+                  IconButton(icon: Icon(Icons.arrow_right), onPressed: null, color: Colors.white,),
                 ],
               ),
             ),
