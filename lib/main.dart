@@ -1,3 +1,7 @@
+import 'dart:io' show Platform;
+
+import 'package:flutter/foundation.dart'
+    show debugDefaultTargetPlatformOverride;
 import 'package:flutter/material.dart';
 import 'package:speechlist/screens/create_room.dart';
 import 'package:speechlist/screens/create_room2.dart';
@@ -5,7 +9,22 @@ import 'package:speechlist/screens/create_room3.dart';
 import 'package:speechlist/screens/room.dart';
 import 'package:speechlist/screens/search_room.dart';
 
-void main() => runApp(MyApp());
+void _setTargetPlatformForDesktop() {
+  TargetPlatform targetPlatform;
+  if (Platform.isMacOS) {
+    targetPlatform = TargetPlatform.iOS;
+  } else if (Platform.isLinux || Platform.isWindows) {
+    targetPlatform = TargetPlatform.android;
+  }
+  if (targetPlatform != null) {
+    debugDefaultTargetPlatformOverride = targetPlatform;
+  }
+}
+
+void main() {
+  _setTargetPlatformForDesktop();
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   static const PrimaryColor = const Color(0xFF00206B);
