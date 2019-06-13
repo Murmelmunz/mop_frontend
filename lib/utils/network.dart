@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 import 'package:http/http.dart' as http;
+import 'package:speechlist/models/contribution.dart';
 import 'dart:convert';
 import 'package:speechlist/models/room.dart';
 import 'package:speechlist/models/user.dart';
@@ -35,7 +36,7 @@ class NetworkNormal {
       return responseJson.map((m) => new Room.fromJson(m)).toList();
     } else {
       // If that call was not successful, throw an error.
-      throw Exception('Failed to load room. Error: ${response.statusCode}');
+      throw Exception('Failed to load rooms. Error: ${response.statusCode}');
     }
   }
 
@@ -51,7 +52,21 @@ class NetworkNormal {
       return Room.fromJson(json.decode(response.body));
     } else {
       // If that call was not successful, throw an error.
-      throw Exception('Failed to load room. Error: ${response.statusCode}');
+      throw Exception('Failed to create room. Error: ${response.statusCode}');
+    }
+  }
+
+  Future<List<User>> fetchRoomParticipants(Room room) async {
+    final response = await http.get('$_host/room/${room.roomId}/participant', headers: {"Content-Type": "application/json"})
+        .timeout(Duration(milliseconds: 5000));
+
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      // If the call to the server was successful, parse the JSON
+      List responseJson = json.decode(response.body);
+      return responseJson.map((m) => new User.fromJson(m)).toList();
+    } else {
+      // If that call was not successful, throw an error.
+      throw Exception('Failed to load room participants. Error: ${response.statusCode}');
     }
   }
 
@@ -71,7 +86,41 @@ class NetworkNormal {
       return Room.fromJson(json.decode(response.body));
     } else {
       // If that call was not successful, throw an error.
-      throw Exception('Failed to load room. Error: ${response.statusCode}');
+      throw Exception('Failed to join room. Error: ${response.statusCode}');
+    }
+  }
+
+  Future<List<Contribution>> fetchRoomContributions(Room room) async {
+    final response = await http.get('$_host/room/${room.roomId}/contribution', headers: {"Content-Type": "application/json"})
+        .timeout(Duration(milliseconds: 5000));
+
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      // If the call to the server was successful, parse the JSON
+      List responseJson = json.decode(response.body);
+      return responseJson.map((m) => new Contribution.fromJson(m)).toList();
+    } else {
+      // If that call was not successful, throw an error.
+      throw Exception('Failed to load room contributions. Error: ${response.statusCode}');
+    }
+  }
+
+  // TODO: send contribution data
+  Future<Contribution> createRoomContribution(Room room, Contribution contribution) async {
+//    final response = await http.post(
+//        '$_host/room/${room.roomId}/contribution',
+//        body: json.encode(contribution),
+//        headers: {"Content-Type": "application/json"})
+//        .timeout(Duration(milliseconds: 5000));
+
+    final response = await http.get('$_host/room/${room.roomId}', headers: {"Content-Type": "application/json"})
+        .timeout(Duration(milliseconds: 5000));
+
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      // If the call to the server was successful, parse the JSON
+      return Contribution.fromJson(json.decode(response.body));
+    } else {
+      // If that call was not successful, throw an error.
+      throw Exception('Failed to create contribution. Error: ${response.statusCode}');
     }
   }
 }
@@ -111,11 +160,11 @@ class NetworkDemoError {
 
   Future<List<Room>> fetchAllRooms() async {
     await Future.delayed(delay);
-    throw Exception('Failed to load room. Error: ${404}');
+    throw Exception('Failed to load rooms. Error: ${404}');
   }
 
   Future<Room> createRoom(Room room) async {
     await Future.delayed(delay);
-    throw Exception('Failed to load room. Error: ${404}');
+    throw Exception('Failed to create room. Error: ${404}');
   }
 }
