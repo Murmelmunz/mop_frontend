@@ -148,6 +148,15 @@ class NetworkDemo {
     room.roomId = Random().nextInt(9001);
     return room;
   }
+
+
+
+  Future<List<Contribution>> fetchRoomContributions(Room room) async {
+    await Future.delayed(delay);
+    List responseJson = json.decode('[{"id": 0, "type": "contribution", "userId": 1337}, '
+        '{"id": 1, "type": "question", "userId": 1337}]');
+    return responseJson.map((m) => new Contribution.fromJson(m)).toList();
+  }
 }
 
 class NetworkDemoError {

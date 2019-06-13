@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:speechlist/models/contribution.dart';
 import 'package:speechlist/models/room.dart';
 import 'package:speechlist/utils/network.dart';
 import 'package:speechlist/utils/preferences.dart';
@@ -33,37 +34,69 @@ class _RoomPageState extends State<RoomPage> {
     return Scaffold(
       appBar: AppBar(title: Text("Room Page $args"),),
 
-      body: FutureBuilder<Room>(
-        future: Network().fetchRoom(roomId),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(snapshot.data.topic),
-                Text(snapshot.data.meetingPoint),
-                Text("${snapshot.data.roomId}"),
+      body: Column(
+        children: <Widget>[
+          FutureBuilder<Room>(
+            future: Network().fetchRoom(roomId),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(snapshot.data.topic),
+                    Text(snapshot.data.meetingPoint),
+                    Text("${snapshot.data.roomId}"),
 
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: snapshot.data.categories.map(
-                          (item) => Row(children: item.map(
-                              (item2) => Text("$item2, ")
-                          ).toList(),)
-                  ).toList(),
-                ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: snapshot.data.categories.map(
+                              (item) => Row(children: item.map(
+                                  (item2) => Text("$item2, ")
+                              ).toList(),)
+                      ).toList(),
+                    ),
 
-                // FutureBuilder will reload data
-                RaisedButton(onPressed: () => setState(() {}), child: Text('Refresh'),),
-                Text("Your Name: $userName"),
-              ],
-            );
-          } else if (snapshot.hasError) {
-            return Text("${snapshot.error}");
-          }
+                    // FutureBuilder will reload data
+                    RaisedButton(onPressed: () => setState(() {}), child: Text('Refresh'),),
+                    Text("Your Name: $userName"),
+                  ],
+                );
+              } else if (snapshot.hasError) {
+                return Text("${snapshot.error}");
+              }
 
-          return CircularProgressIndicator();
-        },
+              return CircularProgressIndicator();
+            },
+          ),
+
+          Padding(padding: EdgeInsets.all(20.0),),
+
+          FutureBuilder<List<Contribution>>(
+            future: Network().fetchRoomContributions(new Room(roomId, null, null, null, null, null)),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+
+                    Column(
+                      children: snapshot.data.map(
+                          (item) => Text("type: ${item.type}, userId: ${item.userId}")
+                      ).toList(),
+                    ),
+
+                    // FutureBuilder will reload data
+                    RaisedButton(onPressed: () => setState(() {}), child: Text('Refresh'),),
+                  ],
+                );
+              } else if (snapshot.hasError) {
+                return Text("${snapshot.error}");
+              }
+
+              return CircularProgressIndicator();
+            },
+          ),
+        ],
       ),
 
       floatingActionButton: FloatingActionButton(

@@ -1,23 +1,19 @@
-enum Type {
-  contribution, question, answer
-}
-
 class Contribution {
   int id;
-  Type type;
+  String type;
   int userId;
 
-  Contribution(this.type);
+  Contribution(this.id, this.type, this.userId);
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-//    'id': this.id,
-//    'name': this.name,
+    'id': this.id,
     'type': this.type,
+    'userId': this.userId,
   };
 
   factory Contribution.fromJson(Map<String, dynamic> json) => new Contribution(
-//    json['id'],
-//    json['name'],
+    json['id'],
     json['type'],
+    json['userId'],
   );
 }
