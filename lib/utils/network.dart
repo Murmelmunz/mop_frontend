@@ -144,6 +144,7 @@ class NetworkDemo {
   }
 
   Future<Room> createRoom(Room room) async {
+    print(json.encode(room));
     await Future.delayed(delay);
     room.roomId = Random().nextInt(9001);
     return room;
@@ -173,6 +174,7 @@ class NetworkDemoError {
   }
 
   Future<Room> createRoom(Room room) async {
+    print(json.encode(room));
     await Future.delayed(delay);
     throw Exception('Failed to create room. Error: ${404}');
   }
