@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:speechlist/main.dart';
 import 'package:speechlist/models/category.dart';
 import 'package:speechlist/models/room.dart';
+import 'package:speechlist/models/value.dart';
 import 'package:speechlist/widgets/category_values_dialog.dart';
 
 class CreateRoomPage2 extends StatefulWidget {
@@ -41,15 +42,19 @@ class _CreateRoomPageState2 extends State<CreateRoomPage2> {
   }
 
   Future _addCategory() async {
-    List<String> categoryValues = await showDialog(
+    List<String> categoryStringValues = await showDialog(
       context: context,
       builder: (context) => CategoryValuesDialog(),
       barrierDismissible: false
     );
 
+    List<Value> categoryValues = categoryStringValues.map(
+        (item) => Value(item)
+    ).toList();
+
     setState(() {
       textControllerList.add(TextEditingController(text: "${textControllerForNewItem.text}"));
-      room.categories.add(Category("${textControllerForNewItem.text}")); // TODO: add categoryValues
+      room.categories.add(Category("${textControllerForNewItem.text}", categoryValues));
       textControllerForNewItem.text = "";
     });
   }

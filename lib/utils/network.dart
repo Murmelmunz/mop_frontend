@@ -138,8 +138,21 @@ class NetworkDemo {
           "topic": "Topic ${Random().nextInt(9001)}",
           "meetingPoint": "Skyscraper",
           "categories": [
-            {"name": "Gender"},
-            {"name": "Haircolor"}
+            {
+              "name": "Gender",
+              "values": [
+                {"name": "Masculine"},
+                {"name": "Feminine"}
+              ]
+            },
+            {
+              "name": "Haircolor",
+              "values": [
+                {"name": "Red"},
+                {"name": "Green"},
+                {"name": "Blue"}
+              ]
+            }
           ]
         }
       '''
@@ -156,8 +169,21 @@ class NetworkDemo {
             "topic": "Topic ${Random().nextInt(9001)}",
             "meetingPoint": "Skyscraper",
             "categories": [
-              {"name": "Gender"},
-              {"name": "Haircolor"}
+              {
+                "name": "Gender",
+                "values": [
+                  {"name": "Masculine"},
+                  {"name": "Feminine"}
+                ]
+              },
+              {
+                "name": "Haircolor",
+                "values": [
+                  {"name": "Red"},
+                  {"name": "Green"},
+                  {"name": "Blue"}
+                ]
+              }
             ]
           },
           {
@@ -165,11 +191,18 @@ class NetworkDemo {
             "topic": "Mobile Programming",
             "meetingPoint": "Cafeteria",
             "categories": [
-              {"name": "Gender1"},
-              {"name": "Gender2"},
-              {"name": "Gender3"},
-              {"name": "Gender4"},
-              {"name": "Gender5"}
+              {
+                "name": "Category1",
+                "values": [
+                  {"name": "Value1"},
+                  {"name": "Value2"},
+                  {"name": "Value3"}
+                ]
+              },
+              {"name": "Category2"},
+              {"name": "Category3"},
+              {"name": "Category4"},
+              {"name": "Category5"}
             ]
           }
         ]

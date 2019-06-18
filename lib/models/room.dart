@@ -1,3 +1,5 @@
+import 'package:speechlist/models/value.dart';
+
 import 'category.dart';
 
 class Room {
@@ -32,7 +34,12 @@ class Room {
     json['date'],
     json['time'],
     (json['categories'] as List)?.map((i) {
-      return Category("${ i['name'] }");
+
+      List<Value> values = (i['values'] as List)?.map(
+        (item) => Value("${ item['name'] }")
+      )?.toList();
+
+      return Category("${ i['name'] }", values);
     })?.toList(),
   );
 
