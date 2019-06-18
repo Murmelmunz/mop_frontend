@@ -50,9 +50,7 @@ class _RoomPageState extends State<RoomPage> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: snapshot.data.categories.map(
-                              (item) => Row(children: item.map(
-                                  (item2) => Text("$item2, ")
-                              ).toList(),)
+                              (item) => Row(children: [Text("${item.name}")])
                       ).toList(),
                     ),
 

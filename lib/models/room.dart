@@ -1,3 +1,5 @@
+import 'category.dart';
+
 class Room {
   int roomId;
   String topic;
@@ -5,15 +7,17 @@ class Room {
   String date;
   String time;
   String password;
-  List<List<String>> categories;
+  List<Category> categories;
 
   Room(this.roomId, this.topic, this.meetingPoint, this.date, this.time, this.categories) {
-    this.categories ??= List<List<String>>();
+    this.topic ??= "";
+    this.password ??= "";
+    this.categories ??= List<Category>();
   }
 
   Map<String, dynamic> toJson() => <String, dynamic>{
 //    'roomId': this.roomId,
-    'topic': this.topic,
+    'name': this.topic,
     'meetingPoint': this.meetingPoint,
     'date': this.date,
     'time': this.time,
@@ -23,12 +27,12 @@ class Room {
 
   factory Room.fromJson(Map<String, dynamic> json) => new Room(
     json['roomId'],
-    json['topic'],
+    json['name'], // topic
     json['meetingPoint'],
     json['date'],
     json['time'],
     (json['categories'] as List)?.map((i) {
-      return new List<String>.from(i);
+      return Category("${ i['name'] }");
     })?.toList(),
   );
 

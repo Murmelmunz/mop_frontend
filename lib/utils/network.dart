@@ -41,6 +41,7 @@ class NetworkNormal {
   }
 
   Future<Room> createRoom(Room room) async {
+    print("${json.encode(room)}");
     final response = await http.post(
         '$_host/room',
         body: json.encode(room),
@@ -131,15 +132,49 @@ class NetworkDemo {
   Future<Room> fetchRoom(int roomId) async {
     await Future.delayed(delay);
     return Room.fromJson(json.decode(
-        '{"roomId": 42, "topic": "Topic ${Random().nextInt(9001)}", "meetingPoint": "Skyscraper", '
-            '"categories": [["Test"], ["Gender", "M", "W"]]}'
+      '''
+        {
+          "roomId": 42, 
+          "topic": "Topic ${Random().nextInt(9001)}",
+          "meetingPoint": "Skyscraper",
+          "categories": [
+            {"name": "Gender"},
+            {"name": "Haircolor"}
+          ]
+        }
+      '''
     ));
   }
 
   Future<List<Room>> fetchAllRooms() async {
     await Future.delayed(delay);
-    List responseJson = json.decode('[{"roomId": 42, "topic": "Topic ${Random().nextInt(9001)}", "meetingPoint": "Skyscraper"}, '
-        '{"roomId": 84, "topic": "Mobile Programming", "meetingPoint": "Cafeteria"}]');
+    List responseJson = json.decode(
+      '''
+        [
+          {
+            "roomId": 42, 
+            "topic": "Topic ${Random().nextInt(9001)}",
+            "meetingPoint": "Skyscraper",
+            "categories": [
+              {"name": "Gender"},
+              {"name": "Haircolor"}
+            ]
+          },
+          {
+            "roomId": 84, 
+            "topic": "Mobile Programming",
+            "meetingPoint": "Cafeteria",
+            "categories": [
+              {"name": "Gender1"},
+              {"name": "Gender2"},
+              {"name": "Gender3"},
+              {"name": "Gender4"},
+              {"name": "Gender5"}
+            ]
+          }
+        ]
+      '''
+    );
     return responseJson.map((m) => new Room.fromJson(m)).toList();
   }
 

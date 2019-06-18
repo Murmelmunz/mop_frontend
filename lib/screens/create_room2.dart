@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:speechlist/main.dart';
+import 'package:speechlist/models/category.dart';
 import 'package:speechlist/models/room.dart';
 import 'package:speechlist/widgets/category_values_dialog.dart';
 
@@ -28,7 +29,7 @@ class _CreateRoomPageState2 extends State<CreateRoomPage2> {
     // create for each existing category a text controller
     textControllerList = List<TextEditingController>.generate(
       room.categories.length,
-      (i) => TextEditingController(text: room.categories[i][0])
+      (i) => TextEditingController(text: room.categories[i].name)
     );
   }
 
@@ -48,7 +49,7 @@ class _CreateRoomPageState2 extends State<CreateRoomPage2> {
 
     setState(() {
       textControllerList.add(TextEditingController(text: "${textControllerForNewItem.text}"));
-      room.categories.add(List()..add("${textControllerForNewItem.text}")..addAll(categoryValues));
+      room.categories.add(Category("${textControllerForNewItem.text}")); // TODO: add categoryValues
       textControllerForNewItem.text = "";
     });
   }
@@ -100,7 +101,7 @@ class _CreateRoomPageState2 extends State<CreateRoomPage2> {
                     return Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: TextField(
-                        onChanged: (text) => room.categories[index][0] = text,
+                        onChanged: (text) => room.categories[index].name = text,
                         controller: textControllerList[index],
                         decoration: InputDecoration(
                             suffixIcon: IconButton(
