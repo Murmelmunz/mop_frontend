@@ -55,7 +55,7 @@ class _RoomPageState extends State<RoomPage> {
                               Text("${item.name}: "),
                               Row(
                                 children: item.values.map(
-                                    (value) => Text("${value.name}, ")
+                                    (value) => Text("${value.value}, ")
                                 ).toList()
                               ),
                             ]

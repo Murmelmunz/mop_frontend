@@ -36,7 +36,7 @@ class Room {
     (json['categories'] as List)?.map((i) {
 
       List<Value> values = (i['values'] as List)?.map(
-        (item) => Value("${ item['name'] }")
+        (item) => Value("${ item['value'] }")
       )?.toList();
 
       return Category("${ i['name'] }", values);

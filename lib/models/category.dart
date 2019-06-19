@@ -16,7 +16,7 @@ class Category {
   factory Category.fromJson(Map<String, dynamic> json) => Category(
     json['name'],
     (json['values'] as List)?.map((i) {
-      return Value("${ i['name'] }");
+      return Value("${ i['value'] }");
     })?.toList(),
   );
 }

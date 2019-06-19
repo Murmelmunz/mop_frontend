@@ -141,16 +141,16 @@ class NetworkDemo {
             {
               "name": "Gender",
               "values": [
-                {"name": "Masculine"},
-                {"name": "Feminine"}
+                {"value": "Masculine"},
+                {"value": "Feminine"}
               ]
             },
             {
               "name": "Haircolor",
               "values": [
-                {"name": "Red"},
-                {"name": "Green"},
-                {"name": "Blue"}
+                {"value": "Red"},
+                {"value": "Green"},
+                {"value": "Blue"}
               ]
             }
           ]
@@ -172,16 +172,16 @@ class NetworkDemo {
               {
                 "name": "Gender",
                 "values": [
-                  {"name": "Masculine"},
-                  {"name": "Feminine"}
+                  {"value": "Masculine"},
+                  {"value": "Feminine"}
                 ]
               },
               {
                 "name": "Haircolor",
                 "values": [
-                  {"name": "Red"},
-                  {"name": "Green"},
-                  {"name": "Blue"}
+                  {"value": "Red"},
+                  {"value": "Green"},
+                  {"value": "Blue"}
                 ]
               }
             ]
@@ -194,9 +194,9 @@ class NetworkDemo {
               {
                 "name": "Category1",
                 "values": [
-                  {"name": "Value1"},
-                  {"name": "Value2"},
-                  {"name": "Value3"}
+                  {"value": "Value1"},
+                  {"value": "Value2"},
+                  {"value": "Value3"}
                 ]
               },
               {"name": "Category2"},

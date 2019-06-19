@@ -1,13 +1,13 @@
 class Value {
-  String name;
+  String value;
 
-  Value(this.name);
+  Value(this.value);
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'name': this.name,
+    'value': this.value,
   };
 
   factory Value.fromJson(Map<String, dynamic> json) => new Value(
-    json['name'],
+    json['value'],
   );
 }
