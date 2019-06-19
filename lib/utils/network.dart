@@ -6,7 +6,7 @@ import 'dart:convert';
 import 'package:speechlist/models/room.dart';
 import 'package:speechlist/models/user.dart';
 
-class Network extends NetworkNormal {
+class Network extends NetworkDemo {
   // change NetworkNormal to NetworkDemo or NetworkDemoError to test without a server
 }
 
