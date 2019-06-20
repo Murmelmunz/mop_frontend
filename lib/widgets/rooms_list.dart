@@ -81,7 +81,7 @@ class _RoomsListState extends State<RoomsList> {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Container(
-                              alignment: Alignment(-0.93, 0),
+                              alignment: Alignment(-0.86, 0),
                               padding: EdgeInsets.all(10),
                               child: Text(
                                 'Topic: ' + '${itemsFiltered[index].topic}',
@@ -114,7 +114,7 @@ class _RoomsListState extends State<RoomsList> {
                               alignment: Alignment(-0.91, 0),
                               padding: EdgeInsets.all(10),
                               child: Text(
-                                'Person count: ' + '${itemsFiltered[index]}',
+                                'Person count: TODO',
                                 style: TextStyle(
                                   fontSize: 11,
                                 ),
@@ -123,7 +123,7 @@ class _RoomsListState extends State<RoomsList> {
                             Container(
                               alignment: Alignment(1, 0),
                               child: new IconButton(
-                                icon: new Icon(Icons.arrow_drop_down),
+                                icon: new Icon(Icons.arrow_right),
                                 tooltip: 'Expand for more Information',
                                 iconSize: 30,
                                 onPressed: () {

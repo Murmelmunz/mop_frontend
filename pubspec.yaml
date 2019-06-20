@@ -49,6 +49,11 @@ flutter:
   #  - images/a_dot_ham.jpeg
   assets:
     - lib/assets/logo_projekt.png
+    - lib/assets/rede_icon.png
+    - lib/assets/fragezeichen_icon.png
+    - lib/assets/antwort_icon.png
+    - lib/assets/discussion_icon.png
+    - lib/assets/speaker_icon.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.

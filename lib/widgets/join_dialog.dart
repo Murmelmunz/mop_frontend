@@ -22,11 +22,9 @@ class _JoinDialogState extends State<JoinDialog> {
 
   // Block of declared variables
   List _cities = [
-    "Cluj-Napoca",
-    "Bucuresti",
-    "Timisoara",
-    "Brasov",
-    "Constanta"
+    "Blond",
+    "Braun",
+    "Grau",
   ];
   List<DropdownMenuItem<String>> _dropDownMenuItems;
   String _currentCity;
@@ -74,8 +72,15 @@ class _JoinDialogState extends State<JoinDialog> {
           children: <Widget>[
             Padding(
                 padding: EdgeInsets.all(8.0),
-                child: TextField(decoration: InputDecoration(labelText: "Your Name"),
-                  controller: textController)),
+                child: TextField(
+
+                    decoration: InputDecoration(
+                        labelText: "Your Name",
+                        fillColor: Color(0xFF00206B)
+                    ),
+                    controller: textController
+                )
+            ),
             Padding(
                 padding: EdgeInsets.all(8.0),
                 child: new DropdownButton(
@@ -84,17 +89,15 @@ class _JoinDialogState extends State<JoinDialog> {
                   onChanged: changedDropDownItem,
                 )),
             Padding(
-              padding: EdgeInsets.all(8.0),
-              child: new DropdownButton(
-                value: _currentCity,
-                items: _dropDownMenuItems,
-                onChanged: changedDropDownItem,
-              ),
-            ),
-            Padding(
               padding: const EdgeInsets.all(8.0),
               child: RaisedButton(
-                child: Text("Enter Room"),
+                color: new Color(0xFF00206B),
+                child: Text(
+                  "Enter Room",
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
                 onPressed: () {
                   Preferences().setUserName(textController.text);
                   Navigator.of(context)

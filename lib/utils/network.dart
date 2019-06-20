@@ -6,7 +6,7 @@ import 'dart:convert';
 import 'package:speechlist/models/room.dart';
 import 'package:speechlist/models/user.dart';
 
-class Network extends NetworkNormal {
+class Network extends NetworkDemo {
   // change NetworkNormal to NetworkDemo or NetworkDemoError to test without a server
 }
 
@@ -135,7 +135,7 @@ class NetworkDemo {
       '''
         {
           "roomId": 42, 
-          "topic": "Topic ${Random().nextInt(9001)}",
+          "name": "Mobile Programming",
           "meetingPoint": "Skyscraper",
           "categories": [
             {
@@ -166,7 +166,7 @@ class NetworkDemo {
         [
           {
             "roomId": 42, 
-            "topic": "Topic ${Random().nextInt(9001)}",
+            "name": "Operation Research",
             "meetingPoint": "Skyscraper",
             "categories": [
               {
@@ -188,7 +188,7 @@ class NetworkDemo {
           },
           {
             "roomId": 84, 
-            "topic": "Mobile Programming",
+            "name": "Mobile Programming",
             "meetingPoint": "Cafeteria",
             "categories": [
               {
