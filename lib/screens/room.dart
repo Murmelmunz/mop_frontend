@@ -145,19 +145,31 @@ class _RoomPageState extends State<RoomPage> {
                                   children: <Widget>[
                                     Container(
                                       padding: EdgeInsets.only(top: 7, bottom: 7),
-                                      child: Text(
-                                        'Topic: ' + snapshot.data.topic,
-                                        style: TextStyle(
-                                          fontSize: 16,
+                                      child: RichText(
+                                        text: new TextSpan(
+                                          style: new TextStyle(
+                                            fontSize: 16,
+                                            color: Color(0xFF00206B),
+                                          ),
+                                          children: <TextSpan>[
+                                            new TextSpan(text: 'Topic: ', style: new TextStyle(fontWeight: FontWeight.bold)),
+                                            new TextSpan(text: '${snapshot.data.topic}')
+                                          ],
                                         ),
                                       ),
                                     ),
                                     Container(
                                       padding: EdgeInsets.only(top: 7, bottom: 7),
-                                      child: Text(
-                                        'Meeting point: ' + snapshot.data.meetingPoint,
-                                        style: TextStyle(
-                                          fontSize: 14,
+                                      child: RichText(
+                                        text: new TextSpan(
+                                          style: new TextStyle(
+                                            fontSize: 14,
+                                            color: Color(0xFF00206B),
+                                          ),
+                                          children: <TextSpan>[
+                                            new TextSpan(text: 'Meeting point: ', style: new TextStyle(fontWeight: FontWeight.bold)),
+                                            new TextSpan(text: '${snapshot.data.meetingPoint}')
+                                          ],
                                         ),
                                       ),
                                     ),
@@ -224,19 +236,31 @@ class _RoomPageState extends State<RoomPage> {
                             children: <Widget>[
                               Container(
                                 padding: EdgeInsets.all(5),
-                                child: Text(
-                                  "Speaker: $userName",
-                                  style: TextStyle(
-                                    fontSize: 16,
+                                child: RichText(
+                                  text: new TextSpan(
+                                    style: new TextStyle(
+                                      fontSize: 16,
+                                      color: Color(0xFF00206B),
+                                    ),
+                                    children: <TextSpan>[
+                                      new TextSpan(text: 'Speaker: ', style: new TextStyle(fontWeight: FontWeight.bold)),
+                                      new TextSpan(text: '${userName}')
+                                    ],
                                   ),
                                 ),
                               ),
                               Container(
                                 padding: EdgeInsets.all(5),
-                                child: Text(
-                                  "Speaktime: 01:23",
-                                  style: TextStyle(
-                                    fontSize: 14,
+                                child: RichText(
+                                  text: new TextSpan(
+                                    style: new TextStyle(
+                                      fontSize: 14,
+                                      color: Color(0xFF00206B),
+                                    ),
+                                    children: <TextSpan>[
+                                      new TextSpan(text: 'Speaktime: ', style: new TextStyle(fontWeight: FontWeight.bold)),
+                                      new TextSpan(text: '01:32')
+                                    ],
                                   ),
                                 ),
                               ),

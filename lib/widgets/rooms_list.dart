@@ -102,12 +102,18 @@ class _RoomsListState extends State<RoomsList> {
                                 Container(
                                   alignment: Alignment(-0.86, 0),
                                   padding: EdgeInsets.only(top: 10, bottom: 5, left: 15),
-                                  child: Text(
-                                    'Topic: ' + '${itemsFiltered[index].topic}',
-                                    style: TextStyle(
-                                      fontSize: 19,
+                                    child: RichText(
+                                      text: new TextSpan(
+                                        style: new TextStyle(
+                                          fontSize: 19,
+                                          color: Color(0xFF00206B),
+                                        ),
+                                        children: <TextSpan>[
+                                          new TextSpan(text: 'Topic: ', style: new TextStyle(fontWeight: FontWeight.bold)),
+                                          new TextSpan(text: itemsFiltered[index].topic)
+                                        ],
+                                      ),
                                     ),
-                                  ),
                                 ),
                                 Container(
                                   child: Align(
@@ -126,10 +132,16 @@ class _RoomsListState extends State<RoomsList> {
                               children: <Widget>[
                                 Container(
                                   padding: EdgeInsets.only(top:5, bottom: 5, left: 15),
-                                  child: Text(
-                                    'ID: ' + '${itemsFiltered[index].roomId}',
-                                    style: TextStyle(
-                                      fontSize: 17,
+                                  child: RichText(
+                                    text: new TextSpan(
+                                      style: new TextStyle(
+                                        fontSize: 17,
+                                        color: Color(0xFF00206B),
+                                      ),
+                                      children: <TextSpan>[
+                                        new TextSpan(text: 'ID: ', style: new TextStyle(fontWeight: FontWeight.bold)),
+                                        new TextSpan(text: '${itemsFiltered[index].roomId}')
+                                      ],
                                     ),
                                   ),
                                 ),
@@ -141,10 +153,16 @@ class _RoomsListState extends State<RoomsList> {
                               children: <Widget>[
                                 Container(
                                   padding: EdgeInsets.only(top:5, bottom: 5, left: 15),
-                                  child: Text(
-                                    'Meeting point: ' + '${itemsFiltered[index].meetingPoint}',
-                                    style: TextStyle(
-                                      fontSize: 13,
+                                  child: RichText(
+                                    text: new TextSpan(
+                                      style: new TextStyle(
+                                        fontSize: 15,
+                                        color: Color(0xFF00206B),
+                                      ),
+                                      children: <TextSpan>[
+                                        new TextSpan(text: 'Meeting point: ', style: new TextStyle(fontWeight: FontWeight.bold)),
+                                        new TextSpan(text: '${itemsFiltered[index].meetingPoint}')
+                                      ],
                                     ),
                                   ),
                                 ),
@@ -156,10 +174,16 @@ class _RoomsListState extends State<RoomsList> {
                               children: <Widget>[
                                 Container(
                                   padding: EdgeInsets.only(top:5, bottom: 5, left: 15),
-                                  child: Text(
-                                    'Person count: TODO',
-                                    style: TextStyle(
-                                      fontSize: 11,
+                                  child: RichText(
+                                    text: new TextSpan(
+                                      style: new TextStyle(
+                                        fontSize: 13,
+                                        color: Color(0xFF00206B),
+                                      ),
+                                      children: <TextSpan>[
+                                        new TextSpan(text: 'Person count: ', style: new TextStyle(fontWeight: FontWeight.bold)),
+                                        new TextSpan(text: 'TODO')
+                                      ],
                                     ),
                                   ),
                                 ),
