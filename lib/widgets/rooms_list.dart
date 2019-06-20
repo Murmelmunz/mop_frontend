@@ -20,7 +20,18 @@ class _RoomsListState extends State<RoomsList> {
   @override
   void initState() {
     itemsFiltered.addAll(items);
+    setPathForPW();
     super.initState();
+  }
+
+  void setPathForPW(){
+    items.forEach((item) {
+      if(item.password != ""){
+        item.password = 'lib/assets/Schloss_Icon_Geschlossen.png';
+      } else{
+        item.password = 'lib/assets/schloss_icon_offen.png';
+      }
+    });
   }
 
   void filterSearchResults(String query) {
@@ -31,6 +42,7 @@ class _RoomsListState extends State<RoomsList> {
         if (item.topic.toLowerCase().contains(query.toLowerCase())) {
           itemsFiltered.add(item);
         }
+
       });
     } else {
       itemsFiltered.addAll(items);
@@ -71,7 +83,10 @@ class _RoomsListState extends State<RoomsList> {
                 child: Card(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30.0),
-                      side: BorderSide(width: 0.2),
+                      side: BorderSide(
+                          width: 1,
+                          color: Color(0xFF00206B),
+                      ),
                     ),
                     clipBehavior: Clip.antiAliasWithSaveLayer,
                     child: Container(
@@ -80,52 +95,85 @@ class _RoomsListState extends State<RoomsList> {
                           textDirection: TextDirection.rtl,
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Container(
-                              alignment: Alignment(-0.86, 0),
-                              padding: EdgeInsets.all(10),
-                              child: Text(
-                                'Topic: ' + '${itemsFiltered[index].topic}',
-                                style: TextStyle(
-                                  fontSize: 19,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                Container(
+                                  alignment: Alignment(-0.86, 0),
+                                  padding: EdgeInsets.only(top: 10, bottom: 5, left: 15),
+                                  child: Text(
+                                    'Topic: ' + '${itemsFiltered[index].topic}',
+                                    style: TextStyle(
+                                      fontSize: 19,
+                                    ),
+                                  ),
                                 ),
-                              ),
+                                Container(
+                                  child: Align(
+                                    child: Image.asset(
+                                      itemsFiltered[index].password,
+                                      height: 30,
+                                      width: 30,
+                                    ),
+                                  ),
+                                  margin: EdgeInsets.only(top: 10, bottom: 5, right: 15),
+                                ),
+                              ],
                             ),
-                            Container(
-                              alignment: Alignment(-0.93, 0),
-                              padding: EdgeInsets.all(10),
-                              child: Text(
-                                'ID: ' + '${itemsFiltered[index].roomId}',
-                                style: TextStyle(
-                                  fontSize: 17,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Container(
+                                  padding: EdgeInsets.only(top:5, bottom: 5, left: 15),
+                                  child: Text(
+                                    'ID: ' + '${itemsFiltered[index].roomId}',
+                                    style: TextStyle(
+                                      fontSize: 17,
+                                    ),
+                                  ),
                                 ),
-                              ),
+                              ],
                             ),
-                            Container(
-                              alignment: Alignment(-0.91, 0),
-                              padding: EdgeInsets.all(10),
-                              child: Text(
-                                'Meeting point: ' + '${itemsFiltered[index].meetingPoint}',
-                                style: TextStyle(
-                                  fontSize: 13,
+
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Container(
+                                  padding: EdgeInsets.only(top:5, bottom: 5, left: 15),
+                                  child: Text(
+                                    'Meeting point: ' + '${itemsFiltered[index].meetingPoint}',
+                                    style: TextStyle(
+                                      fontSize: 13,
+                                    ),
+                                  ),
                                 ),
-                              ),
+                              ],
                             ),
-                            Container(
-                              alignment: Alignment(-0.91, 0),
-                              padding: EdgeInsets.all(10),
-                              child: Text(
-                                'Person count: TODO',
-                                style: TextStyle(
-                                  fontSize: 11,
+
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Container(
+                                  padding: EdgeInsets.only(top:5, bottom: 5, left: 15),
+                                  child: Text(
+                                    'Person count: TODO',
+                                    style: TextStyle(
+                                      fontSize: 11,
+                                    ),
+                                  ),
                                 ),
-                              ),
+                              ],
                             ),
                             Container(
                               alignment: Alignment(1, 0),
                               child: new IconButton(
-                                icon: new Icon(Icons.arrow_right),
+                                icon: new Icon(
+                                  Icons.arrow_right,
+                                  color: Color(0xFF00206B),
+                                ),
                                 tooltip: 'Expand for more Information',
-                                iconSize: 30,
+                                iconSize: 35,
                                 onPressed: () {
                                   showDialog(
                                       context: context,

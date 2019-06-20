@@ -41,9 +41,10 @@ class _RoomPageState extends State<RoomPage> {
           ),
           clipBehavior: Clip.antiAliasWithSaveLayer,
           child: Container(
-            padding: EdgeInsets.all(12),
+            padding: EdgeInsets.all(11),
             child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Expanded(
                     child: Align(
@@ -100,9 +101,9 @@ class _RoomPageState extends State<RoomPage> {
           child: Column (
               children: [
                 Container(
-                  margin: const EdgeInsets.all(15.0),
-                  padding: const EdgeInsets.all(3.0),
-                  width: 400,
+                  margin: EdgeInsets.all(5.0),
+                  padding: EdgeInsets.all(2.0),
+                  width: 600,
                   decoration: new BoxDecoration(
                     color: Colors.white,
                     border: new Border.all(color: Color(0xFF00206B)),
@@ -114,58 +115,83 @@ class _RoomPageState extends State<RoomPage> {
                       )
                     ],
                   ),
-                  child: Column(
+
+
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
-                      Image.asset(
-                        'lib/assets/discussion_icon.png',
-                        height: 50,
-                        width: 50,
+                      Container(
+                        child: Align(
+                          child: Image.asset(
+                            'lib/assets/discussion_icon.png',
+                            height: 50,
+                            width: 50,
+                          ),
+                          alignment: Alignment.centerLeft,
+                        ),
+                        margin: EdgeInsets.all(5),
                       ),
-                      FutureBuilder<Room>(
-                        future: Network().fetchRoom(roomId),
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData) {
-                            return Container(
-                              child: Column(
-                                children: <Widget>[
-                                  Container(
-                                    padding: EdgeInsets.only(top: 7, bottom: 7),
-                                    child: Text(
-                                      'Topic: ' + snapshot.data.topic,
-                                      style: TextStyle(
-                                        fontSize: 17,
+
+                      Container(
+                        margin: EdgeInsets.only(top: 5, left: 10, bottom: 5),
+                        child: FutureBuilder<Room>(
+                          future: Network().fetchRoom(roomId),
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              return Container(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    Container(
+                                      padding: EdgeInsets.only(top: 7, bottom: 7),
+                                      child: Text(
+                                        'Topic: ' + snapshot.data.topic,
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  Container(
-                                    padding: EdgeInsets.only(top: 0, bottom: 7),
-                                    child: Text(
-                                      'Meeting point: ' + snapshot.data.meetingPoint,
-                                      style: TextStyle(
-                                        fontSize: 13,
+                                    Container(
+                                      padding: EdgeInsets.only(top: 7, bottom: 7),
+                                      child: Text(
+                                        'Meeting point: ' + snapshot.data.meetingPoint,
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                            );
-                          } else if (snapshot.hasError){
-                            return Text("${snapshot.error}");
-                          }
+                                  ],
+                                ),
+                              );
+                            } else if (snapshot.hasError){
+                              return Text("${snapshot.error}");
+                            }
 
-                          return CircularProgressIndicator();
+                            return CircularProgressIndicator();
 
-                        },
+                          },
+                        ),
                       ),
+                      Container(
+                          margin: EdgeInsets.all(5),
+                          child: IconButton(
+                            color: Color(0xFF00206B),
+                            icon: Icon(Icons.subdirectory_arrow_right),
+                            onPressed: () {
+                            },
+                          ),
+                      ),
+
                     ],
                   ),
 
 
                 ),
                 Container(
-                  margin: const EdgeInsets.only(left: 15.0, right: 15.0, bottom: 15.0),
-                  padding: const EdgeInsets.all(3.0),
-                  width: 400,
+                  margin: EdgeInsets.only(left: 5.0, right: 5.0, bottom: 10.0),
+                  padding: EdgeInsets.all(2.0),
+                  width: 600,
                   decoration: new BoxDecoration(
                       color: Colors.white,
                       border: new Border.all(color: Color(0xFF00206B)),
@@ -173,7 +199,7 @@ class _RoomPageState extends State<RoomPage> {
                         new BoxShadow(
                           color: Colors.grey,
                           offset: new Offset(10.0, 10.0),
-                          blurRadius: 20.0,
+                          blurRadius: 10.0,
                         )
                         ],
                   ),
@@ -181,32 +207,51 @@ class _RoomPageState extends State<RoomPage> {
                     future: Network().fetchRoomContributions(new Room(roomId, null, null, null, null, null)),
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
-                        return Column(
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
-                            Image.asset(
-                              'lib/assets/speaker_icon.png',
-                              height: 50,
-                              width: 50,
-                            ),
-                            Container(
-                              padding: EdgeInsets.all(5),
-                              child: Text(
-                                "Speaker: $userName",
-                                style: TextStyle(
-                                  fontSize: 17,
-                                ),
+                          Container(
+                          margin: EdgeInsets.all(5),
+                              child: Image.asset(
+                                'lib/assets/speaker_icon.png',
+                                height: 50,
+                                width: 50,
                               ),
-                            ),
-                            Container(
-                              padding: EdgeInsets.all(5),
-                              child: Text(
-                                "Speaktime: 01:23",
-                                style: TextStyle(
-                                  fontSize: 15,
-                                ),
-                              ),
-                            ),
+                          ),
 
+                          Column(
+                            children: <Widget>[
+                              Container(
+                                padding: EdgeInsets.all(5),
+                                child: Text(
+                                  "Speaker: $userName",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                padding: EdgeInsets.all(5),
+                                child: Text(
+                                  "Speaktime: 01:23",
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+
+                          Container(
+                            margin: EdgeInsets.all(5),
+                            child: IconButton(
+                              color: Color(0xFF00206B),
+                              icon: Icon(Icons.cancel),
+                              onPressed: () {
+                              },
+                            ),
+                          ),
                           ],
                         );
                       } else if (snapshot.hasError) {

@@ -190,6 +190,7 @@ class NetworkDemo {
             "roomId": 84, 
             "name": "Mobile Programming",
             "meetingPoint": "Cafeteria",
+            "password": "hallo",
             "categories": [
               {
                 "name": "Category1",
