@@ -86,7 +86,11 @@ class _RoomPageState extends State<RoomPage> {
 
     return Scaffold(
       appBar: new AppBar(
-        title: new Text("Room Page $args"),
+        title: new Image.asset(
+          'lib/assets/logo_speechlist_name.png',
+          height: 30,
+          width: 100,
+        ),
         centerTitle: true,
         actions: [
           new IconButton(
@@ -191,6 +195,8 @@ class _RoomPageState extends State<RoomPage> {
                             color: Color(0xFF00206B),
                             icon: Icon(Icons.subdirectory_arrow_right),
                             onPressed: () {
+                              Navigator.of(context)
+                                  .popAndPushNamed('/evaluate_room', arguments: roomId);
                             },
                           ),
                       ),

@@ -8,6 +8,7 @@ import 'package:speechlist/screens/create_room2.dart';
 import 'package:speechlist/screens/create_room3.dart';
 import 'package:speechlist/screens/room.dart';
 import 'package:speechlist/screens/search_room.dart';
+import 'package:speechlist/screens/evaluate_room.dart';
 
 void _setTargetPlatformForDesktop() {
   TargetPlatform targetPlatform;
@@ -56,6 +57,7 @@ class MyApp extends StatelessWidget {
         RoomPage.routeName: (BuildContext context) => RoomPage(ModalRoute.of(context).settings.arguments),
         CreateRoomPage2.routeName: (BuildContext context) => CreateRoomPage2(room: ModalRoute.of(context).settings.arguments),
         CreateRoomPage3.routeName: (BuildContext context) => CreateRoomPage3(room: ModalRoute.of(context).settings.arguments),
+        EvaluateRoomPage.routeName: (BuildContext context) => EvaluateRoomPage(room: ModalRoute.of(context).settings.arguments),
       },
     );
   }

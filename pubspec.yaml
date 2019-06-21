@@ -56,6 +56,7 @@ flutter:
     - lib/assets/speaker_icon.png
     - lib/assets/Schloss_Icon_Geschlossen.png
     - lib/assets/schloss_icon_offen.png
+    - lib/assets/logo_speechlist_name.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.

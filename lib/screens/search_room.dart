@@ -21,7 +21,11 @@ class _MyHomePageState extends State<SearchRoomPage> {
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: new AppBar(
-        title: new Text('SpeechList',),
+        title: new Image.asset(
+          'lib/assets/logo_speechlist_name.png',
+          height: 30,
+          width: 100,
+        ),
         centerTitle: true,
         actions: [
           new IconButton(
