@@ -67,45 +67,76 @@ class _JoinDialogState extends State<JoinDialog> {
     return AlertDialog(
       content: Form(
         key: _formKey,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Padding(
-                padding: EdgeInsets.all(8.0),
-                child: TextField(
 
-                    decoration: InputDecoration(
-                        labelText: "Your Name",
-                        fillColor: Color(0xFF00206B)
+        child: Container(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: TextField(
+
+                      decoration: InputDecoration(
+                          labelText: "Your Name",
+                          fillColor: Color(0xFF00206B)
+                      ),
+                      controller: textController
+                  )
+              ),
+              Container(
+                padding: EdgeInsets.all(10),
+                child: Column(
+                  children: <Widget>[
+                    Text(
+                      "Categories",
+                      style: TextStyle(
+                        color: Color(0xFF00206B),
+                        fontSize: 14,
+                      ),
                     ),
-                    controller: textController
-                )
-            ),
-            Padding(
-                padding: EdgeInsets.all(8.0),
-                child: new DropdownButton(
-                  value: _currentCity,
-                  items: _dropDownMenuItems,
-                  onChanged: changedDropDownItem,
-                )),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: RaisedButton(
-                color: new Color(0xFF00206B),
-                child: Text(
-                  "Enter Room",
-                  style: TextStyle(
-                    color: Colors.white,
-                  ),
+                  Padding(
+                    padding: EdgeInsets.all(8.0),
+                      child: new DropdownButton(
+                        value: _currentCity,
+                        items: _dropDownMenuItems,
+                        onChanged: changedDropDownItem,
+                      )),
+
+                ],),
+
+              ),
+              TextField(
+                decoration: InputDecoration(
+                    labelText: "Password",
+                    prefixIcon: Icon(Icons.vpn_key),
+                    suffixIcon: IconButton(
+                      icon: Icon(Icons.remove_red_eye),
+                      onPressed: () { },
+                    )
                 ),
-                onPressed: () {
-                  Preferences().setUserName(textController.text);
-                  Navigator.of(context)
-                      .popAndPushNamed('/room', arguments: room.roomId);
+                onChanged: (text) {
+                  room.password = text;
                 },
               ),
-            )
-          ],
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: RaisedButton(
+                  color: new Color(0xFF00206B),
+                  child: Text(
+                    "Enter Room",
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                  onPressed: () {
+                    Preferences().setUserName(textController.text);
+                    Navigator.of(context)
+                        .popAndPushNamed('/room', arguments: room.roomId);
+                  },
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

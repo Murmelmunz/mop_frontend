@@ -11,9 +11,8 @@ class Room {
   String password;
   List<Category> categories;
 
-  Room(this.roomId, this.topic, this.meetingPoint, this.date, this.time, this.categories) {
+  Room(this.roomId, this.topic, this.meetingPoint, this.date, this.time, this.categories, this.password) {
     this.topic ??= "";
-    this.password ??= "";
     this.categories ??= List<Category>();
   }
 
@@ -41,6 +40,7 @@ class Room {
 
       return Category("${ i['name'] }", values);
     })?.toList(),
+    json['password'],
   );
 
 //  @override

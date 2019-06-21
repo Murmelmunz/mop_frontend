@@ -26,7 +26,7 @@ class _RoomsListState extends State<RoomsList> {
 
   void setPathForPW(){
     items.forEach((item) {
-      if(item.password != ""){
+      if(item.password != null){
         item.password = 'lib/assets/Schloss_Icon_Geschlossen.png';
       } else{
         item.password = 'lib/assets/schloss_icon_offen.png';

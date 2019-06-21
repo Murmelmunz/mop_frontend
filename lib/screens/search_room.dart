@@ -53,7 +53,7 @@ class _MyHomePageState extends State<SearchRoomPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.of(context).pushNamed('/create_room', arguments: Room(null, "", "", "", "", null));
+          Navigator.of(context).pushNamed('/create_room', arguments: Room(null, "", "", "", "", null, null));
         },
         child: Icon(Icons.add),
       ),

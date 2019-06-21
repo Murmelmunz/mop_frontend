@@ -31,52 +31,50 @@ class _RoomPageState extends State<RoomPage> {
   }
 
   Widget _buildProductItem(BuildContext context, int index) {
+    var _onPressed;
+    if(allContributions[index].userId == 10){
+      _onPressed = () {
+
+      };
+    }
+
     return new Container(
       padding: EdgeInsets.only(left: 65, right: 65, top: 5, bottom: 5),
-      alignment: Alignment(0, 0),
       child: Card(
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30.0),
+            borderRadius: BorderRadius.circular(20.0),
             side: BorderSide(width: 0.2),
           ),
           clipBehavior: Clip.antiAliasWithSaveLayer,
-          child: Container(
-            padding: EdgeInsets.all(11),
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Expanded(
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Image.asset(
-                        allContributions[index].type,
-                        height: 40,
-                        width: 40,
-                      ),
+            
+            child: Container(
+              padding: EdgeInsets.all(10),
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      allContributions[index].type,
+                      height: 35,
+                      width: 35,
                     ),
-                  ),
 
-                  Column(
-                    children: <Widget>[
-                      Align(
-                        alignment: Alignment.center,
-                        child: Text(
-                          "Ibrahim Dursun",
-                        ),
-                      ),
-                    ],
-                  ),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: IconButton(
-                      icon: Icon(Icons.remove_circle),
-                      onPressed: () {
-                      },
+
+                    Text(
+                      "Murmel",
                     ),
-                  ),
-                ]),
-          )),
+
+                    IconButton(
+                      icon: Icon(
+                          Icons.remove_circle,
+                          color: Color(0xFF00206B),
+                      ),
+                      onPressed: _onPressed,
+                    ),
+                  ]),
+            ),
+            
+          ),
     );
   }
 
@@ -222,7 +220,7 @@ class _RoomPageState extends State<RoomPage> {
                         ],
                   ),
                   child: FutureBuilder<List<Contribution>>(
-                    future: Network().fetchRoomContributions(new Room(roomId, null, null, null, null, null)),
+                    future: Network().fetchRoomContributions(new Room(roomId, null, null, null, null, null, null)),
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
                         return Row(
