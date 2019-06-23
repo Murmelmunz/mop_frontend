@@ -23,12 +23,12 @@ class _ContributionState extends State<ContributionPage> {
 
   void addToList(int value){
     if(value == 1){
-      allContributions.add(new Contribution(1207, "lib/assets/rede_icon.png", 111));
+      allContributions.add(new Contribution(1207, "lib/assets/rede_icon.png", "Name"));
     } else if (value == 2){
-      allContributions.add(new Contribution(0511, "lib/assets/fragezeichen_icon.png", 111));
+      allContributions.add(new Contribution(0511, "lib/assets/fragezeichen_icon.png", "Name"));
     } else if (value == 3) {
       allContributions.add(
-          new Contribution(2411, "lib/assets/antwort_icon.png", 111));
+          new Contribution(2411, "lib/assets/antwort_icon.png", "Name"));
     }
   }
   @override
@@ -104,7 +104,7 @@ class _ContributionState extends State<ContributionPage> {
                     });
                     await Network().createRoomContribution(
                         Room(await Preferences().getCurrentRoomId(), null, null, null, null, null, null),
-                        Contribution(null, "Frage", await Preferences().getUserId()),
+                        Contribution(null, "Statement", await Preferences().getUserName()),
                         User(await Preferences().getUserId(), await Preferences().getUserName(), null)
                     );
                     Navigator.of(context).pop();
@@ -131,8 +131,13 @@ class _ContributionState extends State<ContributionPage> {
                       fontSize: 18,
                     ),
                   ),
-                  onPressed: () {
+                  onPressed: () async {
                     addToList(2);
+                    await Network().createRoomContribution(
+                      Room(await Preferences().getCurrentRoomId(), null, null, null, null, null, null),
+                      Contribution(null, "Question", await Preferences().getUserName()),
+                      User(await Preferences().getUserId(), await Preferences().getUserName(), null)
+                    );
                     Navigator.of(context).pop();
                   },
                 ),
@@ -154,8 +159,13 @@ class _ContributionState extends State<ContributionPage> {
                       fontSize: 18,
                     ),
                   ),
-                  onPressed: () {
+                  onPressed: () async {
                     addToList(3);
+                    await Network().createRoomContribution(
+                        Room(await Preferences().getCurrentRoomId(), null, null, null, null, null, null),
+                    Contribution(null, "Answer", await Preferences().getUserName()),
+                    User(await Preferences().getUserId(), await Preferences().getUserName(), null)
+                    );
                     Navigator.of(context).pop();
                   },
                 ),

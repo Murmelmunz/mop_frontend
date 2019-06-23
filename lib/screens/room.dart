@@ -24,8 +24,8 @@ class _RoomPageState extends State<RoomPage> {
   @override
   void initState() {
     Preferences().getUserName().then((n) => userName = n);
-    allContributions.add(new Contribution(2909, "lib/assets/antwort_icon.png", 10));
-    allContributions.add(new Contribution(0507, "lib/assets/fragezeichen_icon.png", 10));
+    allContributions.add(new Contribution(2909, "lib/assets/antwort_icon.png", "Klaus"));
+    allContributions.add(new Contribution(0507, "lib/assets/fragezeichen_icon.png", "Peter"));
     super.initState();
   }
 
