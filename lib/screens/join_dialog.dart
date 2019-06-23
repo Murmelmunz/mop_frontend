@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:speechlist/models/room.dart';
+import 'package:speechlist/models/user.dart';
+import 'package:speechlist/utils/network.dart';
 import 'package:speechlist/utils/preferences.dart';
 
 class JoinDialogPage extends StatefulWidget {
@@ -20,6 +22,7 @@ class _JoinDialogState extends State<JoinDialogPage>{
   List<DropdownMenuItem<String>> _dropDownMenuItems;
   List<List<DropdownMenuItem<String>>> _allCategories;
   String _currentCity;
+  String _userPassword = "";
   // Block of declared variables
   List _cities = [
     "Blond",
@@ -186,7 +189,7 @@ class _JoinDialogState extends State<JoinDialogPage>{
                             )
                         ),
                         onChanged: (text) {
-                          room.password = text;
+                          _userPassword = text;
                         },
                       ),
                       Padding(
@@ -200,8 +203,9 @@ class _JoinDialogState extends State<JoinDialogPage>{
                               fontSize: 18,
                             ),
                           ),
-                          onPressed: () {
+                          onPressed: () async {
                             Preferences().setUserName(textController.text);
+                            await Network().joinRoom(room.roomId, User(null, await Preferences().getUserName(), _userPassword));
                             Navigator.of(context)
                                 .pushNamed('/room', arguments: room.roomId);
                           },

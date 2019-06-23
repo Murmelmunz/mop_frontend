@@ -71,16 +71,35 @@ class NetworkNormal {
     }
   }
 
-  // TODO: send user data with join request
   Future<Room> joinRoom(int roomId, User participant) async {
+    String body = '''
+      {
+        "user": 
+        [
+          {
+            "name": "${participant.name}",
+            "password": "${participant.password}"
+          }
+        ]
+      }
+    ''';
+
+    print(body);
+    final response = await http.post(
+        '$_host/room/$roomId/user',
+        body: body,
+        headers: {"Content-Type": "application/json"})
+        .timeout(Duration(milliseconds: 5000));
+
+//    print(json.encode(participant));
 //    final response = await http.post(
-//        '$_host/room/$roomId/participant',
+//        '$_host/room/$roomId/user',
 //        body: json.encode(participant),
 //        headers: {"Content-Type": "application/json"})
 //        .timeout(Duration(milliseconds: 5000));
 
-    final response = await http.get('$_host/room/$roomId', headers: {"Content-Type": "application/json"})
-        .timeout(Duration(milliseconds: 5000));
+//    final response = await http.get('$_host/room/$roomId', headers: {"Content-Type": "application/json"})
+//        .timeout(Duration(milliseconds: 5000));
 
     if (response.statusCode >= 200 && response.statusCode < 300) {
       // If the call to the server was successful, parse the JSON
@@ -220,6 +239,35 @@ class NetworkDemo {
   }
 
 
+  Future<Room> joinRoom(int roomId, User participant) async {
+    await Future.delayed(delay);
+    return Room.fromJson(json.decode(
+        '''
+        {
+          "roomId": 42, 
+          "name": "Mobile Programming",
+          "meetingPoint": "Skyscraper",
+          "categories": [
+            {
+              "name": "Gender",
+              "values": [
+                {"value": "Masculine"},
+                {"value": "Feminine"}
+              ]
+            },
+            {
+              "name": "Haircolor",
+              "values": [
+                {"value": "Red"},
+                {"value": "Green"},
+                {"value": "Blue"}
+              ]
+            }
+          ]
+        }
+      '''
+    ));
+  }
 
   Future<List<Contribution>> fetchRoomContributions(Room room) async {
     await Future.delayed(delay);
