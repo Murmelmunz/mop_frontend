@@ -3,7 +3,6 @@ import 'package:speechlist/models/contribution.dart';
 import 'package:speechlist/models/room.dart';
 import 'package:speechlist/utils/network.dart';
 import 'package:speechlist/utils/preferences.dart';
-import 'package:speechlist/widgets/contribution_dialog.dart';
 
 class RoomPage extends StatefulWidget {
   static const String routeName = "/room";
@@ -25,57 +24,58 @@ class _RoomPageState extends State<RoomPage> {
   @override
   void initState() {
     Preferences().getUserName().then((n) => userName = n);
-    allContributions.add(new Contribution(01, "lib/assets/antwort_icon.png", 10));
-    allContributions.add(new Contribution(01, "lib/assets/fragezeichen_icon.png", 10));
+    allContributions.add(new Contribution(2909, "lib/assets/antwort_icon.png", 10));
+    allContributions.add(new Contribution(0507, "lib/assets/fragezeichen_icon.png", 10));
     super.initState();
   }
 
   Widget _buildProductItem(BuildContext context, int index) {
-    var _onPressed;
-    if(allContributions[index].userId == 10){
-      _onPressed = () {
 
-      };
-    }
-
-    return new Container(
-      padding: EdgeInsets.only(left: 65, right: 65, top: 5, bottom: 5),
-      child: Card(
+    if(allContributions.length == 0){
+      return Container();
+    }else {
+      return new Container(
+        padding: EdgeInsets.only(left: 65, right: 65, top: 5, bottom: 5),
+        child: Card(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20.0),
             side: BorderSide(width: 0.2),
           ),
           clipBehavior: Clip.antiAliasWithSaveLayer,
-            
-            child: Container(
-              padding: EdgeInsets.all(10),
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Image.asset(
-                      allContributions[index].type,
-                      height: 35,
-                      width: 35,
-                    ),
 
-
-                    Text(
-                      "Murmel",
-                    ),
-
-                    IconButton(
-                      icon: Icon(
-                          Icons.remove_circle,
-                          color: Color(0xFF00206B),
+          child: Container(
+            padding: EdgeInsets.all(15),
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(left: 15),
+                    child:
+                    Column(children: <Widget>[
+                      Image.asset(
+                        allContributions[index].type,
+                        height: 35,
+                        width: 35,
                       ),
-                      onPressed: _onPressed,
-                    ),
-                  ]),
-            ),
-            
+
+                    ],),),
+
+                  Container(
+                    margin: EdgeInsets.only(right: 40),
+                    child: Column(children: <Widget>[
+                      Text(
+                        "${allContributions[index].id}",
+                      ),
+                    ],),),
+
+                ]),
           ),
-    );
+
+        ),
+      );
+    }
+
   }
 
   @override
@@ -92,7 +92,9 @@ class _RoomPageState extends State<RoomPage> {
         centerTitle: true,
         actions: [
           new IconButton(
-            icon: new Image.asset('lib/assets/logo_projekt.png'),
+            icon: new Icon(
+                Icons.update
+            ),
             tooltip: 'Home',
             onPressed: () => setState(() {}),
           ),
@@ -191,10 +193,10 @@ class _RoomPageState extends State<RoomPage> {
                           margin: EdgeInsets.all(5),
                           child: IconButton(
                             color: Color(0xFF00206B),
-                            icon: Icon(Icons.subdirectory_arrow_right),
+                            icon: Icon(Icons.launch),
                             onPressed: () {
                               Navigator.of(context)
-                                  .popAndPushNamed('/evaluate_room', arguments: roomId);
+                                  .pushNamed('/evaluate_room', arguments: roomId);
                             },
                           ),
                       ),
@@ -248,7 +250,7 @@ class _RoomPageState extends State<RoomPage> {
                                     ),
                                     children: <TextSpan>[
                                       new TextSpan(text: 'Speaker: ', style: new TextStyle(fontWeight: FontWeight.bold)),
-                                      new TextSpan(text: '${userName}')
+                                      new TextSpan(text: '${allContributions[0].id}')
                                     ],
                                   ),
                                 ),
@@ -277,6 +279,10 @@ class _RoomPageState extends State<RoomPage> {
                               color: Color(0xFF00206B),
                               icon: Icon(Icons.cancel),
                               onPressed: () {
+                                allContributions.removeAt(0);
+                                setState(() {
+
+                                });
                               },
                             ),
                           ),
@@ -291,10 +297,12 @@ class _RoomPageState extends State<RoomPage> {
                   ),
                 ),
 
-                Expanded(
-                  child: new ListView.builder(
-                     itemBuilder: _buildProductItem,
-                     itemCount: allContributions.length,
+                Expanded(child:
+                  ListView.builder(
+                    scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
+                    itemBuilder: _buildProductItem,
+                    itemCount: allContributions.length,
                   ),
                 ),
               ]
@@ -303,11 +311,8 @@ class _RoomPageState extends State<RoomPage> {
 
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          showDialog(
-              context: context,
-              builder: (context) {
-                return ContributionDialog(this.allContributions);
-              });
+          Navigator.of(context)
+              .pushNamed('/contribute_room', arguments: this.allContributions);
         },
         child: Icon(Icons.add_comment),
       ),

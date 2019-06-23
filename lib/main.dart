@@ -3,9 +3,11 @@ import 'dart:io' show Platform;
 import 'package:flutter/foundation.dart'
     show debugDefaultTargetPlatformOverride;
 import 'package:flutter/material.dart';
+import 'package:speechlist/screens/contribution_dialog.dart';
 import 'package:speechlist/screens/create_room.dart';
 import 'package:speechlist/screens/create_room2.dart';
 import 'package:speechlist/screens/create_room3.dart';
+import 'package:speechlist/screens/join_dialog.dart';
 import 'package:speechlist/screens/room.dart';
 import 'package:speechlist/screens/search_room.dart';
 import 'package:speechlist/screens/evaluate_room.dart';
@@ -53,6 +55,8 @@ class MyApp extends StatelessWidget {
       home: SearchRoomPage(title: 'HomePage'),
       routes: <String, WidgetBuilder>{
         SearchRoomPage.routeName: (BuildContext context) => SearchRoomPage(title: 'Homepage'),
+        JoinDialogPage.routeName: (BuildContext context) => JoinDialogPage(room: ModalRoute.of(context).settings.arguments),
+        ContributionPage.routeName: (BuildContext context) => ContributionPage(ModalRoute.of(context).settings.arguments),
         CreateRoomPage.routeName: (BuildContext context) => CreateRoomPage(room: ModalRoute.of(context).settings.arguments),
         RoomPage.routeName: (BuildContext context) => RoomPage(ModalRoute.of(context).settings.arguments),
         CreateRoomPage2.routeName: (BuildContext context) => CreateRoomPage2(room: ModalRoute.of(context).settings.arguments),

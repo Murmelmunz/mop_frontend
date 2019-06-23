@@ -29,7 +29,9 @@ class _MyHomePageState extends State<SearchRoomPage> {
         centerTitle: true,
         actions: [
           new IconButton(
-            icon: new Image.asset('lib/assets/logo_projekt.png'),
+            icon: new Icon(
+            Icons.update
+            ),
             tooltip: 'Home',
             onPressed: () => setState(() {}),
           ),

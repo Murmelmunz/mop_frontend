@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:speechlist/models/room.dart';
-import 'package:speechlist/widgets/join_dialog.dart';
 
 class RoomsList extends StatefulWidget {
   final List<Room> items;
@@ -193,17 +192,14 @@ class _RoomsListState extends State<RoomsList> {
                               alignment: Alignment(1, 0),
                               child: new IconButton(
                                 icon: new Icon(
-                                  Icons.arrow_right,
+                                  Icons.subdirectory_arrow_right,
                                   color: Color(0xFF00206B),
                                 ),
                                 tooltip: 'Expand for more Information',
                                 iconSize: 35,
                                 onPressed: () {
-                                  showDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        return JoinDialog(itemsFiltered[index]);
-                                      });
+                                  Navigator.of(context)
+                                      .pushNamed('/join_room', arguments: itemsFiltered[index]);
                                 },
                               ),
                             ),
