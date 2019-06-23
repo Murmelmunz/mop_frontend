@@ -205,7 +205,9 @@ class _JoinDialogState extends State<JoinDialogPage>{
                           ),
                           onPressed: () async {
                             Preferences().setUserName(textController.text);
-                            await Network().joinRoom(room.roomId, User(null, await Preferences().getUserName(), _userPassword));
+                            User user = await Network().joinRoom(room.roomId, User(null, await Preferences().getUserName(), _userPassword));
+                            Preferences().setUserId(user.id);
+                            Preferences().setCurrentRoomId(room.roomId);
                             Navigator.of(context)
                                 .pushNamed('/room', arguments: room.roomId);
                           },

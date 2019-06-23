@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:speechlist/models/contribution.dart';
+import 'package:speechlist/models/room.dart';
+import 'package:speechlist/models/user.dart';
+import 'package:speechlist/utils/network.dart';
+import 'package:speechlist/utils/preferences.dart';
 
 // ignore: must_be_immutable
 class ContributionPage extends StatefulWidget {
@@ -94,10 +98,15 @@ class _ContributionState extends State<ContributionPage> {
                       fontSize: 18,
                     ),
                   ),
-                  onPressed: () {
+                  onPressed: () async {
                     setState(() {
                       addToList(1);
                     });
+                    await Network().createRoomContribution(
+                        Room(await Preferences().getCurrentRoomId(), null, null, null, null, null, null),
+                        Contribution(null, "Frage", await Preferences().getUserId()),
+                        User(await Preferences().getUserId(), await Preferences().getUserName(), null)
+                    );
                     Navigator.of(context).pop();
                   },
                 ),

@@ -3,7 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:speechlist/main.dart';
 import 'package:speechlist/models/room.dart';
+import 'package:speechlist/models/user.dart';
 import 'package:speechlist/utils/network.dart';
+import 'package:speechlist/utils/preferences.dart';
 import 'package:speechlist/widgets/box_with_title.dart';
 
 class CreateRoomPage3 extends StatefulWidget {
@@ -27,6 +29,9 @@ class _CreateRoomPageState3 extends State<CreateRoomPage3> {
     setState(() { _isLoading = true; });
     try {
       Room room = await Network().createRoom(this.room);
+      User user = await Network().joinRoom(room.roomId, User(null, await Preferences().getUserName(), ""));
+      Preferences().setUserId(user.id);
+      Preferences().setCurrentRoomId(room.roomId);
       Navigator.of(context).popAndPushNamed('/room', arguments: room.roomId);
     } catch (e) {
       print(e.toString());

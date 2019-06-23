@@ -71,7 +71,7 @@ class NetworkNormal {
     }
   }
 
-  Future<Room> joinRoom(int roomId, User participant) async {
+  Future<User> joinRoom(int roomId, User participant) async {
     String body = '''
       {
         "user": 
@@ -91,19 +91,9 @@ class NetworkNormal {
         headers: {"Content-Type": "application/json"})
         .timeout(Duration(milliseconds: 5000));
 
-//    print(json.encode(participant));
-//    final response = await http.post(
-//        '$_host/room/$roomId/user',
-//        body: json.encode(participant),
-//        headers: {"Content-Type": "application/json"})
-//        .timeout(Duration(milliseconds: 5000));
-
-//    final response = await http.get('$_host/room/$roomId', headers: {"Content-Type": "application/json"})
-//        .timeout(Duration(milliseconds: 5000));
-
     if (response.statusCode >= 200 && response.statusCode < 300) {
       // If the call to the server was successful, parse the JSON
-      return Room.fromJson(json.decode(response.body));
+      return User.fromJson(json.decode(response.body));
     } else {
       // If that call was not successful, throw an error.
       throw Exception('Failed to join room. Error: ${response.statusCode}');
@@ -124,15 +114,24 @@ class NetworkNormal {
     }
   }
 
-  // TODO: send contribution data
-  Future<Contribution> createRoomContribution(Room room, Contribution contribution) async {
-//    final response = await http.post(
-//        '$_host/room/${room.roomId}/contribution',
-//        body: json.encode(contribution),
-//        headers: {"Content-Type": "application/json"})
-//        .timeout(Duration(milliseconds: 5000));
+  Future<Contribution> createRoomContribution(Room room, Contribution contribution, User user) async {
+    String body = '''
+      {
+        "contribution": 
+        [
+          {
+            "art": "${contribution.type}",
+            "name": "${user.name}"
+          }
+        ]
+      }
+    ''';
 
-    final response = await http.get('$_host/room/${room.roomId}', headers: {"Content-Type": "application/json"})
+    print(body);
+    final response = await http.post(
+        '$_host/room/${room.roomId}/user/${user.id}/contribution',
+        body: body,
+        headers: {"Content-Type": "application/json"})
         .timeout(Duration(milliseconds: 5000));
 
     if (response.statusCode >= 200 && response.statusCode < 300) {
@@ -152,28 +151,77 @@ class NetworkDemo {
     await Future.delayed(delay);
     return Room.fromJson(json.decode(
       '''
+{
+    "_id": "5d0fe55ad7b9acd6a4f80602",
+    "categories": [
         {
-          "roomId": 42, 
-          "name": "Mobile Programming",
-          "meetingPoint": "Skyscraper",
-          "categories": [
-            {
-              "name": "Gender",
-              "values": [
-                {"value": "Masculine"},
-                {"value": "Feminine"}
-              ]
-            },
-            {
-              "name": "Haircolor",
-              "values": [
-                {"value": "Red"},
-                {"value": "Green"},
-                {"value": "Blue"}
-              ]
-            }
-          ]
+            "name": "Geschlecht",
+            "values": [
+                {
+                    "value": "M"
+                },
+                {
+                    "value": "W"
+                }
+            ]
+        },
+        {
+            "name": "Haar",
+            "values": [
+                {
+                    "value": "R"
+                },
+                {
+                    "value": "G"
+                },
+                {
+                    "value": "B"
+                }
+            ]
         }
+    ],
+    "date": "27.06.19",
+    "meetingPoint": "Hochhaus",
+    "name": "Gehalt",
+    "password": null,
+    "roomId": 595557,
+    "time": "5:46 PM",
+    "user": [
+        {
+            "contribution": {
+                "contribution": [
+                    {
+                        "art": "Frage",
+                        "contributionId": 602870,
+                        "name": "Klaus"
+                    },
+                    {
+                        "art": "Frage",
+                        "contributionId": 88876,
+                        "name": "Klaus"
+                    }
+                ]
+            },
+            "name": "Klaus",
+            "password": "",
+            "userId": 587127
+        },
+        {
+            "contribution": {
+                "contribution": [
+                    {
+                        "art": "Frage",
+                        "contributionId": 756117,
+                        "name": "Anonymousrtest3PPP"
+                    }
+                ]
+            },
+            "name": "Anonymousrtest3PPP",
+            "password": "",
+            "userId": 490249
+        }
+    ]
+}
       '''
     ));
   }
@@ -182,50 +230,136 @@ class NetworkDemo {
     await Future.delayed(delay);
     List responseJson = json.decode(
       '''
-        [
-          {
-            "roomId": 42, 
-            "name": "Operation Research",
-            "meetingPoint": "Skyscraper",
-            "categories": [
-              {
-                "name": "Gender",
+[
+    {
+        "_id": "5d0fe55ad7b9acd6a4f80602",
+        "categories": [
+            {
+                "name": "Geschlecht",
                 "values": [
-                  {"value": "Masculine"},
-                  {"value": "Feminine"}
+                    {
+                        "value": "M"
+                    },
+                    {
+                        "value": "W"
+                    }
                 ]
-              },
-              {
-                "name": "Haircolor",
+            },
+            {
+                "name": "Haar",
                 "values": [
-                  {"value": "Red"},
-                  {"value": "Green"},
-                  {"value": "Blue"}
+                    {
+                        "value": "R"
+                    },
+                    {
+                        "value": "G"
+                    },
+                    {
+                        "value": "B"
+                    }
                 ]
-              }
-            ]
-          },
-          {
-            "roomId": 84, 
-            "name": "Mobile Programming",
-            "meetingPoint": "Cafeteria",
-            "password": "hallo",
-            "categories": [
-              {
-                "name": "Category1",
-                "values": [
-                  {"value": "Value1"},
-                  {"value": "Value2"},
-                  {"value": "Value3"}
-                ]
-              },
-              {"name": "Category2"},
-              {"name": "Category3"},
-              {"name": "Category4"},
-              {"name": "Category5"}
-            ]
-          }
+            }
+        ],
+        "date": "27.06.19",
+        "meetingPoint": "Hochhaus",
+        "name": "Gehalt",
+        "password": null,
+        "roomId": 595557,
+        "time": "5:46 PM",
+        "user": [
+            {
+                "contribution": {
+                    "contribution": [
+                        {
+                            "art": "Frage",
+                            "contributionId": 602870,
+                            "name": "Klaus"
+                        },
+                        {
+                            "art": "Frage",
+                            "contributionId": 88876,
+                            "name": "Klaus"
+                        }
+                    ]
+                },
+                "name": "Klaus",
+                "password": "",
+                "userId": 587127
+            },
+            {
+                "contribution": {
+                    "contribution": [
+                        {
+                            "art": "Frage",
+                            "contributionId": 756117,
+                            "name": "Anonymousrtest3PPP"
+                        }
+                    ]
+                },
+                "name": "Anonymousrtest3PPP",
+                "password": "",
+                "userId": 490249
+            }
         ]
+    },
+    {
+        "_id": "5d0fec65d7b9acd6a4f8061f",
+        "categories": [
+            {
+                "name": "Cat1",
+                "values": [
+                    {
+                        "value": "Val1"
+                    },
+                    {
+                        "value": "Val2"
+                    }
+                ]
+            },
+            {
+                "name": "Cat2",
+                "values": [
+                    {
+                        "value": "Val1"
+                    },
+                    {
+                        "value": "Val2"
+                    },
+                    {
+                        "value": "Val3"
+                    },
+                    {
+                        "value": "Val4"
+                    }
+                ]
+            },
+            {
+                "name": "Cat3",
+                "values": [
+                    {
+                        "value": "Val1"
+                    },
+                    {
+                        "value": "Val2"
+                    }
+                ]
+            }
+        ],
+        "date": "26.06.19",
+        "meetingPoint": "A Gebäude",
+        "name": "MOP",
+        "password": null,
+        "roomId": 800188,
+        "time": "5:07 PM",
+        "user": [
+            {
+                "name": "Klaus",
+                "password": "",
+                "userId": 126709
+            }
+        ]
+    }
+]
       '''
     );
     return responseJson.map((m) => new Room.fromJson(m)).toList();
@@ -238,32 +372,14 @@ class NetworkDemo {
     return room;
   }
 
-
-  Future<Room> joinRoom(int roomId, User participant) async {
+  Future<User> joinRoom(int roomId, User participant) async {
     await Future.delayed(delay);
-    return Room.fromJson(json.decode(
-        '''
+    return User.fromJson(json.decode(
+      '''
         {
-          "roomId": 42, 
-          "name": "Mobile Programming",
-          "meetingPoint": "Skyscraper",
-          "categories": [
-            {
-              "name": "Gender",
-              "values": [
-                {"value": "Masculine"},
-                {"value": "Feminine"}
-              ]
-            },
-            {
-              "name": "Haircolor",
-              "values": [
-                {"value": "Red"},
-                {"value": "Green"},
-                {"value": "Blue"}
-              ]
-            }
-          ]
+          "name": "Klaus",
+          "password": "",
+          "userId": 635869
         }
       '''
     ));
@@ -274,6 +390,24 @@ class NetworkDemo {
     List responseJson = json.decode('[{"id": 0, "type": "contribution", "userId": 1337}, '
         '{"id": 1, "type": "question", "userId": 1337}]');
     return responseJson.map((m) => new Contribution.fromJson(m)).toList();
+  }
+
+  Future<Contribution> createRoomContribution(Room room, Contribution contribution, User user) async {
+    await Future.delayed(delay);
+    return Contribution.fromJson(json.decode(
+        '''
+        {
+          "contribution":
+          [
+            {
+              "art": "Frage",
+              "contributionId": 456,
+              "name": "user"
+            }
+          ]
+        }
+      '''
+    ));
   }
 }
 

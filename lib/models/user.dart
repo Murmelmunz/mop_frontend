@@ -13,9 +13,11 @@ class User {
     'roomPassword': "test",
   };
 
-  factory User.fromJson(Map<String, dynamic> json) => new User(
-    json['id'],
-    json['name'],
-    json['password'],
-  );
+  factory User.fromJson(Map<String, dynamic> json) {
+    return User(
+      json['userId'],
+      json['name'],
+      json['password'],
+    );
+  }
 }
