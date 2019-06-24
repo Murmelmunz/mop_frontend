@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:speechlist/models/room.dart';
 import 'package:speechlist/utils/preferences.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_circular_chart/flutter_circular_chart.dart';
 
 class EvaluateRoomPage extends StatefulWidget {
   static const String routeName = "/evaluate_room";
-  final int room;
+  final Room room;
 
 
   EvaluateRoomPage({Key key, this.room}) : super (key: key);
@@ -15,7 +16,7 @@ class EvaluateRoomPage extends StatefulWidget {
 }
 
 class _EvaluateRoomPageState extends State<EvaluateRoomPage> {
-  int roomId;
+  Room roomId;
   String userName;
   var data1 = [0.0,-2.0,3.5,-2.0,0.5,0.7,0.8,1.0,2.0,3.0,3.2];
 
@@ -24,10 +25,7 @@ class _EvaluateRoomPageState extends State<EvaluateRoomPage> {
   List<CircularStackEntry> circularData = <CircularStackEntry>[
     new CircularStackEntry(
       <CircularSegmentEntry>[
-        new CircularSegmentEntry(700.0, Color(0xff4285F4), rankKey: 'Q1'),
-        new CircularSegmentEntry(1000.0, Color(0xfff3af00), rankKey: 'Q2'),
-        new CircularSegmentEntry(1800.0, Color(0xffec3337), rankKey: 'Q3'),
-        new CircularSegmentEntry(1000.0, Color(0xff40b24b), rankKey: 'Q4'),
+        new CircularSegmentEntry(700.0, Color(0xff00206B), rankKey: 'Q1'),
       ],
       rankKey: 'Quarterly Profits',
     ),
@@ -140,7 +138,9 @@ class _EvaluateRoomPageState extends State<EvaluateRoomPage> {
         centerTitle: true,
         actions: [
           new IconButton(
-            icon: new Image.asset('lib/assets/logo_projekt.png'),
+            icon: new Icon(
+                Icons.update
+            ),
             tooltip: 'Home',
             onPressed: () => setState(() {}),
           ),
@@ -157,7 +157,7 @@ class _EvaluateRoomPageState extends State<EvaluateRoomPage> {
                 children: <Widget>[
                 Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: myCircularItems("Quarterly speak time", "Topic: Mobile Programming"),
+                child: myCircularItems("Quarterly speak time", roomId.topic),
                 ),
 //                Padding(
 //                padding: const EdgeInsets.only(right:8.0),

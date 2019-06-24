@@ -19,10 +19,35 @@ class _JoinDialogState extends State<JoinDialogPage>{
   Room room;
   var textController = new TextEditingController();
   SharedPreferences sharedPreferences;
+
+
+  //Try
+  List<DropdownMenuItem<String>> _allCategories;
+  List<List<String>> _CategoriesInCategory =
+  [
+    [
+      "Blond",
+      "Braun",
+    ],
+    [
+      "Ledig",
+      "Verlobt",
+      "Verheiratet",
+    ],
+    [
+      "Links",
+      "Rechts",
+    ],
+  ];
+  String _currentCategory;
+  List _categorynames = [
+    "Haarfarbe",
+    "Familienstand",
+    "Schreibhand",
+  ];
+
   List<DropdownMenuItem<String>> _dropDownMenuItems;
-  List<List<DropdownMenuItem<String>>> _allCategories;
   String _currentCity;
-  String _userPassword = "";
   // Block of declared variables
   List _cities = [
     "Blond",
@@ -33,34 +58,55 @@ class _JoinDialogState extends State<JoinDialogPage>{
   _JoinDialogState(this.room);
 
 
-  //REAL TRY
-  List<DropdownMenuItem<String>> getAllCategories(){
-    List<DropdownMenuItem<String>> items = new List();
-    for(List Category in _allCategories){
-
-    }
-    return items;
-  }
-
   void changeCategory(String selectedCategory){
     setState(() {
-
+      _currentCategory = selectedCategory;
     });
   }
 
-  Widget _createDropDown(BuildContext context, int index){
-    return Container(
-      child: Padding(
-          padding: EdgeInsets.all(8.0),
-          child: new DropdownButton(
-            value: _allCategories[index][0].toString(),
-            items: _allCategories[index],
-            onChanged: changedDropDownItem,
-          )),
-    );
+  List<DropdownMenuItem<String>> _fillCategories(){
+    List<DropdownMenuItem<String>> items = new List();
+    for(List _list in _CategoriesInCategory) {
+      for (String item in _list) {
+        items.add(new DropdownMenuItem(value: item, child: new Text(item)));
+      }
+      return items;
+    }
   }
 
+  Widget _createDropDown(BuildContext context, int index){
+    return Flexible(
+      child: Container(
+        child: Padding(
+            padding: EdgeInsets.all(8.0),
+            child: new DropdownButton(
+              value: _currentCategory,
+              items: _fillCategories(),
+              onChanged: changeCategory,
+            )),
+      ),);
+  }
 
+  // To hide or show the password button
+  Widget _passwordButton(){
+    if(this.room.password == null){
+      return TextField(
+        decoration: InputDecoration(
+            labelText: "Password",
+            prefixIcon: Icon(Icons.vpn_key),
+            suffixIcon: IconButton(
+              icon: Icon(Icons.remove_red_eye),
+              onPressed: () {},
+            )
+        ),
+        onChanged: (text) {
+          room.password = text;
+        },
+      );
+    } else{
+      return new Container();
+    }
+  }
 
 
   // DEMO
@@ -113,42 +159,47 @@ class _JoinDialogState extends State<JoinDialogPage>{
         ],
       ),
 
-      body: Container(
-        child: Container(
-          padding: EdgeInsets.all(15),
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            children: <Widget>[
-              Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: TextField(
+      body:  Container(
+        margin: EdgeInsets.all(10),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Padding(
+                padding: EdgeInsets.all(8.0),
+                child: TextField(
 
-                      decoration: InputDecoration(
-                          labelText: "Your Name",
-                          fillColor: Color(0xFF00206B)
-                      ),
-                      controller: textController
-                  )
-              ),
-              Container(
-                padding: EdgeInsets.only(top: 40, bottom: 40),
-                child: Column(
-                  children: <Widget>[
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                    decoration: InputDecoration(
+                        labelText: "Your Name",
+                        fillColor: Color(0xFF00206B)
+                    ),
+                    controller: textController
+                )
+            ),
+            Container(
+              padding: EdgeInsets.only(top: 40, bottom: 40),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Column(
+                        mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
-                          Column(children: <Widget>[
-                            Container(
-                              child: Text(
-                                  "Choose your properties",
-                                  style: new TextStyle(
-                                    fontSize: 22,
-                                    color: Color(0xFF00206B),
-                                  ),
+                          Container(
+                            child: Text(
+                              "Choose your properties",
+                              style: new TextStyle(
+                                fontSize: 22,
+                                color: Color(0xFF00206B),
                               ),
                             ),
-                            Container(
-                                child: Padding(
+                          ),
+                          Container(
+                            child: Column(
+                              children: <Widget>[
+                                Padding(
                                   padding: EdgeInsets.all(10.0),
                                   child: new ButtonTheme(
                                       alignedDropdown: true,
@@ -162,66 +213,45 @@ class _JoinDialogState extends State<JoinDialogPage>{
                                         ),
                                       )
                                   ),
-                                )
-                            )
-                          ],),
-
-                        ],
-
-
-                    ),
-
-                  ],),
-
-              ),
-              Expanded(
-                child:new Align(
-                  alignment: FractionalOffset.bottomCenter,
-                  child: Column(
-                    children: <Widget>[
-                      TextField(
-                        decoration: InputDecoration(
-                            labelText: "Password",
-                            prefixIcon: Icon(Icons.vpn_key),
-                            suffixIcon: IconButton(
-                              icon: Icon(Icons.remove_red_eye),
-                              onPressed: () {},
-                            )
-                        ),
-                        onChanged: (text) {
-                          _userPassword = text;
-                        },
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: RaisedButton(
-                          color: new Color(0xFF00206B),
-                          child: Text(
-                            "Enter Room",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 18,
+                                ),
+                              ],
                             ),
                           ),
-                          onPressed: () async {
-                            Preferences().setUserName(textController.text);
-                            User user = await Network().joinRoom(room.roomId, User(null, await Preferences().getUserName(), _userPassword));
-                            Preferences().setUserId(user.id);
-                            Preferences().setCurrentRoomId(room.roomId);
-                            Navigator.of(context)
-                                .pushNamed('/room', arguments: room.roomId);
-                          },
-                        ),
-                      )
-                    ],),
+
+                        ],),
+
+                    ],
+                  ),
+                ],),
+            ),
+
+            _passwordButton(),
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: RaisedButton(
+                color: new Color(0xFF00206B),
+                child: Text(
+                  "Enter Room",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                  ),
                 ),
+                onPressed: () {
+                  Preferences().setUserName(textController.text);
+                  Navigator.of(context)
+                      .pushNamed('/room', arguments: room.roomId);
+                },
               ),
+            ),
 
 
-            ],
-          ),
+
+
+          ],
         ),
       ),
+      
     );
   }
 }

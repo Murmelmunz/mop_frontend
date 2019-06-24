@@ -6,12 +6,12 @@ import 'dart:convert';
 import 'package:speechlist/models/room.dart';
 import 'package:speechlist/models/user.dart';
 
-class Network extends NetworkDemo {
+class Network extends NetworkNormal {
   // change NetworkNormal to NetworkDemo or NetworkDemoError to test without a server
 }
 
 class NetworkNormal {
-  final _host = 'http://10.0.2.2:3000';
+  final _host = 'http://141.19.142.81:3000';
 
   Future<Room> fetchRoom(int roomId) async {
     final response = await http.get('$_host/room/$roomId', headers: {"Content-Type": "application/json"})

@@ -21,14 +21,14 @@ class _ContributionState extends State<ContributionPage> {
 
   _ContributionState(this.allContributions);
 
-  void addToList(int value){
+  Future addToList(int value) async {
     if(value == 1){
-      allContributions.add(new Contribution(1207, "lib/assets/rede_icon.png", "Name"));
+      allContributions.add(new Contribution(1207, "lib/assets/rede_icon.png", await Preferences().getUserName()));
     } else if (value == 2){
-      allContributions.add(new Contribution(0511, "lib/assets/fragezeichen_icon.png", "Name"));
+      allContributions.add(new Contribution(0511, "lib/assets/fragezeichen_icon.png", await Preferences().getUserName()));
     } else if (value == 3) {
       allContributions.add(
-          new Contribution(2411, "lib/assets/antwort_icon.png", "Name"));
+          new Contribution(2411, "lib/assets/antwort_icon.png", await Preferences().getUserName()));
     }
   }
   @override

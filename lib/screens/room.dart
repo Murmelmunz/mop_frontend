@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:speechlist/models/contribution.dart';
 import 'package:speechlist/models/room.dart';
@@ -16,17 +17,90 @@ class RoomPage extends StatefulWidget {
 
 class _RoomPageState extends State<RoomPage> {
   List<Contribution> allContributions = [];
+  Room room;
   int roomId;
   String userName;
+   int counterForTime = 0;
+  Timer _timer;
+   bool _isButtonDisabledStart = false;
+  bool _isButtonDisabledStop = true;
 
   _RoomPageState(this.roomId);
 
   @override
   void initState() {
     Preferences().getUserName().then((n) => userName = n);
-    allContributions.add(new Contribution(2909, "lib/assets/antwort_icon.png", "Klaus"));
-    allContributions.add(new Contribution(0507, "lib/assets/fragezeichen_icon.png", "Peter"));
     super.initState();
+  }
+
+  Widget _buildButton(bool stopOrStartClock){
+    if(stopOrStartClock){
+      return IconButton(
+        color: Color(0xFF00206B),
+        icon: Icon(Icons.access_alarm),
+        onPressed: _isButtonDisabledStart ? null : () => {
+          _isButtonDisabledStart = !_isButtonDisabledStart,
+          _isButtonDisabledStop = !_isButtonDisabledStop,
+          _timer = new Timer.periodic(Duration(seconds: 1), (Timer timer) => {
+            counterForTime++,
+            setState(() {
+
+            }),
+
+          }),
+        },
+      );
+    } else {
+      return IconButton(
+        color: Color(0xFF00206B),
+        icon: Icon(Icons.stop),
+        onPressed: _isButtonDisabledStop ? null : () => {
+          _isButtonDisabledStart = !_isButtonDisabledStart,
+          _isButtonDisabledStop = !_isButtonDisabledStop,
+          _timer.cancel(),
+          allContributions.removeAt(0),
+          counterForTime = 0,
+          setState(() {
+          }),
+        },
+      );
+    }
+  }
+
+  Widget _getSpeaker(Room room, List<Contribution> contributions){
+    if(allContributions.length == 0){
+      return Container(
+        padding: EdgeInsets.all(5),
+        child: RichText(
+          text: new TextSpan(
+            style: new TextStyle(
+              fontSize: 16,
+              color: Color(0xFF00206B),
+            ),
+            children: <TextSpan>[
+              new TextSpan(text: 'Speaker: ', style: new TextStyle(fontWeight: FontWeight.bold)),
+              new TextSpan(text: 'Nobody')
+            ],
+          ),
+        ),
+      );
+    } else {
+      return Container(
+        padding: EdgeInsets.all(5),
+        child: RichText(
+          text: new TextSpan(
+            style: new TextStyle(
+              fontSize: 16,
+              color: Color(0xFF00206B),
+            ),
+            children: <TextSpan>[
+              new TextSpan(text: 'Speaker: ', style: new TextStyle(fontWeight: FontWeight.bold)),
+              new TextSpan(text: '${contributions.first.name}')
+            ],
+          ),
+        ),
+      );
+    }
   }
 
   Widget _buildProductItem(BuildContext context, int index, List<Contribution> contributions) {
@@ -59,7 +133,9 @@ class _RoomPageState extends State<RoomPage> {
                         width: 35,
                       ),
 
-                    ],),),
+                    ],
+                    ),
+                  ),
 
                   Container(
                     margin: EdgeInsets.only(right: 40),
@@ -143,6 +219,7 @@ class _RoomPageState extends State<RoomPage> {
                           future: Network().fetchRoom(roomId),
                           builder: (context, snapshot) {
                             if (snapshot.hasData) {
+                              this.room = snapshot.data;
                               return Container(
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -190,13 +267,13 @@ class _RoomPageState extends State<RoomPage> {
                         ),
                       ),
                       Container(
-                          margin: EdgeInsets.all(5),
+                          margin: EdgeInsets.all(2),
                           child: IconButton(
                             color: Color(0xFF00206B),
                             icon: Icon(Icons.launch),
                             onPressed: () {
                               Navigator.of(context)
-                                  .pushNamed('/evaluate_room', arguments: roomId);
+                                  .pushNamed('/evaluate_room', arguments: room);
                             },
                           ),
                       ),
@@ -221,8 +298,8 @@ class _RoomPageState extends State<RoomPage> {
                         )
                         ],
                   ),
-                  child: FutureBuilder<List<Contribution>>(
-                    future: Network().fetchRoomContributions(new Room(roomId, null, null, null, null, null, null)),
+                  child: FutureBuilder<Room>(
+                    future: Network().fetchRoom(roomId),
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
                         return Row(
@@ -240,21 +317,7 @@ class _RoomPageState extends State<RoomPage> {
 
                           Column(
                             children: <Widget>[
-                              Container(
-                                padding: EdgeInsets.all(5),
-                                child: RichText(
-                                  text: new TextSpan(
-                                    style: new TextStyle(
-                                      fontSize: 16,
-                                      color: Color(0xFF00206B),
-                                    ),
-                                    children: <TextSpan>[
-                                      new TextSpan(text: 'Speaker: ', style: new TextStyle(fontWeight: FontWeight.bold)),
-                                      new TextSpan(text: '${allContributions[0].id}')
-                                    ],
-                                  ),
-                                ),
-                              ),
+                              _getSpeaker(snapshot.data, snapshot.data.contributions),
                               Container(
                                 padding: EdgeInsets.all(5),
                                 child: RichText(
@@ -265,7 +328,7 @@ class _RoomPageState extends State<RoomPage> {
                                     ),
                                     children: <TextSpan>[
                                       new TextSpan(text: 'Speaktime: ', style: new TextStyle(fontWeight: FontWeight.bold)),
-                                      new TextSpan(text: '01:32')
+                                      new TextSpan(text: '$counterForTime' + ' seconds')
                                     ],
                                   ),
                                 ),
@@ -273,19 +336,19 @@ class _RoomPageState extends State<RoomPage> {
                             ],
                           ),
 
-                          Container(
-                            margin: EdgeInsets.all(5),
-                            child: IconButton(
-                              color: Color(0xFF00206B),
-                              icon: Icon(Icons.cancel),
-                              onPressed: () {
-                                allContributions.removeAt(0);
-                                setState(() {
 
-                                });
-                              },
-                            ),
-                          ),
+                            Row(children: <Widget>[
+                              Container(
+                                margin: EdgeInsets.all(0),
+                                child: _buildButton(true),
+                              ),
+                              Container(
+                                margin: EdgeInsets.all(3),
+                                child: _buildButton(false),
+                              ),
+                            ],),
+
+
                           ],
                         );
                       } else if (snapshot.hasError) {

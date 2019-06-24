@@ -167,7 +167,6 @@ class _RoomsListState extends State<RoomsList> {
                                 ),
                               ],
                             ),
-
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: <Widget>[
@@ -180,8 +179,8 @@ class _RoomsListState extends State<RoomsList> {
                                         color: Color(0xFF00206B),
                                       ),
                                       children: <TextSpan>[
-                                        new TextSpan(text: 'Person count: ', style: new TextStyle(fontWeight: FontWeight.bold)),
-                                        new TextSpan(text: 'TODO')
+                                        new TextSpan(text: 'Date: ', style: new TextStyle(fontWeight: FontWeight.bold)),
+                                        new TextSpan(text: '${itemsFiltered[index].date}')
                                       ],
                                     ),
                                   ),

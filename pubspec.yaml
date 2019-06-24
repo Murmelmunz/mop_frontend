@@ -31,9 +31,15 @@ dependencies:
   cupertino_icons: ^0.1.2
 
 dev_dependencies:
+  flutter_launcher_icons: "^0.7.2"
   flutter_test:
     sdk: flutter
 
+flutter_icons:
+  android: "launcher_android"
+  ios: true
+  image_path_android: "lib/assets/logo_projekt_32.png"
+  image_path_ios: "lib/assets/logo_projekt_32.png"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://www.dartlang.org/tools/pub/pubspec
@@ -51,6 +57,8 @@ flutter:
   #  - images/a_dot_burr.jpeg
   #  - images/a_dot_ham.jpeg
   assets:
+    - lib/assets/logo_projekt_28.png
+    - lib/assets/logo_projekt_32.png
     - lib/assets/logo_projekt.png
     - lib/assets/rede_icon.png
     - lib/assets/fragezeichen_icon.png
