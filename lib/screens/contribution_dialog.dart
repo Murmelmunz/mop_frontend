@@ -104,7 +104,7 @@ class _ContributionState extends State<ContributionPage> {
                     });
                     await Network().createRoomContribution(
                         Room(await Preferences().getCurrentRoomId(), null, null, null, null, null, null),
-                        Contribution(null, "Statement", await Preferences().getUserName()),
+                        Contribution(null, "lib/assets/rede_icon.png", await Preferences().getUserName()),
                         User(await Preferences().getUserId(), await Preferences().getUserName(), null)
                     );
                     Navigator.of(context).pop();
@@ -135,7 +135,7 @@ class _ContributionState extends State<ContributionPage> {
                     addToList(2);
                     await Network().createRoomContribution(
                       Room(await Preferences().getCurrentRoomId(), null, null, null, null, null, null),
-                      Contribution(null, "Question", await Preferences().getUserName()),
+                      Contribution(null, "lib/assets/fragezeichen_icon.png", await Preferences().getUserName()),
                       User(await Preferences().getUserId(), await Preferences().getUserName(), null)
                     );
                     Navigator.of(context).pop();
@@ -163,7 +163,7 @@ class _ContributionState extends State<ContributionPage> {
                     addToList(3);
                     await Network().createRoomContribution(
                         Room(await Preferences().getCurrentRoomId(), null, null, null, null, null, null),
-                    Contribution(null, "Answer", await Preferences().getUserName()),
+                    Contribution(null, "lib/assets/antwort_icon.png", await Preferences().getUserName()),
                     User(await Preferences().getUserId(), await Preferences().getUserName(), null)
                     );
                     Navigator.of(context).pop();

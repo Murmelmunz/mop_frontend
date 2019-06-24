@@ -29,12 +29,12 @@ class _RoomPageState extends State<RoomPage> {
     super.initState();
   }
 
-  Widget _buildProductItem(BuildContext context, int index) {
+  Widget _buildProductItem(BuildContext context, int index, List<Contribution> contributions) {
 
-    if(allContributions.length == 0){
+    if(contributions.length == 0){
       return Container();
     }else {
-      return new Container(
+      return Container(
         padding: EdgeInsets.only(left: 65, right: 65, top: 5, bottom: 5),
         child: Card(
           shape: RoundedRectangleBorder(
@@ -54,7 +54,7 @@ class _RoomPageState extends State<RoomPage> {
                     child:
                     Column(children: <Widget>[
                       Image.asset(
-                        allContributions[index].type,
+                        contributions[index].type,
                         height: 35,
                         width: 35,
                       ),
@@ -65,7 +65,7 @@ class _RoomPageState extends State<RoomPage> {
                     margin: EdgeInsets.only(right: 40),
                     child: Column(children: <Widget>[
                       Text(
-                        "${allContributions[index].id}",
+                        "${contributions[index].name}",
                       ),
                     ],),),
 
@@ -297,13 +297,29 @@ class _RoomPageState extends State<RoomPage> {
                   ),
                 ),
 
-                Expanded(child:
-                  ListView.builder(
-                    scrollDirection: Axis.vertical,
-                    shrinkWrap: true,
-                    itemBuilder: _buildProductItem,
-                    itemCount: allContributions.length,
-                  ),
+
+                FutureBuilder<Room>(
+                  future: Network().fetchRoom(roomId),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+
+                      return Expanded(
+                        child: ListView.builder(
+                          scrollDirection: Axis.vertical,
+                          shrinkWrap: true,
+                          itemBuilder: (context, int) =>
+                              _buildProductItem(
+                                  context, int, snapshot.data.contributions),
+                          itemCount: snapshot.data.contributions.length,
+                        ),
+                      );
+
+                    } else {
+
+                      return Container();
+
+                    }
+                  }
                 ),
               ]
           )

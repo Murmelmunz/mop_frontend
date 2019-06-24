@@ -191,12 +191,12 @@ class NetworkDemo {
             "contribution": {
                 "contribution": [
                     {
-                        "art": "Frage",
+                        "art": "lib/assets/antwort_icon.png",
                         "contributionId": 602870,
                         "name": "Klaus"
                     },
                     {
-                        "art": "Frage",
+                        "art": "lib/assets/rede_icon.png",
                         "contributionId": 88876,
                         "name": "Klaus"
                     }
@@ -210,7 +210,7 @@ class NetworkDemo {
             "contribution": {
                 "contribution": [
                     {
-                        "art": "Frage",
+                        "art": "lib/assets/fragezeichen_icon.png",
                         "contributionId": 756117,
                         "name": "Anonymousrtest3PPP"
                     }
@@ -271,12 +271,12 @@ class NetworkDemo {
                 "contribution": {
                     "contribution": [
                         {
-                            "art": "Frage",
+                            "art": "lib/assets/fragezeichen_icon.png",
                             "contributionId": 602870,
                             "name": "Klaus"
                         },
                         {
-                            "art": "Frage",
+                            "art": "lib/assets/rede_icon.png",
                             "contributionId": 88876,
                             "name": "Klaus"
                         }
@@ -290,7 +290,7 @@ class NetworkDemo {
                 "contribution": {
                     "contribution": [
                         {
-                            "art": "Frage",
+                            "art": "lib/assets/rede_icon.png",
                             "contributionId": 756117,
                             "name": "Anonymousrtest3PPP"
                         }
