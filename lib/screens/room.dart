@@ -59,11 +59,10 @@ class _RoomPageState extends State<RoomPage> {
           _isButtonDisabledStart = !_isButtonDisabledStart;
           _isButtonDisabledStop = !_isButtonDisabledStop;
           _timer.cancel();
-          allContributions.removeAt(0);
           counterForTime = 0;
 
           Contribution lastContribution = room.contributions.last;
-          Network().removeRoomContribution(room, lastContribution, User(await Preferences().getUserId(), await Preferences().getUserName(), ""));
+          Network().removeRoomContribution(room, lastContribution, User(lastContribution.userId, lastContribution.name, ""));
 
           setState(() {
           });
@@ -73,7 +72,7 @@ class _RoomPageState extends State<RoomPage> {
   }
 
   Widget _getSpeaker(Room room, List<Contribution> contributions){
-    if(allContributions.length == 0){
+    if(contributions.length == 0){
       return Container(
         padding: EdgeInsets.all(5),
         child: RichText(

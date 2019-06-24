@@ -33,7 +33,7 @@ class Room {
     (json['user'] as List)?.map((i) {
       if (i['contribution'] != null && i['contribution']['contribution'] != null) {
         List<Contribution> contributions = (i['contribution']['contribution'] as List)?.map(
-                (item) => Contribution(item['contributionId'], item['art'], item['name'])
+                (item) => Contribution(item['contributionId'], item['art'], item['name'], i['userId'])
         )?.toList();
 
         allContributions.addAll(contributions);
