@@ -65,7 +65,7 @@ class _JoinDialogState extends State<JoinDialogPage>{
     });
   }
 
-  List<DropdownMenuItem<String>> _fillCategories(){
+  List<DropdownMenuItem<String>> _fillCategories(int index){
     List<DropdownMenuItem<String>> items = new List();
     for(List _list in _CategoriesInCategory) {
       for (String item in _list) {
@@ -76,21 +76,20 @@ class _JoinDialogState extends State<JoinDialogPage>{
   }
 
   Widget _createDropDown(BuildContext context, int index){
-    return Flexible(
-      child: Container(
-        child: Padding(
-            padding: EdgeInsets.all(8.0),
-            child: new DropdownButton(
-              value: _currentCategory,
-              items: _fillCategories(),
-              onChanged: changeCategory,
-            )),
-      ),);
+    return Container(
+      child: Padding(
+          padding: EdgeInsets.all(8.0),
+          child: new DropdownButton(
+            value: _currentCategory,
+            items: _fillCategories(index),
+            onChanged: changeCategory,
+          )),
+    );
   }
 
   // To hide or show the password button
   Widget _passwordButton(){
-    if(this.room.password == null){
+    if(this.room.password != "lib/assets/schloss_icon_offen.png"){
       return TextField(
         decoration: InputDecoration(
             labelText: "Password",
@@ -179,14 +178,11 @@ class _JoinDialogState extends State<JoinDialogPage>{
             Container(
               padding: EdgeInsets.only(top: 40, bottom: 40),
               child: Column(
-                mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   Row(
-                    mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Column(
-                        mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
                           Container(
                             child: Text(

@@ -78,7 +78,8 @@ class NetworkNormal {
         [
           {
             "name": "${participant.name}",
-            "password": "${participant.password}"
+            "password": "${participant.password}",
+            "roomPassword": "${participant.password}"
           }
         ]
       }
