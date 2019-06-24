@@ -19,6 +19,7 @@ class _JoinDialogState extends State<JoinDialogPage>{
   Room room;
   var textController = new TextEditingController();
   SharedPreferences sharedPreferences;
+  String _userPassword = "";
 
 
   //Try
@@ -100,7 +101,7 @@ class _JoinDialogState extends State<JoinDialogPage>{
             )
         ),
         onChanged: (text) {
-          room.password = text;
+          _userPassword = text;
         },
       );
     } else{
@@ -237,8 +238,13 @@ class _JoinDialogState extends State<JoinDialogPage>{
                     fontSize: 18,
                   ),
                 ),
-                onPressed: () {
+                onPressed: () async {
                   Preferences().setUserName(textController.text);
+
+                  User user = await Network().joinRoom(room.roomId, User(null, await Preferences().getUserName(), _userPassword));
+                  Preferences().setUserId(user.id);
+                  Preferences().setCurrentRoomId(room.roomId);
+
                   Navigator.of(context)
                       .pushNamed('/room', arguments: room.roomId);
                 },
