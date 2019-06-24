@@ -142,6 +142,35 @@ class NetworkNormal {
       throw Exception('Failed to create contribution. Error: ${response.statusCode}');
     }
   }
+
+  void removeRoomContribution(Room room, Contribution contribution, User user) async {
+    String body = '''
+      {
+        "contribution": 
+        [
+          {
+            "art": "${contribution.type}",
+            "name": "${user.name}"
+          }
+        ]
+      }
+    ''';
+
+    print(body);
+    final response = await http.delete(
+        '$_host/room/${room.roomId}/user/${user.id}/contribution/${contribution.id}',
+//        body: body,
+        headers: {"Content-Type": "application/json"})
+        .timeout(Duration(milliseconds: 5000));
+
+//    if (response.statusCode >= 200 && response.statusCode < 300) {
+//      // If the call to the server was successful, parse the JSON
+//      return Contribution.fromJson(json.decode(response.body));
+//    } else {
+//      // If that call was not successful, throw an error.
+//      throw Exception('Failed to create contribution. Error: ${response.statusCode}');
+//    }
+  }
 }
 
 class NetworkDemo {

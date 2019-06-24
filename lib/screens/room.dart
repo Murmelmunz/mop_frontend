@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:speechlist/models/contribution.dart';
 import 'package:speechlist/models/room.dart';
+import 'package:speechlist/models/user.dart';
 import 'package:speechlist/utils/network.dart';
 import 'package:speechlist/utils/preferences.dart';
 
@@ -38,30 +39,34 @@ class _RoomPageState extends State<RoomPage> {
       return IconButton(
         color: Color(0xFF00206B),
         icon: Icon(Icons.access_alarm),
-        onPressed: _isButtonDisabledStart ? null : () => {
-          _isButtonDisabledStart = !_isButtonDisabledStart,
-          _isButtonDisabledStop = !_isButtonDisabledStop,
-          _timer = new Timer.periodic(Duration(seconds: 1), (Timer timer) => {
-            counterForTime++,
+        onPressed: _isButtonDisabledStart ? null : () {
+          _isButtonDisabledStart = !_isButtonDisabledStart;
+          _isButtonDisabledStop = !_isButtonDisabledStop;
+          _timer = new Timer.periodic(Duration(seconds: 1), (Timer timer) {
+            counterForTime++;
             setState(() {
 
-            }),
+            });
 
-          }),
+          });
         },
       );
     } else {
       return IconButton(
         color: Color(0xFF00206B),
         icon: Icon(Icons.stop),
-        onPressed: _isButtonDisabledStop ? null : () => {
-          _isButtonDisabledStart = !_isButtonDisabledStart,
-          _isButtonDisabledStop = !_isButtonDisabledStop,
-          _timer.cancel(),
-          allContributions.removeAt(0),
-          counterForTime = 0,
+        onPressed: _isButtonDisabledStop ? null : () async {
+          _isButtonDisabledStart = !_isButtonDisabledStart;
+          _isButtonDisabledStop = !_isButtonDisabledStop;
+          _timer.cancel();
+          allContributions.removeAt(0);
+          counterForTime = 0;
+
+          Contribution lastContribution = room.contributions.last;
+          Network().removeRoomContribution(room, lastContribution, User(await Preferences().getUserId(), await Preferences().getUserName(), ""));
+
           setState(() {
-          }),
+          });
         },
       );
     }
@@ -317,7 +322,7 @@ class _RoomPageState extends State<RoomPage> {
 
                           Column(
                             children: <Widget>[
-                              _getSpeaker(snapshot.data, snapshot.data.contributions),
+                              _getSpeaker(snapshot.data, snapshot.data.contributions.reversed.toList()),
                               Container(
                                 padding: EdgeInsets.all(5),
                                 child: RichText(
@@ -372,7 +377,7 @@ class _RoomPageState extends State<RoomPage> {
                           shrinkWrap: true,
                           itemBuilder: (context, int) =>
                               _buildProductItem(
-                                  context, int, snapshot.data.contributions),
+                                  context, int, snapshot.data.contributions.reversed.toList()),
                           itemCount: snapshot.data.contributions.length,
                         ),
                       );
