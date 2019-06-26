@@ -176,7 +176,12 @@ class _RoomPageState extends State<RoomPage> {
                 Icons.update
             ),
             tooltip: 'Home',
-            onPressed: () => setState(() {}),
+            onPressed: () {
+              Timer _newTimer = new Timer.periodic(Duration(seconds: 3), (Timer timer) {
+                setState(() {
+                });
+              });
+              } ,
           ),
         ],
       ),

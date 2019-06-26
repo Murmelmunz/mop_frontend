@@ -26,6 +26,7 @@ class _EvaluateRoomPageState extends State<EvaluateRoomPage> {
     new CircularStackEntry(
       <CircularSegmentEntry>[
         new CircularSegmentEntry(700.0, Color(0xff00206B), rankKey: 'Q1'),
+        new CircularSegmentEntry(700.0, Color(0xff6783E6), rankKey: 'Q1'),
       ],
       rankKey: 'Quarterly Profits',
     ),
