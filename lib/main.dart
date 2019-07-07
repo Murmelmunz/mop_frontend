@@ -54,6 +54,8 @@ class MyApp extends StatelessWidget {
 
         buttonTheme: ButtonThemeData(
           alignedDropdown: true,
+          buttonColor: PrimaryColor,
+          textTheme: ButtonTextTheme.primary
         ),
 
       ),

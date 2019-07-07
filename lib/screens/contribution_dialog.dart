@@ -69,7 +69,6 @@ class _ContributionState extends State<ContributionPage> {
                   "Create a new Contribution",
                   style: new TextStyle(
                     fontSize: 25,
-                    color: Color(0xFF00206B),
                   ),
                 ),
                 ),
@@ -90,11 +89,9 @@ class _ContributionState extends State<ContributionPage> {
                   ),
                 ),
                 RaisedButton(
-                  color: new Color(0xFF00206B),
                   child: Text(
                     "Statement",
                     style: TextStyle(
-                      color: Colors.white,
                       fontSize: 18,
                     ),
                   ),
@@ -123,11 +120,9 @@ class _ContributionState extends State<ContributionPage> {
 
 
                 RaisedButton(
-                  color: new Color(0xFF00206B),
                   child: Text(
                     "Question",
                     style: TextStyle(
-                      color: Colors.white,
                       fontSize: 18,
                     ),
                   ),
@@ -151,11 +146,9 @@ class _ContributionState extends State<ContributionPage> {
                 ),
                 RaisedButton(
 
-                  color: new Color(0xFF00206B),
                   child: Text(
                     "Answer",
                     style: TextStyle(
-                      color: Colors.white,
                       fontSize: 18,
                     ),
                   ),

@@ -126,11 +126,9 @@ class _JoinDialogState extends State<JoinDialogPage>{
             Padding(
               padding: const EdgeInsets.all(10.0),
               child: RaisedButton(
-                color: new Color(0xFF00206B),
                 child: Text(
                   "Enter Room",
                   style: TextStyle(
-                    color: Colors.white,
                     fontSize: 18,
                   ),
                 ),
