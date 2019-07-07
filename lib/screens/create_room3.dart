@@ -29,10 +29,7 @@ class _CreateRoomPageState3 extends State<CreateRoomPage3> {
     setState(() { _isLoading = true; });
     try {
       Room room = await Network().createRoom(this.room);
-      User user = await Network().joinRoom(room.roomId, User(null, await Preferences().getUserName(), ""));
-      Preferences().setUserId(user.id);
-      Preferences().setCurrentRoomId(room.roomId);
-      Navigator.of(context).popAndPushNamed('/room', arguments: room.roomId);
+      Navigator.of(context).popAndPushNamed('/join_room', arguments: room);
     } catch (e) {
       print(e.toString());
       setState(() {

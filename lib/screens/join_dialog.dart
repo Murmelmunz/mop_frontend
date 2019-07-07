@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:speechlist/models/room.dart';
 import 'package:speechlist/models/user.dart';
+import 'package:speechlist/models/value.dart';
 import 'package:speechlist/utils/network.dart';
 import 'package:speechlist/utils/preferences.dart';
 
@@ -18,78 +19,15 @@ class _JoinDialogState extends State<JoinDialogPage>{
   Room room;
   var textController = new TextEditingController();
   String _userPassword = "";
-
-  //Try
-  List<DropdownMenuItem<String>> _allCategories;
-  List<List<String>> _CategoriesInCategory =
-  [
-    [
-      "Blond",
-      "Braun",
-    ],
-    [
-      "Ledig",
-      "Verlobt",
-      "Verheiratet",
-    ],
-    [
-      "Links",
-      "Rechts",
-    ],
-  ];
-  String _currentCategory;
-  List _categorynames = [
-    "Haarfarbe",
-    "Familienstand",
-    "Schreibhand",
-  ];
-
-  List<DropdownMenuItem<String>> _dropDownMenuItems;
-  String _currentCity;
-  // Block of declared variables
-  List _cities = [
-    "Blond",
-    "Braun",
-    "Grau",
-  ];
+  var selectedCategories = new Map<String, String>();
 
   _JoinDialogState(this.room);
 
   @override
   void initState() {
-    _dropDownMenuItems = getDropDownMenuItems();
-    _currentCity = _dropDownMenuItems[0].value;
-    Preferences().getUserName().then((userName) =>
-    textController.text = userName);
     super.initState();
-  }
-
-  void changeCategory(String selectedCategory){
-    setState(() {
-      _currentCategory = selectedCategory;
-    });
-  }
-
-  List<DropdownMenuItem<String>> _fillCategories(int index){
-    List<DropdownMenuItem<String>> items = new List();
-    for(List _list in _CategoriesInCategory) {
-      for (String item in _list) {
-        items.add(new DropdownMenuItem(value: item, child: new Text(item)));
-      }
-      return items;
-    }
-  }
-
-  Widget _createDropDown(BuildContext context, int index){
-    return Container(
-      child: Padding(
-          padding: EdgeInsets.all(8.0),
-          child: new DropdownButton(
-            value: _currentCategory,
-            items: _fillCategories(index),
-            onChanged: changeCategory,
-          )),
-    );
+    room.categories.forEach( (cat) => selectedCategories[cat.name] = cat.values[0].value );
+    Preferences().getUserName().then((userName) => textController.text = userName);
   }
 
   // To hide or show the password button
@@ -111,25 +49,6 @@ class _JoinDialogState extends State<JoinDialogPage>{
     } else{
       return new Container();
     }
-  }
-
-  // DEMO
-  // to change a old value to a new value of a dropdown button
-  void changedDropDownItem(String selectedCity) {
-    print("Selected city $selectedCity, we are going to refresh the UI");
-    setState(() {
-      _currentCity = selectedCity;
-    });
-  }
-
-  List<DropdownMenuItem<String>> getDropDownMenuItems() {
-    List<DropdownMenuItem<String>> items = new List();
-    for (String city in _cities) {
-      // here we are creating the drop down menu items, you can customize the item right here
-      // but I'll just use a simple text for this
-      items.add(new DropdownMenuItem(value: city, child: new Text(city)));
-    }
-    return items;
   }
 
   @override
@@ -154,10 +73,10 @@ class _JoinDialogState extends State<JoinDialogPage>{
         ],
       ),
 
-      body:  Container(
+      body: Container(
         margin: EdgeInsets.all(10),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
+        child: ListView(
+          shrinkWrap: true,
           children: <Widget>[
             Padding(
                 padding: EdgeInsets.all(8.0),
@@ -176,15 +95,28 @@ class _JoinDialogState extends State<JoinDialogPage>{
                     "Choose your properties",
                     style: TextStyle(fontSize: 22),
                   ),
-                  Padding(padding: EdgeInsets.all(5.0),),
-                  DropdownButton(
-                    value: _currentCity,
-                    items: _dropDownMenuItems,
-                    onChanged: changedDropDownItem,
-                    style: new TextStyle(
-                      color: Color(0xFF00206B),
-                      fontSize: 20,
-                    ),
+
+                  Column(
+                    children: room.categories.map( (cat) {
+                      return Column(children: <Widget>[
+                        Padding(padding: EdgeInsets.all(5.0),),
+                        Text(cat.name),
+                        DropdownButton<String>(
+                          value: selectedCategories[cat.name],
+                          items: cat.values.map((Value value) {
+                            return new DropdownMenuItem<String>(
+                              value: value.value,
+                              child: new Text(value.value),
+                            );
+                          }).toList(),
+                          onChanged: (selectedItem) => setState( () => selectedCategories[cat.name] = selectedItem ),
+                          style: new TextStyle(
+                            color: Color(0xFF00206B),
+                            fontSize: 20,
+                          ),
+                        ),
+                      ],);
+                    } ).toList()
                   ),
 
                 ],),
@@ -205,6 +137,7 @@ class _JoinDialogState extends State<JoinDialogPage>{
                 onPressed: () async {
                   Preferences().setUserName(textController.text);
 
+                  print(selectedCategories);
                   User user = await Network().joinRoom(room.roomId, User(null, await Preferences().getUserName(), _userPassword));
                   Preferences().setUserId(user.id);
                   Preferences().setCurrentRoomId(room.roomId);
@@ -214,9 +147,6 @@ class _JoinDialogState extends State<JoinDialogPage>{
                 },
               ),
             ),
-
-
-
 
           ],
         ),
