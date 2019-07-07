@@ -79,7 +79,10 @@ class NetworkNormal {
           {
             "name": "${participant.name}",
             "password": "${participant.password}",
-            "roomPassword": "${participant.password}"
+            "roomPassword": "${participant.password}",
+            
+            "categories": ${json.encode(participant.categories)}
+            
           }
         ]
       }

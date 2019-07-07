@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:speechlist/models/category.dart';
 import 'package:speechlist/models/room.dart';
 import 'package:speechlist/models/user.dart';
 import 'package:speechlist/models/value.dart';
@@ -134,9 +135,15 @@ class _JoinDialogState extends State<JoinDialogPage>{
                 ),
                 onPressed: () async {
                   Preferences().setUserName(textController.text);
+                  var tempUser = User(null, await Preferences().getUserName(), _userPassword);
 
-                  print(selectedCategories);
-                  User user = await Network().joinRoom(room.roomId, User(null, await Preferences().getUserName(), _userPassword));
+                  selectedCategories.forEach( (cat, value) {
+                    tempUser.categories.add(
+                      Category(cat, List<Value>()..add(Value(value)))
+                    );
+                  } );
+
+                  User user = await Network().joinRoom(room.roomId, tempUser);
                   Preferences().setUserId(user.id);
                   Preferences().setCurrentRoomId(room.roomId);
 
