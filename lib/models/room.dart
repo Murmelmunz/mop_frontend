@@ -1,3 +1,4 @@
+import 'package:speechlist/models/user.dart';
 import 'package:speechlist/models/value.dart';
 
 import 'category.dart';
@@ -12,6 +13,7 @@ class Room {
   String password;
   List<Category> categories;
   List<Contribution> contributions;
+  List<User> participants;
 
   Room(this.roomId, this.topic, this.meetingPoint, this.date, this.time, this.categories, this.password, {this.contributions}) {
     this.topic ??= "";
@@ -58,7 +60,18 @@ class Room {
         })?.toList(),
         json['password'],
         contributions: allContributions,
-    );
+    )..participants = (json['user'] as List)?.map((i) {
+      var userCategories = (i['categories'] as List)?.map((i) {
+
+        List<Value> values = (i['values'] as List)?.map(
+                (item) => Value("${ item['value'] }")
+        )?.toList();
+
+        return Category("${ i['name'] }", values);
+      })?.toList();
+
+      return User(i['userId'], i['name'], i['password'])..categories = userCategories;
+    })?.toList();
   }
 
 //  @override
