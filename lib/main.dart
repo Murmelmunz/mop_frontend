@@ -43,12 +43,17 @@ class MyApp extends StatelessWidget {
 
         textTheme: TextTheme(
           body1: TextStyle(color: PrimaryColor),
+//          subhead: TextStyle(color: PrimaryColor, fontSize: 20), // for dropdown and textfield
         ),
 
         inputDecorationTheme: InputDecorationTheme(
           border: OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(25.0))
           ),
+        ),
+
+        buttonTheme: ButtonThemeData(
+          alignedDropdown: true,
         ),
 
       ),

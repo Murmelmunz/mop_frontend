@@ -11,7 +11,7 @@ class Network extends NetworkNormal {
 }
 
 class NetworkNormal {
-  final _host = 'http://192.168.178.38:3000';
+  final _host = 'http://141.19.142.81:3000';
 
   Future<Room> fetchRoom(int roomId) async {
     final response = await http.get('$_host/room/$roomId', headers: {"Content-Type": "application/json"})

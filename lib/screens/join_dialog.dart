@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:speechlist/models/room.dart';
 import 'package:speechlist/models/user.dart';
 import 'package:speechlist/utils/network.dart';
@@ -18,9 +17,7 @@ class JoinDialogPage extends StatefulWidget {
 class _JoinDialogState extends State<JoinDialogPage>{
   Room room;
   var textController = new TextEditingController();
-  SharedPreferences sharedPreferences;
   String _userPassword = "";
-
 
   //Try
   List<DropdownMenuItem<String>> _allCategories;
@@ -58,6 +55,14 @@ class _JoinDialogState extends State<JoinDialogPage>{
 
   _JoinDialogState(this.room);
 
+  @override
+  void initState() {
+    _dropDownMenuItems = getDropDownMenuItems();
+    _currentCity = _dropDownMenuItems[0].value;
+    Preferences().getUserName().then((userName) =>
+    textController.text = userName);
+    super.initState();
+  }
 
   void changeCategory(String selectedCategory){
     setState(() {
@@ -108,7 +113,6 @@ class _JoinDialogState extends State<JoinDialogPage>{
     }
   }
 
-
   // DEMO
   // to change a old value to a new value of a dropdown button
   void changedDropDownItem(String selectedCity) {
@@ -116,15 +120,6 @@ class _JoinDialogState extends State<JoinDialogPage>{
     setState(() {
       _currentCity = selectedCity;
     });
-  }
-
-  @override
-  void initState() {
-    _dropDownMenuItems = getDropDownMenuItems();
-    _currentCity = _dropDownMenuItems[0].value;
-    Preferences().getUserName().then((userName) =>
-    textController.text = userName);
-    super.initState();
   }
 
   List<DropdownMenuItem<String>> getDropDownMenuItems() {
@@ -167,10 +162,8 @@ class _JoinDialogState extends State<JoinDialogPage>{
             Padding(
                 padding: EdgeInsets.all(8.0),
                 child: TextField(
-
                     decoration: InputDecoration(
-                        labelText: "Your Name",
-                        fillColor: Color(0xFF00206B)
+                        labelText: "Your Name"
                     ),
                     controller: textController
                 )
@@ -179,46 +172,21 @@ class _JoinDialogState extends State<JoinDialogPage>{
               padding: EdgeInsets.only(top: 40, bottom: 40),
               child: Column(
                 children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Column(
-                        children: <Widget>[
-                          Container(
-                            child: Text(
-                              "Choose your properties",
-                              style: new TextStyle(
-                                fontSize: 22,
-                                color: Color(0xFF00206B),
-                              ),
-                            ),
-                          ),
-                          Container(
-                            child: Column(
-                              children: <Widget>[
-                                Padding(
-                                  padding: EdgeInsets.all(10.0),
-                                  child: new ButtonTheme(
-                                      alignedDropdown: true,
-                                      child: new DropdownButton(
-                                        value: _currentCity,
-                                        items: _dropDownMenuItems,
-                                        onChanged: changedDropDownItem,
-                                        style: new TextStyle(
-                                          color: Color(0xFF00206B),
-                                          fontSize: 20,
-                                        ),
-                                      )
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-
-                        ],),
-
-                    ],
+                  Text(
+                    "Choose your properties",
+                    style: TextStyle(fontSize: 22),
                   ),
+                  Padding(padding: EdgeInsets.all(5.0),),
+                  DropdownButton(
+                    value: _currentCity,
+                    items: _dropDownMenuItems,
+                    onChanged: changedDropDownItem,
+                    style: new TextStyle(
+                      color: Color(0xFF00206B),
+                      fontSize: 20,
+                    ),
+                  ),
+
                 ],),
             ),
 
@@ -253,7 +221,7 @@ class _JoinDialogState extends State<JoinDialogPage>{
           ],
         ),
       ),
-      
+
     );
   }
 }
