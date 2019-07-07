@@ -11,7 +11,7 @@ class Network extends NetworkNormal {
 }
 
 class NetworkNormal {
-  final _host = 'http://141.19.142.81:3000';
+  final _host = 'http://192.168.178.38:3000';
 
   Future<Room> fetchRoom(int roomId) async {
     final response = await http.get('$_host/room/$roomId', headers: {"Content-Type": "application/json"})
@@ -439,6 +439,10 @@ class NetworkDemo {
       '''
     ));
   }
+
+  void removeRoomContribution(Room room, Contribution contribution, User user) async {
+
+  }
 }
 
 class NetworkDemoError {
@@ -458,5 +462,29 @@ class NetworkDemoError {
     print(json.encode(room));
     await Future.delayed(delay);
     throw Exception('Failed to create room. Error: ${404}');
+  }
+
+  Future<User> joinRoom(int roomId, User participant) async {
+    print(json.encode(participant));
+    await Future.delayed(delay);
+    throw Exception('Failed to join room. Error: ${404}');
+  }
+
+  Future<List<Contribution>> fetchRoomContributions(Room room) async {
+    print(json.encode(room));
+    await Future.delayed(delay);
+    throw Exception('Failed to fetch room contributions. Error: ${404}');
+  }
+
+  Future<Contribution> createRoomContribution(Room room, Contribution contribution, User user) async {
+    print(json.encode(room));
+    await Future.delayed(delay);
+    throw Exception('Failed to create room contribution. Error: ${404}');
+  }
+
+  void removeRoomContribution(Room room, Contribution contribution, User user) async {
+    print(json.encode(room));
+    await Future.delayed(delay);
+    throw Exception('Failed to remove room contribution. Error: ${404}');
   }
 }
