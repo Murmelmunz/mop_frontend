@@ -53,8 +53,7 @@ class _ContributionState extends State<ContributionPage> {
         ],
       ),
 
-      body: Container(
-        color: Colors.white,
+      body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,

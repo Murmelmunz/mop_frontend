@@ -99,7 +99,7 @@ class _RoomPageState extends State<RoomPage> {
             ),
             children: <TextSpan>[
               new TextSpan(text: 'Speaker: ', style: new TextStyle(fontWeight: FontWeight.bold)),
-              new TextSpan(text: '${contributions.first.name}')
+              new TextSpan(text: contributions.first.name)
             ],
           ),
         ),
@@ -141,11 +141,10 @@ class _RoomPageState extends State<RoomPage> {
                     ),
                   ),
 
-                  Container(
-                    margin: EdgeInsets.only(right: 40),
+                  Expanded(
                     child: Column(children: <Widget>[
                       Text(
-                        "${contributions[index].name}",
+                        contributions[index].name,
                       ),
                     ],),),
 
@@ -324,37 +323,33 @@ class _RoomPageState extends State<RoomPage> {
                               ),
                           ),
 
-                          Column(
-                            children: <Widget>[
-                              _getSpeaker(snapshot.data, snapshot.data.contributions.reversed.toList()),
-                              Container(
-                                padding: EdgeInsets.all(5),
-                                child: RichText(
-                                  text: new TextSpan(
-                                    style: new TextStyle(
-                                      fontSize: 14,
-                                      color: Color(0xFF00206B),
+                          Expanded(
+                            child: Column(
+                              children: <Widget>[
+                                _getSpeaker(snapshot.data, snapshot.data.contributions.reversed.toList()),
+                                Container(
+                                  padding: EdgeInsets.all(5),
+                                  child: RichText(
+                                    text: new TextSpan(
+                                      style: new TextStyle(
+                                        fontSize: 14,
+                                        color: Color(0xFF00206B),
+                                      ),
+                                      children: <TextSpan>[
+                                        new TextSpan(text: 'Speaktime: ', style: new TextStyle(fontWeight: FontWeight.bold)),
+                                        new TextSpan(text: '$counterForTime' + ' seconds')
+                                      ],
                                     ),
-                                    children: <TextSpan>[
-                                      new TextSpan(text: 'Speaktime: ', style: new TextStyle(fontWeight: FontWeight.bold)),
-                                      new TextSpan(text: '$counterForTime' + ' seconds')
-                                    ],
                                   ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
 
 
-                            Row(children: <Widget>[
-                              Container(
-                                margin: EdgeInsets.all(0),
-                                child: _buildButton(true),
-                              ),
-                              Container(
-                                margin: EdgeInsets.all(3),
-                                child: _buildButton(false),
-                              ),
+                            Column(children: <Widget>[
+                              _buildButton(true),
+                              _buildButton(false),
                             ],),
 
 
