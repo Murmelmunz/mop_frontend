@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:speechlist/models/category.dart';
 import 'package:speechlist/models/room.dart';
+import 'package:speechlist/utils/network.dart';
 import 'package:speechlist/utils/preferences.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_circular_chart/flutter_circular_chart.dart';
+import 'package:speechlist/widgets/box_with_title.dart';
 
 class EvaluateRoomPage extends StatefulWidget {
   static const String routeName = "/evaluate_room";
   final Room room;
-
 
   EvaluateRoomPage({Key key, this.room}) : super (key: key);
 
@@ -22,6 +23,20 @@ class _EvaluateRoomPageState extends State<EvaluateRoomPage> {
 
   _EvaluateRoomPageState(this.roomId);
 
+  @override
+  void initState() {
+    Preferences().getUserName().then((n) => userName = n);
+    super.initState();
+  }
+
+  List<CircularStackEntry> getCircularData(List<String> categories){
+    List<CircularStackEntry> circularData = new List<CircularStackEntry>();
+    for(String category in categories){
+      CircularStackEntry entry = new CircularStackEntry(<CircularSegmentEntry> [new CircularSegmentEntry(700.0, Color(0xff00206B))]);
+      circularData.add(entry);
+    }
+  }
+  
   List<CircularStackEntry> circularData = <CircularStackEntry>[
     new CircularStackEntry(
       <CircularSegmentEntry>[
@@ -32,7 +47,21 @@ class _EvaluateRoomPageState extends State<EvaluateRoomPage> {
     ),
   ];
 
-  Material myCircularItems(String title, String subtitle){
+  Widget _buildStatistic(BuildContext context, int index, List<Category> allCategories){
+    return Container(
+      padding: EdgeInsets.all(15),
+      child: myCircularItems("Quarterly speak time", allCategories[index].name, index)
+      ,
+    );
+  }
+
+  Widget _buildLabel(BuildContext context, int index){
+    return Container(
+      child: Text("Text" + index.toString()),
+    );
+  }
+
+  Material myCircularItems(String title, String subtitle, int index){
     return Material(
       color: Colors.white,
       elevation: 14.0,
@@ -42,6 +71,7 @@ class _EvaluateRoomPageState extends State<EvaluateRoomPage> {
         child:Padding(
           padding: EdgeInsets.all(8.0),
           child: Row(
+            mainAxisSize: MainAxisSize.min,
             mainAxisAlignment:MainAxisAlignment.center,
             children: <Widget>[
               Column(
@@ -49,27 +79,47 @@ class _EvaluateRoomPageState extends State<EvaluateRoomPage> {
                 children: <Widget>[
 
                   Padding(
-                    padding: EdgeInsets.all(5.0),
-                    child:Text(title,style:TextStyle(
-                      fontSize: 25.0,
+                    padding: EdgeInsets.all(3.0),
+                    child:Text(
+                      title,
+                      style:TextStyle(
+                        fontSize: 23.0,
                       color: Color(0xFF00206B),
                     ),),
                   ),
 
                   Padding(
-                    padding: EdgeInsets.all(5.0),
-                    child:Text(subtitle,style:TextStyle(
-                      fontSize: 20.0,
+                    padding: EdgeInsets.all(3.0),
+                    child:Text(
+                      subtitle,
+                      style:TextStyle(
+                        fontSize: 18.0,
                     ),),
                   ),
 
-                  Padding(
-                    padding:EdgeInsets.all(8.0),
-                    child:AnimatedCircularChart(
-                      size: const Size(120.0, 120.0),
-                      initialChartData: circularData,
-                      chartType: CircularChartType.Pie,
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Padding(
+                        padding:EdgeInsets.all(5),
+                        child:AnimatedCircularChart(
+                          size: const Size(100.0, 100.0),
+                          initialChartData: circularData,
+                          chartType: CircularChartType.Pie,
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(left: 20, top: 10),
+                        height: 100,
+                        width: 100,
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          itemBuilder: (context, int) => _buildLabel(context, int),
+                          itemCount: 4,
+                        )
+                      ),
+
+                    ],
                   ),
 
                 ],
@@ -79,52 +129,6 @@ class _EvaluateRoomPageState extends State<EvaluateRoomPage> {
         ),
       ),
     );
-  }
-
-//  Material myTextItems(String title, String subtitle){
-//    return Material(
-//      color: Colors.white,
-//      elevation: 14.0,
-//      borderRadius: BorderRadius.circular(24.0),
-//      shadowColor: Color(0x802196F3),
-//      child: Center(
-//        child:Padding(
-//          padding: EdgeInsets.all(8.0),
-//          child: Row(
-//            mainAxisAlignment:MainAxisAlignment.center,
-//            children: <Widget>[
-//              Column(
-//                mainAxisAlignment:MainAxisAlignment.center,
-//                children: <Widget>[
-//
-//                  Padding(
-//                    padding: EdgeInsets.all(8.0),
-//                    child:Text(title,style:TextStyle(
-//                      fontSize: 20.0,
-//                      color: Colors.blueAccent,
-//                    ),),
-//                  ),
-//
-//                  Padding(
-//                    padding: EdgeInsets.all(8.0),
-//                    child:Text(subtitle,style:TextStyle(
-//                      fontSize: 30.0,
-//                    ),),
-//                  ),
-//
-//                ],
-//              ),
-//            ],
-//          ),
-//        ),
-//      ),
-//    );
-//  }
-
-  @override
-  void initState() {
-    Preferences().getUserName().then((n) => userName = n);
-    super.initState();
   }
 
   @override
@@ -149,35 +153,93 @@ class _EvaluateRoomPageState extends State<EvaluateRoomPage> {
       ),
 
 
-          body: new Container(
-                color:Color(0xffE5E5E5),
-                child:StaggeredGridView.count(
-                crossAxisCount: 4,
-                crossAxisSpacing: 12.0,
-                mainAxisSpacing: 12.0,
-                children: <Widget>[
-                Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: myCircularItems("Quarterly speak time", roomId.topic),
+          body:
+              Column(children:
+              <Widget>[
+                BoxWithTitle(
+                  title: "Room Information",
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Wrap(
+                      spacing: 10,
+                      direction: Axis.vertical,
+                      children: <Widget>[
+                        RichText(
+                          text: new TextSpan(
+                            style: new TextStyle(
+                              fontSize: 18,
+                              color: Color(0xFF00206B),
+                            ),
+                            children: <TextSpan>[
+                              new TextSpan(text: 'Topic: ', style: new TextStyle(fontWeight: FontWeight.bold)),
+                              new TextSpan(text: '${roomId.topic}')
+                            ],
+                          ),
+                        ),
+                        RichText(
+                          text: new TextSpan(
+                            style: new TextStyle(
+                              fontSize: 16,
+                              color: Color(0xFF00206B),
+                            ),
+                            children: <TextSpan>[
+                              new TextSpan(text: 'Meeting point: ', style: new TextStyle(fontWeight: FontWeight.bold)),
+                              new TextSpan(text: '${roomId.meetingPoint}')
+                            ],
+                          ),
+                        ),
+                        RichText(
+                          text: new TextSpan(
+                            style: new TextStyle(
+                              fontSize: 14,
+                              color: Color(0xFF00206B),
+                            ),
+                            children: <TextSpan>[
+                              new TextSpan(text: 'Date: ', style: new TextStyle(fontWeight: FontWeight.bold)),
+                              new TextSpan(text: '${roomId.date}')
+                            ],
+                          ),
+                        ),
+                        RichText(
+                          text: new TextSpan(
+                            style: new TextStyle(
+                              fontSize: 13,
+                              color: Color(0xFF00206B),
+                            ),
+                            children: <TextSpan>[
+                              new TextSpan(text: 'Time: ', style: new TextStyle(fontWeight: FontWeight.bold)),
+                              new TextSpan(text: '${roomId.time}')
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
-//                Padding(
-//                padding: const EdgeInsets.only(right:8.0),
-//                child: myTextItems("Mktg. Spend","48.6M"),
-//                ),
-//                Padding(
-//                padding: const EdgeInsets.only(right:8.0),
-//                child: myTextItems("Users","25.5M"),
-//                ),
+                Container(
+                  child: FutureBuilder<Room>(
+                    future: Network().fetchRoom(this.roomId.roomId),
+                    builder: (context, snapshot){
+                      if(snapshot.hasData){
+                        List<Category> allCategories = snapshot.data.categories;
+                        return Expanded(
+                          child: ListView.builder(
+                            scrollDirection: Axis.vertical,
+                            shrinkWrap: true,
+                            itemBuilder: (context, int) => _buildStatistic(context, int, allCategories),
+                            itemCount: 3,
+                          ),
+                        );
+                      } else{
+                        return Container();
+                      }
+                    },
+                  ),
+                ),
 
-        ],
-        staggeredTiles: [
-        StaggeredTile.extent(4, 250.0),
-        StaggeredTile.extent(2, 250.0),
-        StaggeredTile.extent(2, 120.0),
-        StaggeredTile.extent(2, 120.0),
-        StaggeredTile.extent(4, 250.0),
-    ]),
-      ),
+              ],
+              ),
+
 
       floatingActionButton: FloatingActionButton(
         onPressed: () {
