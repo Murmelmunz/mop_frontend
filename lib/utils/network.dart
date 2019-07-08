@@ -176,31 +176,31 @@ class NetworkNormal {
 //    }
   }
 
-  void setRoomContributionStartTime(Room room, Contribution contribution, User user, int timeStart) async {
+  void setRoomContributionStartTime(Room room, Contribution contribution, User user, DateTime timeStart) async {
     String body = '''
       {
-        "timeStart": $timeStart
+        "timeStart": "$timeStart"
       }
     ''';
 
     print(body);
-    final response = await http.put(
-        '$_host/room/${room.roomId}/user/${user.id}/contribution/${contribution.id}',
+    final response = await http.post(
+        '$_host/evaluation/${contribution.id}',
         body: body,
         headers: {"Content-Type": "application/json"})
         .timeout(Duration(milliseconds: 5000));
   }
 
-  void setRoomContributionStopTime(Room room, Contribution contribution, User user, int timeStop) async {
+  void setRoomContributionStopTime(Room room, Contribution contribution, User user, DateTime timeStop) async {
     String body = '''
       {
-        "timeStop": $timeStop
+        "timeStop": "$timeStop"
       }
     ''';
 
     print(body);
-    final response = await http.put(
-        '$_host/room/${room.roomId}/user/${user.id}/contribution/${contribution.id}',
+    final response = await http.post(
+        '$_host/evaluation/${contribution.id}',
         body: body,
         headers: {"Content-Type": "application/json"})
         .timeout(Duration(milliseconds: 5000));

@@ -49,7 +49,7 @@ class _RoomPageState extends State<RoomPage> {
           });
 
           Contribution lastContribution = room.contributions.first;
-          Network().setRoomContributionStartTime(room, lastContribution, User(lastContribution.userId, lastContribution.name, ""), 0);
+          Network().setRoomContributionStartTime(room, lastContribution, User(lastContribution.userId, lastContribution.name, ""), DateTime.now());
           setState(() {});
         },
       );
@@ -63,7 +63,7 @@ class _RoomPageState extends State<RoomPage> {
           _timer.cancel();
 
           Contribution lastContribution = room.contributions.first;
-          Network().setRoomContributionStopTime(room, lastContribution, User(lastContribution.userId, lastContribution.name, ""), counterForTime);
+          Network().setRoomContributionStopTime(room, lastContribution, User(lastContribution.userId, lastContribution.name, ""), DateTime.now());
           await Network().removeRoomContribution(room, lastContribution, User(lastContribution.userId, lastContribution.name, ""));
 
           counterForTime = 0;

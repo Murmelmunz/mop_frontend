@@ -98,7 +98,7 @@ class _CreateRoomPageState3 extends State<CreateRoomPage3> {
                         spacing: 10,
                         direction: Axis.vertical,
                         children: room.categories.map(
-                            (item) => Text("${item.name}")
+                            (item) => Text("${item.name} ${item.values.map( (val) => " ${val.value} " )}")
                         ).toList()
                       ),
                     ),
