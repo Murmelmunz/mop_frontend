@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:speechlist/models/category.dart';
-import 'package:speechlist/models/contribution.dart';
+import 'package:speechlist/models/evaluated_contribution.dart';
 import 'package:speechlist/models/room.dart';
 import 'package:speechlist/models/value.dart';
 import 'package:speechlist/utils/network.dart';
@@ -240,12 +240,13 @@ class _EvaluateRoomPageState extends State<EvaluateRoomPage> {
                 ),
 
                 Container(
-                  child: FutureBuilder<List<Contribution>>(
+                  child: FutureBuilder<List<EvaluatedContribution>>(
                     future: Network().fetchRoomEvaluation(this.roomId.roomId),
                     builder: (context, snapshot){
                       if(snapshot.hasData){
-                        List<Contribution> allCategories = snapshot.data;
+                        List<EvaluatedContribution> allCategories = snapshot.data;
                         print(allCategories[0].name);
+                        print(allCategories[0].categories[0].values[0].value);
                         return Container();
                       } else{
                         return Container();

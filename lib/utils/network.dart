@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 import 'package:http/http.dart' as http;
 import 'package:speechlist/models/contribution.dart';
+import 'package:speechlist/models/evaluated_contribution.dart';
 import 'dart:convert';
 import 'package:speechlist/models/room.dart';
 import 'package:speechlist/models/user.dart';
@@ -206,14 +207,14 @@ class NetworkNormal {
         .timeout(Duration(milliseconds: 5000));
   }
 
-  Future<List<Contribution>> fetchRoomEvaluation(int roomId) async {
+  Future<List<EvaluatedContribution>> fetchRoomEvaluation(int roomId) async {
     final response = await http.get('$_host/room/${roomId}/evaluation', headers: {"Content-Type": "application/json"})
         .timeout(Duration(milliseconds: 5000));
 
     if (response.statusCode >= 200 && response.statusCode < 300) {
       // If the call to the server was successful, parse the JSON
       List responseJson = json.decode(response.body);
-      return responseJson.map((m) => new Contribution.fromJson(m)).toList();
+      return responseJson.map((m) => new EvaluatedContribution.fromJson(m)).toList();
     } else {
       // If that call was not successful, throw an error.
       throw Exception('Failed to load room evaluation. Error: ${response.statusCode}');
@@ -513,7 +514,7 @@ class NetworkDemo {
 
   }
 
-  Future<List<Contribution>> fetchRoomEvaluation(int roomId) async {
+  Future<List<EvaluatedContribution>> fetchRoomEvaluation(int roomId) async {
     List responseJson = json.decode(
       '''
         [
@@ -541,7 +542,7 @@ class NetworkDemo {
         ]
       '''
     );
-    return responseJson.map((m) => new Contribution.fromJson(m)).toList();
+    return responseJson.map((m) => EvaluatedContribution.fromJson(m)).toList();
   }
 }
 
@@ -600,7 +601,7 @@ class NetworkDemoError {
     throw Exception('Failed to set time. Error: ${404}');
   }
 
-  Future<List<Contribution>> fetchRoomEvaluation(int roomId) async {
+  Future<List<EvaluatedContribution>> fetchRoomEvaluation(int roomId) async {
     await Future.delayed(delay);
     throw Exception('Failed to fetch room evaluation. Error: ${404}');
   }
