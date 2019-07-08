@@ -21,9 +21,9 @@ class _RoomPageState extends State<RoomPage> {
   Room room;
   int roomId;
   String userName;
-   int counterForTime = 0;
+  int counterForTime = 0;
   Timer _timer;
-   bool _isButtonDisabledStart = false;
+  bool _isButtonDisabledStart = false;
   bool _isButtonDisabledStop = true;
 
   _RoomPageState(this.roomId);
@@ -44,11 +44,13 @@ class _RoomPageState extends State<RoomPage> {
           _isButtonDisabledStop = !_isButtonDisabledStop;
           _timer = new Timer.periodic(Duration(seconds: 1), (Timer timer) {
             counterForTime++;
-            setState(() {
-
-            });
+            setState(() {});
 
           });
+
+          Contribution lastContribution = room.contributions.first;
+          Network().setRoomContributionStartTime(room, lastContribution, User(lastContribution.userId, lastContribution.name, ""), 0);
+          setState(() {});
         },
       );
     } else {
@@ -59,13 +61,14 @@ class _RoomPageState extends State<RoomPage> {
           _isButtonDisabledStart = !_isButtonDisabledStart;
           _isButtonDisabledStop = !_isButtonDisabledStop;
           _timer.cancel();
+
+          Contribution lastContribution = room.contributions.first;
+          Network().setRoomContributionStopTime(room, lastContribution, User(lastContribution.userId, lastContribution.name, ""), counterForTime);
+          await Network().removeRoomContribution(room, lastContribution, User(lastContribution.userId, lastContribution.name, ""));
+
           counterForTime = 0;
 
-          Contribution lastContribution = room.contributions.last;
-          Network().removeRoomContribution(room, lastContribution, User(lastContribution.userId, lastContribution.name, ""));
-
-          setState(() {
-          });
+          setState(() {});
         },
       );
     }
@@ -326,7 +329,7 @@ class _RoomPageState extends State<RoomPage> {
                           Expanded(
                             child: Column(
                               children: <Widget>[
-                                _getSpeaker(snapshot.data, snapshot.data.contributions.reversed.toList()),
+                                _getSpeaker(snapshot.data, snapshot.data.contributions),
                                 Container(
                                   padding: EdgeInsets.all(5),
                                   child: RichText(
@@ -376,7 +379,7 @@ class _RoomPageState extends State<RoomPage> {
                           shrinkWrap: true,
                           itemBuilder: (context, int) =>
                               _buildProductItem(
-                                  context, int, snapshot.data.contributions.reversed.toList()),
+                                  context, int, snapshot.data.contributions),
                           itemCount: snapshot.data.contributions.length,
                         ),
                       );

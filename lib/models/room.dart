@@ -31,18 +31,25 @@ class Room {
   };
 
   factory Room.fromJson(Map<String, dynamic> json) {
-    var allContributions = List<Contribution>();
-    (json['user'] as List)?.map((i) {
-      if (i['contribution'] != null && i['contribution']['contribution'] != null) {
-        List<Contribution> contributions = (i['contribution']['contribution'] as List)?.map(
-                (item) => Contribution(item['contributionId'], item['art'], item['name'], i['userId'])
-        )?.toList();
+//    var allContributions = List<Contribution>();
+//    (json['user'] as List)?.map((i) {
+//      if (i['contribution'] != null && i['contribution']['contribution'] != null) {
+//        List<Contribution> contributions = (i['contribution']['contribution'] as List)?.map(
+//                (item) => Contribution(item['contributionId'], item['art'], item['name'], i['userId'])
+//        )?.toList();
+//
+//        allContributions.addAll(contributions);
+//      }
+//
+//      return null;
+//    })?.toList();
 
-        allContributions.addAll(contributions);
-      }
 
-      return null;
-    })?.toList();
+    var allContributions = (json['contributionsAll'] as List)
+        ?.map((m) => Contribution.fromJson(m))
+        ?.toList();
+
+    allContributions ??= List<Contribution>();
 
     return Room(
         json['roomId'],

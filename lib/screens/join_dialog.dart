@@ -21,6 +21,7 @@ class _JoinDialogState extends State<JoinDialogPage>{
   var textController = new TextEditingController();
   String _userPassword = "";
   var selectedCategories = new Map<String, String>();
+  bool _obscureText = true;
 
   _JoinDialogState(this.room);
 
@@ -40,12 +41,13 @@ class _JoinDialogState extends State<JoinDialogPage>{
             prefixIcon: Icon(Icons.vpn_key),
             suffixIcon: IconButton(
               icon: Icon(Icons.remove_red_eye),
-              onPressed: () {},
+              onPressed: () { setState(() => _obscureText = !_obscureText); },
             )
         ),
         onChanged: (text) {
           _userPassword = text;
         },
+        obscureText: _obscureText,
       );
     } else{
       return new Container();

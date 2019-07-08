@@ -14,8 +14,8 @@ class Contribution {
   };
 
   factory Contribution.fromJson(Map<String, dynamic> json) => new Contribution(
-    json['id'],
-    json['type'],
+    json['contributionId'],
+    json['art'],
     json['name'],
     json['userId'],
   );

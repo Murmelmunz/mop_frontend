@@ -105,7 +105,7 @@ class NetworkNormal {
   }
 
   Future<List<Contribution>> fetchRoomContributions(Room room) async {
-    final response = await http.get('$_host/room/${room.roomId}/contribution', headers: {"Content-Type": "application/json"})
+    final response = await http.get('$_host/room/${room.roomId}/contributionsAll', headers: {"Content-Type": "application/json"})
         .timeout(Duration(milliseconds: 5000));
 
     if (response.statusCode >= 200 && response.statusCode < 300) {
@@ -160,7 +160,7 @@ class NetworkNormal {
       }
     ''';
 
-    print(body);
+    print('$_host/room/${room.roomId}/user/${user.id}/contribution/${contribution.id}');
     final response = await http.delete(
         '$_host/room/${room.roomId}/user/${user.id}/contribution/${contribution.id}',
 //        body: body,
@@ -174,6 +174,36 @@ class NetworkNormal {
 //      // If that call was not successful, throw an error.
 //      throw Exception('Failed to create contribution. Error: ${response.statusCode}');
 //    }
+  }
+
+  void setRoomContributionStartTime(Room room, Contribution contribution, User user, int timeStart) async {
+    String body = '''
+      {
+        "timeStart": $timeStart
+      }
+    ''';
+
+    print(body);
+    final response = await http.put(
+        '$_host/room/${room.roomId}/user/${user.id}/contribution/${contribution.id}',
+        body: body,
+        headers: {"Content-Type": "application/json"})
+        .timeout(Duration(milliseconds: 5000));
+  }
+
+  void setRoomContributionStopTime(Room room, Contribution contribution, User user, int timeStop) async {
+    String body = '''
+      {
+        "timeStop": $timeStop
+      }
+    ''';
+
+    print(body);
+    final response = await http.put(
+        '$_host/room/${room.roomId}/user/${user.id}/contribution/${contribution.id}',
+        body: body,
+        headers: {"Content-Type": "application/json"})
+        .timeout(Duration(milliseconds: 5000));
   }
 }
 
@@ -211,6 +241,20 @@ class NetworkDemo {
                     "value": "B"
                 }
             ]
+        }
+    ],
+    "contributionsAll": [
+        {
+            "art": "lib/assets/antwort_icon.png",
+            "contributionId": 796109,
+            "name": "Lisa",
+            "userId": 898591
+        },
+        {
+            "art": "lib/assets/antwort_icon.png",
+            "contributionId": 123,
+            "name": "Jonny",
+            "userId": 343
         }
     ],
     "date": "27.06.19",
@@ -446,6 +490,14 @@ class NetworkDemo {
   void removeRoomContribution(Room room, Contribution contribution, User user) async {
 
   }
+
+  void setRoomContributionStartTime(Room room, Contribution contribution, User user, int timeStart) async {
+
+  }
+
+  void setRoomContributionStopTime(Room room, Contribution contribution, User user, int timeStop) async {
+
+  }
 }
 
 class NetworkDemoError {
@@ -489,5 +541,13 @@ class NetworkDemoError {
     print(json.encode(room));
     await Future.delayed(delay);
     throw Exception('Failed to remove room contribution. Error: ${404}');
+  }
+
+  void setRoomContributionStartTime(Room room, Contribution contribution, User user, int timeStart) async {
+
+  }
+
+  void setRoomContributionStopTime(Room room, Contribution contribution, User user, int timeStop) async {
+
   }
 }
