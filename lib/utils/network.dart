@@ -185,7 +185,7 @@ class NetworkNormal {
 
     print(body);
     final response = await http.post(
-        '$_host/evaluation/${contribution.id}',
+        '$_host/room/${room.roomId}/evaluation/${contribution.id}',
         body: body,
         headers: {"Content-Type": "application/json"})
         .timeout(Duration(milliseconds: 5000));
@@ -200,10 +200,24 @@ class NetworkNormal {
 
     print(body);
     final response = await http.post(
-        '$_host/evaluation/${contribution.id}',
+        '$_host/room/${room.roomId}/evaluation/${contribution.id}',
         body: body,
         headers: {"Content-Type": "application/json"})
         .timeout(Duration(milliseconds: 5000));
+  }
+
+  Future<List<Contribution>> fetchRoomEvaluation(int roomId) async {
+    final response = await http.get('$_host/room/${roomId}/evaluation', headers: {"Content-Type": "application/json"})
+        .timeout(Duration(milliseconds: 5000));
+
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      // If the call to the server was successful, parse the JSON
+      List responseJson = json.decode(response.body);
+      return responseJson.map((m) => new Contribution.fromJson(m)).toList();
+    } else {
+      // If that call was not successful, throw an error.
+      throw Exception('Failed to load room evaluation. Error: ${response.statusCode}');
+    }
   }
 }
 
@@ -491,12 +505,43 @@ class NetworkDemo {
 
   }
 
-  void setRoomContributionStartTime(Room room, Contribution contribution, User user, int timeStart) async {
+  void setRoomContributionStartTime(Room room, Contribution contribution, User user, DateTime timeStart) async {
 
   }
 
-  void setRoomContributionStopTime(Room room, Contribution contribution, User user, int timeStop) async {
+  void setRoomContributionStopTime(Room room, Contribution contribution, User user, DateTime timeStop) async {
 
+  }
+
+  Future<List<Contribution>> fetchRoomEvaluation(int roomId) async {
+    List responseJson = json.decode(
+      '''
+        [
+            {
+                "_id": "5d2367307fca9b7175eb0596",
+                "art": "lib/assets/rede_icon.png",
+                "categories": [
+                    {
+                        "name": "cat",
+                        "values": [
+                            {
+                                "value": "val"
+                            }
+                        ]
+                    }
+                ],
+                "contributionId": 160732,
+                "name": "Guenter",
+                "roomId": 302483,
+                "time": 5,
+                "timeStart": "2019-07-08 17:55:49.641874",
+                "timeStop": "2019-07-08 17:55:54.881814",
+                "userId": 186600
+            }
+        ]
+      '''
+    );
+    return responseJson.map((m) => new Contribution.fromJson(m)).toList();
   }
 }
 
@@ -543,11 +588,20 @@ class NetworkDemoError {
     throw Exception('Failed to remove room contribution. Error: ${404}');
   }
 
-  void setRoomContributionStartTime(Room room, Contribution contribution, User user, int timeStart) async {
-
+  void setRoomContributionStartTime(Room room, Contribution contribution, User user, DateTime timeStart) async {
+    print(json.encode(room));
+    await Future.delayed(delay);
+    throw Exception('Failed to set time. Error: ${404}');
   }
 
-  void setRoomContributionStopTime(Room room, Contribution contribution, User user, int timeStop) async {
+  void setRoomContributionStopTime(Room room, Contribution contribution, User user, DateTime timeStop) async {
+    print(json.encode(room));
+    await Future.delayed(delay);
+    throw Exception('Failed to set time. Error: ${404}');
+  }
 
+  Future<List<Contribution>> fetchRoomEvaluation(int roomId) async {
+    await Future.delayed(delay);
+    throw Exception('Failed to fetch room evaluation. Error: ${404}');
   }
 }

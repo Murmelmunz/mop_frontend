@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:speechlist/models/category.dart';
+import 'package:speechlist/models/contribution.dart';
 import 'package:speechlist/models/room.dart';
+import 'package:speechlist/models/value.dart';
 import 'package:speechlist/utils/network.dart';
 import 'package:speechlist/utils/preferences.dart';
 import 'package:flutter_circular_chart/flutter_circular_chart.dart';
@@ -50,18 +52,18 @@ class _EvaluateRoomPageState extends State<EvaluateRoomPage> {
   Widget _buildStatistic(BuildContext context, int index, List<Category> allCategories){
     return Container(
       padding: EdgeInsets.all(15),
-      child: myCircularItems("Quarterly speak time", allCategories[index].name, index)
+      child: myCircularItems("Quarterly speak time", allCategories[index], index)
       ,
     );
   }
 
-  Widget _buildLabel(BuildContext context, int index){
+  Widget _buildLabel(BuildContext context, int index, List<Value> values){
     return Container(
-      child: Text("Text" + index.toString()),
+      child: Text(values[index].value),
     );
   }
 
-  Material myCircularItems(String title, String subtitle, int index){
+  Material myCircularItems(String title, Category category, int index){
     return Material(
       color: Colors.white,
       elevation: 14.0,
@@ -91,7 +93,7 @@ class _EvaluateRoomPageState extends State<EvaluateRoomPage> {
                   Padding(
                     padding: EdgeInsets.all(3.0),
                     child:Text(
-                      subtitle,
+                      category.name,
                       style:TextStyle(
                         fontSize: 18.0,
                     ),),
@@ -114,8 +116,8 @@ class _EvaluateRoomPageState extends State<EvaluateRoomPage> {
                         width: 100,
                         child: ListView.builder(
                           shrinkWrap: true,
-                          itemBuilder: (context, int) => _buildLabel(context, int),
-                          itemCount: 4,
+                          itemBuilder: (context, int) => _buildLabel(context, int, category.values),
+                          itemCount: category.values.length,
                         )
                       ),
 
@@ -227,9 +229,24 @@ class _EvaluateRoomPageState extends State<EvaluateRoomPage> {
                             scrollDirection: Axis.vertical,
                             shrinkWrap: true,
                             itemBuilder: (context, int) => _buildStatistic(context, int, allCategories),
-                            itemCount: 3,
+                            itemCount: allCategories.length,
                           ),
                         );
+                      } else {
+                        return Container();
+                      }
+                    },
+                  ),
+                ),
+
+                Container(
+                  child: FutureBuilder<List<Contribution>>(
+                    future: Network().fetchRoomEvaluation(this.roomId.roomId),
+                    builder: (context, snapshot){
+                      if(snapshot.hasData){
+                        List<Contribution> allCategories = snapshot.data;
+                        print(allCategories[0].name);
+                        return Container();
                       } else{
                         return Container();
                       }
@@ -245,7 +262,7 @@ class _EvaluateRoomPageState extends State<EvaluateRoomPage> {
         onPressed: () {
           showDialog(
               context: context,
-              builder: (context) {});
+              builder: (context) {return Container();});
         },
         child: Icon(
             Icons.save,
