@@ -3,9 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:speechlist/main.dart';
 import 'package:speechlist/models/room.dart';
-import 'package:speechlist/models/user.dart';
 import 'package:speechlist/utils/network.dart';
-import 'package:speechlist/utils/preferences.dart';
 import 'package:speechlist/widgets/box_with_title.dart';
 
 class CreateRoomPage3 extends StatefulWidget {

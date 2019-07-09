@@ -152,16 +152,16 @@ class _EvaluateRoomPageState extends State<EvaluateRoomPage> {
                           chartType: CircularChartType.Pie,
                         ),
                       ),
-                          Container(
-                              margin: EdgeInsets.only(left: 30, top: 2),
-                              height: 100,
-                              width: 150,
-                              child: ListView.builder(
-                                shrinkWrap: true,
-                                itemBuilder: (context, int) => _buildLabel(context, int, room.categories[index].values),
-                                itemCount: room.categories[index].values.length,
-                              )
-                          ),
+                      Container(
+                          margin: EdgeInsets.only(left: 14, top: 2),
+                          height: 100,
+                          width: 140,
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            itemBuilder: (context, int) => _buildLabel(context, int, room.categories[index].values),
+                            itemCount: room.categories[index].values.length,
+                          )
+                      ),
 
                     ],
                   ),

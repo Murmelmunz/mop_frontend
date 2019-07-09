@@ -523,10 +523,18 @@ class NetworkDemo {
                 "art": "lib/assets/rede_icon.png",
                 "categories": [
                     {
-                        "name": "cat",
+                        "name": "Haar",
                         "values": [
                             {
-                                "value": "val"
+                                "value": "R"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Geschlecht",
+                        "values": [
+                            {
+                                "value": "M"
                             }
                         ]
                     }
@@ -538,6 +546,35 @@ class NetworkDemo {
                 "timeStart": "2019-07-08 17:55:49.641874",
                 "timeStop": "2019-07-08 17:55:54.881814",
                 "userId": 186600
+            },
+            {
+                "_id": "5d2367307fca9b7175eb0597",
+                "art": "lib/assets/rede_icon.png",
+                "categories": [
+                    {
+                        "name": "Haar",
+                        "values": [
+                            {
+                                "value": "B"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Geschlecht",
+                        "values": [
+                            {
+                                "value": "W"
+                            }
+                        ]
+                    }
+                ],
+                "contributionId": 160733,
+                "name": "Lisa",
+                "roomId": 302483,
+                "time": 25,
+                "timeStart": "2019-07-08 17:55:49.641874",
+                "timeStop": "2019-07-08 17:55:54.881814",
+                "userId": 13
             }
         ]
       '''

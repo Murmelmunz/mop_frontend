@@ -12,7 +12,9 @@ class EvaluatedContribution {
   List<Category> categories;
 
   EvaluatedContribution(this.id, this.type, this.name, this.userId, this.roomId,
-      this.time, this.timeStart, this.timeStop, this.categories);
+      this.time, this.timeStart, this.timeStop, this.categories) {
+    time ??= 0;
+  }
 
   Map<String, dynamic> toJson() => <String, dynamic>{
     'id': this.id,
