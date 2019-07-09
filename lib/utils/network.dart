@@ -29,7 +29,7 @@ class NetworkNormal {
 
   Future<List<Room>> fetchAllRooms() async {
     final response = await http.get('$_host/room', headers: {"Content-Type": "application/json"})
-        .timeout(Duration(milliseconds: 5000));
+        .timeout(Duration(milliseconds: 15000));
 
     if (response.statusCode >= 200 && response.statusCode < 300) {
       // If the call to the server was successful, parse the JSON

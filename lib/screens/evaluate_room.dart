@@ -19,51 +19,93 @@ class EvaluateRoomPage extends StatefulWidget {
 }
 
 class _EvaluateRoomPageState extends State<EvaluateRoomPage> {
-  Room roomId;
+  Room room;
   String userName;
-  var data1 = [0.0,-2.0,3.5,-2.0,0.5,0.7,0.8,1.0,2.0,3.0,3.2];
+  List<EvaluatedContribution> settedList;
+  List<Category> tranformList;
+  double reciprocal(double d) => 1/d;
+  List<Color> colors = new List<Color>();
 
-  _EvaluateRoomPageState(this.roomId);
+  _EvaluateRoomPageState(this.room);
 
   @override
   void initState() {
+    colors.add(new Color(0xff00206B));
+    colors.add(new Color(0xffFF0000));
+    colors.add(new Color(0xffFFA500));
+    colors.add(new Color(0xffFFFF00));
+    colors.add(new Color(0xff228B22));
+    colors.add(new Color(0xff00FFFF));
+    colors.add(new Color(0xffFF00FF));
+    colors.add(new Color(0xff8A2BE2));
     Preferences().getUserName().then((n) => userName = n);
     super.initState();
   }
 
-  List<CircularStackEntry> getCircularData(List<String> categories){
-    List<CircularStackEntry> circularData = new List<CircularStackEntry>();
-    for(String category in categories){
-      CircularStackEntry entry = new CircularStackEntry(<CircularSegmentEntry> [new CircularSegmentEntry(700.0, Color(0xff00206B))]);
-      circularData.add(entry);
-    }
-  }
-  
-  List<CircularStackEntry> circularData = <CircularStackEntry>[
-    new CircularStackEntry(
-      <CircularSegmentEntry>[
-        new CircularSegmentEntry(700.0, Color(0xff00206B), rankKey: 'Q1'),
-        new CircularSegmentEntry(700.0, Color(0xff6783E6), rankKey: 'Q1'),
-      ],
-      rankKey: 'Quarterly Profits',
-    ),
-  ];
+  void setupData(List<EvaluatedContribution> allData){
+      tranformList = this.room.categories;
+      for(EvaluatedContribution contribution in allData){
+        for(Category evaCat in contribution.categories){
+          for (Value evaVal in evaCat.values){
+            for(Category cat in tranformList){
+              for(Value val in cat.values){
+                if(cat.name == evaCat.name){
+                  if(evaVal.value == val.value){
+                    val.time += contribution.time;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
 
-  Widget _buildStatistic(BuildContext context, int index, List<Category> allCategories){
+  }
+
+  List<CircularStackEntry> getCircularData(List<Value> categories){
+    List<CircularStackEntry> circularData = new List<CircularStackEntry>();
+    List<CircularSegmentEntry> helper = new List<CircularSegmentEntry>();
+    int index = 0;
+    for(Value category in categories){
+      if(category.time == 0){
+        helper.add(new CircularSegmentEntry(0.0, colors[index], rankKey: "Q" + index.toString()));
+      } else{
+        helper.add(new CircularSegmentEntry(category.time.toDouble(), colors[index], rankKey: "Q" + index.toString()));
+      }
+      index = index + 1;
+    }
+    CircularStackEntry entry = new CircularStackEntry(helper, rankKey: "Quarterly Speak Time");
+    circularData.add(entry);
+    return circularData;
+  }
+
+  Widget _buildStatistic(BuildContext context, int index){
     return Container(
       padding: EdgeInsets.all(15),
-      child: myCircularItems("Quarterly speak time", allCategories[index], index)
+      child: myCircularItems("Quarterly speak time", index)
       ,
     );
   }
 
   Widget _buildLabel(BuildContext context, int index, List<Value> values){
-    return Container(
-      child: Text(values[index].value),
+    return Row(children: <Widget>[
+      Container(
+        padding: EdgeInsets.only(right: 5, top: 1),
+        child: IconTheme(
+          data: new IconThemeData(
+              color: colors[index]),
+          child: Icon(Icons.color_lens),
+        ),
+      ),
+      Container(
+          child: Text(values[index].value),
+        )
+    ],
     );
+
   }
 
-  Material myCircularItems(String title, Category category, int index){
+  Material myCircularItems(String title, int index){
     return Material(
       color: Colors.white,
       elevation: 14.0,
@@ -91,9 +133,9 @@ class _EvaluateRoomPageState extends State<EvaluateRoomPage> {
                   ),
 
                   Padding(
-                    padding: EdgeInsets.all(3.0),
+                    padding: EdgeInsets.all(5.0),
                     child:Text(
-                      category.name,
+                      room.categories[index].name,
                       style:TextStyle(
                         fontSize: 18.0,
                     ),),
@@ -103,23 +145,23 @@ class _EvaluateRoomPageState extends State<EvaluateRoomPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Padding(
-                        padding:EdgeInsets.all(5),
+                        padding:EdgeInsets.all(10),
                         child:AnimatedCircularChart(
                           size: const Size(100.0, 100.0),
-                          initialChartData: circularData,
+                          initialChartData: getCircularData(this.tranformList[index].values),
                           chartType: CircularChartType.Pie,
                         ),
                       ),
-                      Container(
-                        margin: EdgeInsets.only(left: 20, top: 10),
-                        height: 100,
-                        width: 100,
-                        child: ListView.builder(
-                          shrinkWrap: true,
-                          itemBuilder: (context, int) => _buildLabel(context, int, category.values),
-                          itemCount: category.values.length,
-                        )
-                      ),
+                          Container(
+                              margin: EdgeInsets.only(left: 30, top: 2),
+                              height: 100,
+                              width: 150,
+                              child: ListView.builder(
+                                shrinkWrap: true,
+                                itemBuilder: (context, int) => _buildLabel(context, int, room.categories[index].values),
+                                itemCount: room.categories[index].values.length,
+                              )
+                          ),
 
                     ],
                   ),
@@ -174,7 +216,7 @@ class _EvaluateRoomPageState extends State<EvaluateRoomPage> {
                             ),
                             children: <TextSpan>[
                               new TextSpan(text: 'Topic: ', style: new TextStyle(fontWeight: FontWeight.bold)),
-                              new TextSpan(text: '${roomId.topic}')
+                              new TextSpan(text: '${room.topic}')
                             ],
                           ),
                         ),
@@ -186,7 +228,7 @@ class _EvaluateRoomPageState extends State<EvaluateRoomPage> {
                             ),
                             children: <TextSpan>[
                               new TextSpan(text: 'Meeting point: ', style: new TextStyle(fontWeight: FontWeight.bold)),
-                              new TextSpan(text: '${roomId.meetingPoint}')
+                              new TextSpan(text: '${room.meetingPoint}')
                             ],
                           ),
                         ),
@@ -198,7 +240,7 @@ class _EvaluateRoomPageState extends State<EvaluateRoomPage> {
                             ),
                             children: <TextSpan>[
                               new TextSpan(text: 'Date: ', style: new TextStyle(fontWeight: FontWeight.bold)),
-                              new TextSpan(text: '${roomId.date}')
+                              new TextSpan(text: '${room.date}')
                             ],
                           ),
                         ),
@@ -210,7 +252,7 @@ class _EvaluateRoomPageState extends State<EvaluateRoomPage> {
                             ),
                             children: <TextSpan>[
                               new TextSpan(text: 'Time: ', style: new TextStyle(fontWeight: FontWeight.bold)),
-                              new TextSpan(text: '${roomId.time}')
+                              new TextSpan(text: '${room.time}')
                             ],
                           ),
                         ),
@@ -218,37 +260,23 @@ class _EvaluateRoomPageState extends State<EvaluateRoomPage> {
                     ),
                   ),
                 ),
-                Container(
-                  child: FutureBuilder<Room>(
-                    future: Network().fetchRoom(this.roomId.roomId),
-                    builder: (context, snapshot){
-                      if(snapshot.hasData){
-                        List<Category> allCategories = snapshot.data.categories;
-                        return Expanded(
-                          child: ListView.builder(
-                            scrollDirection: Axis.vertical,
-                            shrinkWrap: true,
-                            itemBuilder: (context, int) => _buildStatistic(context, int, allCategories),
-                            itemCount: allCategories.length,
-                          ),
-                        );
-                      } else {
-                        return Container();
-                      }
-                    },
-                  ),
-                ),
 
                 Container(
                   child: FutureBuilder<List<EvaluatedContribution>>(
-                    future: Network().fetchRoomEvaluation(this.roomId.roomId),
+                    future: Network().fetchRoomEvaluation(this.room.roomId),
                     builder: (context, snapshot){
                       if(snapshot.hasData){
-                        List<EvaluatedContribution> allCategories = snapshot.data;
-                        print(allCategories[0].name);
-                        print(allCategories[0].categories[0].values[0].value);
-                        return Container();
-                      } else{
+                        this.settedList = snapshot.data;
+                        setupData(settedList);
+                        return Expanded(
+                          child: ListView.builder(
+                              scrollDirection: Axis.vertical,
+                              shrinkWrap: true,
+                              itemBuilder: (context, int) => _buildStatistic(context, int),
+                              itemCount: room.categories.length,
+                          ),
+                        );
+                      } else {
                         return Container();
                       }
                     },

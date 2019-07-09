@@ -63,7 +63,7 @@ class _ContributionState extends State<ContributionPage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Container(
-                  margin: EdgeInsets.only(bottom: 60),
+                  margin: EdgeInsets.only(bottom: 60, top: 40),
                   child: new Text(
                   "Create a new Contribution",
                   style: new TextStyle(

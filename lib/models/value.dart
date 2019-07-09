@@ -1,5 +1,6 @@
 class Value {
   String value;
+  int time = 0;
 
   Value(this.value);
 
